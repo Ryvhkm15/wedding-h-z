@@ -2212,6 +2212,50 @@ footer h3 {
     }
 }
 
+/* FIX TANGGAL BERANTAKAN DI ANDROID */
+@media (max-width: 560px) {
+    .std-date-split {
+        flex-direction: column !important;
+        gap: 8px !important;
+        align-items: center !important;
+    }
+    .std-side-item {
+        min-width: 0 !important;
+        width: 100% !important;
+        max-width: 260px !important;
+        padding: 8px 8px !important;
+        border-top: none !important;
+        border-bottom: none !important;
+    }
+    .std-side-item:first-child {
+        border-bottom: 1px solid rgba(255,255,255,0.5) !important;
+    }
+    .std-side-item:last-child {
+        border-top: 1px solid rgba(255,255,255,0.5) !important;
+    }
+    .std-day-number {
+        font-size: 3rem !important;
+        line-height: 1.1 !important;
+        order: 2 !important;
+    }
+    .std-side-item:first-child { order: 1 !important; }
+    .std-side-item:last-child { order: 3 !important; }
+}
+
+/* FIX TOMBOL BAWAH - PAKSA MUSIK DI ATAS */
+@media (max-width: 768px) {
+    .music-btn {
+        right: 12px !important;
+        bottom: 62px !important;
+        z-index: 60 !important;
+    }
+    .theme-switcher {
+        left: 12px !important;
+        bottom: 12px !important;
+        z-index: 50 !important;
+    }
+}
+
 @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
