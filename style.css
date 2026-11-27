@@ -365,25 +365,35 @@ footer {
 
 .text-rise {
     opacity: 0;
-    transform: translate3d(0, 16px, 0);
-    transition: opacity 0.68s cubic-bezier(0.22, 1, 0.36, 1), transform 0.68s cubic-bezier(0.22, 1, 0.36, 1);
+    transform: translate3d(0, 22px, 0);
+    transition: opacity 0.72s cubic-bezier(0.22, 1, 0.36, 1), transform 0.72s cubic-bezier(0.22, 1, 0.36, 1);
     will-change: opacity, transform;
 }
 
-.text-rise.is-shown,
-.hero-envelope .text-rise {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
+.text-rise.is-shown {
+    opacity: 1 !important;
+    transform: translate3d(0, 0, 0) !important;
 }
 
 .gold-sheen-text {
-    background: linear-gradient(110deg, currentColor 35%, #fff3cf 50%, currentColor 65%);
+    color: var(--gold-bright, #f5e2ba);
+    background-image: linear-gradient(
+        110deg,
+        #d9be8c 20%,
+        #fff9e6 50%,
+        #d9be8c 80%
+    );
     background-size: 220% 100%;
     -webkit-background-clip: text;
     background-clip: text;
-    animation: goldSheenSweep 4.5s ease-in-out infinite;
+    -webkit-text-fill-color: transparent;
+    animation: goldSheenSweep 3.8s ease-in-out infinite;
 }
 
+@keyframes goldSheenSweep {
+    0% { background-position: 120% 50%; }
+    100% { background-position: -20% 50%; }
+}
 @keyframes goldSheenSweep {
     0%, 100% { background-position: 100% 50%; }
     50% { background-position: 0% 50%; }
