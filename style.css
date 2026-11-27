@@ -280,25 +280,6 @@ body[data-wedding-theme="botanical"] .hero-envelope .click-hint {
 body[data-wedding-theme="emerald"] .hero-envelope .guest-mini strong,
 body[data-wedding-theme="botanical"] .hero-envelope .guest-mini strong { color: #5c1422; }
 
-/* FIX WARNA NAMA HERLANGGA & ZALSA BIAR KEBA CA */
-#display-nama-pasangan.couple-script,
-.hero-envelope .couple-script {
-    color: #4e0d19 !important;
-    background: none !important;
-    -webkit-background-clip: border-box !important;
-    background-clip: border-box !important;
-    -webkit-text-fill-color: #4e0d19 !important;
-    animation: none !important;
-    text-shadow: 0 2px 0 rgba(255,255,255,0.9), 0 4px 16px rgba(255,255,255,0.85) !important;
-}
-
-body[data-wedding-theme="emerald"] .hero-envelope .couple-script,
-body[data-wedding-theme="botanical"] .hero-envelope .couple-script,
-body[data-wedding-theme="velvet"] .hero-envelope .couple-script {
-    color: #4e0d19 !important;
-    -webkit-text-fill-color: #4e0d19 !important;
-}
-
 .scroll-progress-bar {
     position: fixed;
     top: 0;
@@ -1615,6 +1596,60 @@ footer {
 footer { padding: 48px 20px 84px; background-image: linear-gradient(180deg, rgba(42, 7, 14, 0.68) 0%, rgba(24, 3, 7, 0.85) 100%), url("./bg-gift-rsvp.jpg"); color: #f6eedc; text-align: center; }
 footer p { max-width: 560px; margin: 0 auto 12px; font-family: var(--font-serif); font-size: 1.08rem; line-height: 1.65; }
 footer h3 { font-family: var(--font-serif); font-size: 1rem; line-height: 1.5; letter-spacing: 0.26em; color: var(--gold-bright); }
+
+/* === EFEK MENGKILAU ESTETIK - KHUSUS JUDUL SLIDE === */
+.std-script-title,
+.gift-script-heading,
+.love-story-heading,
+.detail-script-heading,
+.ampersand-maroon {
+    background: linear-gradient(110deg, #d9be8c 20%, #fff9e6 38%, #f5e2ba 50%, #fff9e6 62%, #d9be8c 80%);
+    background-size: 220% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    animation: titleShine 3.8s ease-in-out infinite;
+}
+
+.gallery-classic-title,
+.rsvp-last-title,
+.closing-couple-names,
+.spaced-title {
+    background: linear-gradient(110deg, #4e0d19 20%, #a81a35 38%, #d9be8c 50%, #a81a35 62%, #4e0d19 80%);
+    background-size: 220% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    animation: titleShine 4.5s ease-in-out infinite;
+}
+
+#display-nama-pasangan.couple-script {
+    background: linear-gradient(110deg, #4e0d19 25%, #8a1428 40%, #e6c88c 50%, #8a1428 60%, #4e0d19 75%) !important;
+    background-size: 220% 100% !important;
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    color: transparent !important;
+    animation: titleShine 4s ease-in-out infinite !important;
+    text-shadow: none !important;
+    filter: drop-shadow(0 2px 6px rgba(255,255,255,0.7));
+}
+
+@keyframes titleShine {
+    0%, 100% { background-position: 100% 50%; }
+    50% { background-position: 0% 50%; }
+}
+
+.std-script-title,
+.gift-script-heading,
+.love-story-heading,
+.gallery-classic-title,
+.rsvp-last-title,
+#display-nama-pasangan.couple-script {
+    will-change: background-position;
+}
 
 @media (max-width: 768px) {
     html { scroll-behavior: auto !important; }
