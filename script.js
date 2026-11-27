@@ -44,14 +44,8 @@ document.addEventListener("DOMContentLoaded", () => {
         curtainEl.addEventListener("click", triggerCurtainOpen);
     }
 
-    const revealElements = () => {
-        document.querySelectorAll(".text-rise, .anim-item").forEach((el) => {
-            const rect = el.getBoundingClientRect();
-            if (rect.top < window.innerHeight * 0.96) {
-                el.classList.add("is-shown", "anim-visible");
-            }
-        });
-    };
+    // === GABUNGAN: TEXT-RISE / ANIM-ITEM - HANYA IntersectionObserver ===
+    const riseTargets = document.querySelectorAll(".text-rise, .anim-item");
 
     if ("IntersectionObserver" in window) {
         const riseObserver = new IntersectionObserver(
@@ -66,15 +60,12 @@ document.addEventListener("DOMContentLoaded", () => {
             { threshold: 0.12, rootMargin: "0px 0px -24px 0px" }
         );
 
-        document.querySelectorAll(".text-rise, .anim-item").forEach((el) => {
-            riseObserver.observe(el);
-        });
+        riseTargets.forEach((target) => riseObserver.observe(target));
     } else {
-        revealElements();
+        // Fallback kalau browser lama gak support Observer
+        riseTargets.forEach((el) => el.classList.add("is-shown", "anim-visible"));
     }
-
-    window.addEventListener("scroll", revealElements, { passive: true });
-    revealElements();
+    // === AKHIR BAGIAN GABUNGAN ===
 
     const applyTheme = (themeName) => {
         const validTheme = ["emerald", "velvet", "botanical"].includes(themeName) ? themeName : "emerald";
