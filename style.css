@@ -2045,3 +2045,28 @@ footer h3 {
     .anim-item { opacity: 1 !important; transform: none !important; filter: none !important; }
     .opening-curtain { display: none !important; }
 }
+/* Matikan total animasi & pergerakan background */
+.hero-envelope,
+.section-doily-emerald,
+.section-maroon,
+.section-save-date-green,
+.section-gift-maroon,
+.section-love-story-green,
+.section-gallery-classic,
+.section-closing-envelope,
+.section-rsvp-last,
+.curtain-panel,
+footer {
+    animation: none !important;
+    transition: none !important;
+    background-attachment: scroll !important;
+    background-position: center center !important;
+}
+
+.curtain-panel-left {
+    background-position: left center !important;
+}
+
+.curtain-panel-right {
+    background-position: right center !important;
+}
