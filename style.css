@@ -2150,26 +2150,47 @@ footer h3 {
     .anim-item { opacity: 1 !important; transform: none !important; filter: none !important; }
     .opening-curtain { display: none !important; }
 }
-/* === FIX FINAL - GANTI BLOK LAMA DI BAWAH === */
-*, *::before, *::after {
+/* === FIX FINAL - FULL, TEMPEL PALING BAWAH === */
+
+/* 1. Matiin cahaya emas yang goyang di belakang background */
+.hero-envelope::before,
+.section-doily-emerald::before,
+.section-maroon::before,
+.section-save-date-green::before,
+.section-gift-maroon::before,
+.section-love-story-green::before,
+.section-closing-envelope::before {
   animation: none !important;
-  transition: none !important;
+  transform: none !important;
 }
 
-.sparkle-field, .typewriter-text::after {
+/* 2. Matiin amplop melayang, segel denyut, kado melayang */
+.envelope-trigger,
+.wax-seal,
+.gift-wrap-decor {
+  animation: none !important;
+}
+
+/* 3. Matiin teks ngetik, tapi JANGAN matiin bintang */
+.typewriter-text::after {
   display: none !important;
 }
 
-.anim-item, .anim-visible .anim-item {
+/* 4. Matiin card yang naik dari bawah pas scroll - ini yang bikin background keliatan gerak */
+.anim-item,
+.anim-visible .anim-item {
   opacity: 1 !important;
   transform: none !important;
   filter: none !important;
+  transition: none !important;
 }
 
+/* 5. Biar cover di HP gak nge-zoom pas address bar ngilang */
 .hero-envelope {
   min-height: 760px !important;
 }
 
+/* 6. Kunci semua background biar DIEM */
 .hero-envelope,
 .section-doily-emerald,
 .section-maroon,
@@ -2177,8 +2198,29 @@ footer h3 {
 .section-gift-maroon,
 .section-love-story-green,
 .section-closing-envelope,
+.section-gallery-classic,
+.section-rsvp-last,
 footer {
   background-position: center top !important;
   background-size: cover !important;
   background-attachment: scroll !important;
+}
+
+/* 7. BINTANG TETEP KEDIP - JANGAN DIHAPUS */
+.sparkle-field {
+  display: block !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+.sparkle-star {
+  display: block !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  animation: starTwinkle var(--dur, 2.4s) ease-in-out infinite !important;
+}
+.sparkle-dot {
+  display: block !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  animation: dotTwinkle var(--dur, 2.8s) ease-in-out infinite !important;
 }
