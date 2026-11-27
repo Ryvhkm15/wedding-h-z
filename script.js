@@ -489,11 +489,9 @@ if (bukaBtn) {
 // EFEK KETIKAN (TYPEWRITER) & SCROLL REVEAL
 // ==========================================
 function runTypewriter(el) {
-    if (!el || el.dataset.typedDone === "true") return;
-    if (el.children.length > 0) {
-        el.dataset.typedDone = "true";
-        return;
-    }
+  if (!el) return;
+  el.dataset.typedDone = "true";
+}
 
     const fullText = el.textContent;
     if (!fullText || !fullText.trim()) return;
