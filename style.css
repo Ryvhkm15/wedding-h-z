@@ -356,22 +356,21 @@ footer {
 
 .anim-item {
     opacity: 0;
-    transform: translate3d(0, 28px, 0) scale(0.98);
-    filter: blur(3px);
+    transform: translate3d(0, 14px, 0);
     transition:
-        opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1),
-        transform 0.85s cubic-bezier(0.22, 1, 0.36, 1),
-        filter 0.75s cubic-bezier(0.22, 1, 0.36, 1);
-    will-change: opacity, transform, filter;
+        opacity 0.45s ease,
+        transform 0.45s ease;
+    will-change: opacity, transform;
 }
 
-.hero-envelope .anim-item {
-    opacity: 1 !important;
-    transform: none !important;
-    filter: none !important;
-    transition: opacity 0.35s ease !important;
-    will-change: auto !important;
+.hero-envelope .anim-item,
+.anim-visible .anim-item,
+.anim-item.anim-visible {
+    opacity: 1;
+    transform: none;
+    filter: none;
 }
+
 
 .anim-visible .anim-item,
 .anim-item.anim-visible {
