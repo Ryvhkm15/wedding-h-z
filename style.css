@@ -70,9 +70,6 @@
         linear-gradient(160deg, #fbf3e4 0%, #e1caa3 100%);
 }
 
-/* =========================================================
-   ANIMASI BUKA TIRAI & PUTERAN TENGAH BISA DIPENCET + MUTER
-========================================================= */
 .opening-curtain {
     position: fixed;
     inset: 0;
@@ -127,7 +124,6 @@
 .curtain-panel-left .curtain-gold-trim { right: 6px; }
 .curtain-panel-right .curtain-gold-trim { left: 6px; }
 
-/* Tombol puteran tengah: bisa dipencet (button/div interaktif) & berputar */
 .curtain-crest-badge {
     position: fixed;
     top: 50%;
@@ -334,6 +330,7 @@ footer {
     background-repeat: no-repeat;
     background-attachment: scroll;
 }
+
 .top-ornament-line,
 .botanical-flourish {
     display: flex;
@@ -366,18 +363,30 @@ footer {
     animation: starTwinkle 2.6s ease-in-out infinite;
 }
 
-.typewriter-text.typing-active::after {
-    content: "|";
-    display: inline-block;
-    margin-left: 3px;
-    font-weight: 400;
-    color: currentColor;
-    animation: cursorBlink 0.72s steps(2, start) infinite;
+.text-rise {
+    opacity: 0;
+    transform: translate3d(0, 16px, 0);
+    transition: opacity 0.68s cubic-bezier(0.22, 1, 0.36, 1), transform 0.68s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: opacity, transform;
 }
 
-@keyframes cursorBlink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0; }
+.text-rise.is-shown,
+.hero-envelope .text-rise {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+}
+
+.gold-sheen-text {
+    background: linear-gradient(110deg, currentColor 35%, #fff3cf 50%, currentColor 65%);
+    background-size: 220% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    animation: goldSheenSweep 4.5s ease-in-out infinite;
+}
+
+@keyframes goldSheenSweep {
+    0%, 100% { background-position: 100% 50%; }
+    50% { background-position: 0% 50%; }
 }
 
 .anim-item {
@@ -2135,7 +2144,10 @@ footer h3 {
 
     .section-doily-emerald .anim-item,
     .section-love-story-green .anim-item,
-    .section-rsvp-last .anim-item {
+    .section-rsvp-last .anim-item,
+    .section-doily-emerald .text-rise,
+    .section-love-story-green .text-rise,
+    .section-rsvp-last .text-rise {
         opacity: 1 !important;
         transform: none !important;
         filter: none !important;
@@ -2154,6 +2166,13 @@ footer h3 {
         scroll-behavior: auto !important;
     }
 
-    .anim-item { opacity: 1 !important; transform: none !important; filter: none !important; }
+    .anim-item,
+    .text-rise { opacity: 1 !important; transform: none !important; filter: none !important; }
+    .gold-sheen-text {
+        animation: none !important;
+        background: none !important;
+        -webkit-background-clip: border-box !important;
+        background-clip: border-box !important;
+    }
     .opening-curtain { display: none !important; }
 }
