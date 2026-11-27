@@ -16,9 +16,6 @@
     --font-serif: "Cormorant Garamond", Georgia, serif;
     --font-sans: "Plus Jakarta Sans", sans-serif;
 
-    /* =========================================================
-       BACKGROUND IMAGE TIAP SEKSI (FOTO LOKAL + OVERLAY)
-    ========================================================= */
     --bg-hero-cover:
         radial-gradient(circle at 50% 45%, rgba(252, 248, 240, 0.52) 0%, rgba(252, 248, 240, 0.14) 68%),
         linear-gradient(180deg, rgba(246, 241, 231, 0.42) 0%, rgba(246, 241, 231, 0.18) 62%, rgba(43, 66, 49, 0.36) 100%),
@@ -73,22 +70,20 @@
         linear-gradient(160deg, #fbf3e4 0%, #e1caa3 100%);
 }
 
-/* =========================================================
-   ANIMASI BUKA TIRAI (OPENING CURTAIN) MENYATU BACKGROUND
-========================================================= */
 .opening-curtain {
     position: fixed;
     inset: 0;
     z-index: 95;
     display: flex;
     pointer-events: auto;
-    transition: opacity 0.45s ease 1.15s, visibility 0.45s ease 1.15s;
+    transition: opacity 0.25s ease 0.55s, visibility 0.25s ease 0.55s;
 }
 
 .opening-curtain.is-done {
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
+    display: none;
 }
 
 .curtain-panel {
@@ -99,10 +94,11 @@
         linear-gradient(180deg, rgba(246, 241, 231, 0.34) 0%, rgba(45, 7, 14, 0.34) 100%),
         url("./bg-cover-garden.jpg");
     background-size: 200% 100%;
+    background-position: center;
     background-repeat: no-repeat;
     border-bottom: 3px solid rgba(217, 190, 140, 0.75);
     box-shadow: inset 0 0 48px rgba(0, 0, 0, 0.35);
-    transition: transform 1.25s cubic-bezier(0.22, 1, 0.36, 1) 0.28s;
+    transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
     will-change: transform;
 }
 
@@ -125,13 +121,8 @@
     opacity: 0.75;
 }
 
-.curtain-panel-left .curtain-gold-trim {
-    right: 6px;
-}
-
-.curtain-panel-right .curtain-gold-trim {
-    left: 6px;
-}
+.curtain-panel-left .curtain-gold-trim { right: 6px; }
+.curtain-panel-right .curtain-gold-trim { left: 6px; }
 
 .curtain-crest-badge {
     position: fixed;
@@ -150,7 +141,7 @@
     align-items: center;
     justify-content: center;
     box-shadow: 0 14px 34px rgba(0, 0, 0, 0.45);
-    transition: transform 0.65s cubic-bezier(0.22, 1, 0.36, 1) 0.12s, opacity 0.55s ease 0.12s;
+    transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s ease;
     pointer-events: none;
 }
 
@@ -171,23 +162,20 @@
 
 .opening-curtain.is-opening .curtain-panel-left,
 .opening-curtain.is-done .curtain-panel-left {
-    transform: translate3d(-102%, 0, 0);
+    transform: translate3d(-100%, 0, 0);
 }
 
 .opening-curtain.is-opening .curtain-panel-right,
 .opening-curtain.is-done .curtain-panel-right {
-    transform: translate3d(102%, 0, 0);
+    transform: translate3d(100%, 0, 0);
 }
 
 .opening-curtain.is-opening .curtain-crest-badge,
 .opening-curtain.is-done .curtain-crest-badge {
-    transform: translate(-50%, -50%) scale(0.6);
+    transform: translate(-50%, -50%) scale(0.85);
     opacity: 0;
 }
 
-/* =========================================================
-   VARIASI TEMA WEDDING INSTAN (MEMPERTAHANKAN FOTO BACKGROUND)
-========================================================= */
 body[data-wedding-theme="velvet"] {
     --bg-hero-cover:
         linear-gradient(180deg, rgba(44, 6, 14, 0.34) 0%, rgba(28, 3, 9, 0.56) 100%),
@@ -222,9 +210,7 @@ body[data-wedding-theme="botanical"] {
 }
 
 body[data-wedding-theme="emerald"] .hero-envelope,
-body[data-wedding-theme="botanical"] .hero-envelope {
-    color: #261d17;
-}
+body[data-wedding-theme="botanical"] .hero-envelope { color: #261d17; }
 
 body[data-wedding-theme="emerald"] .hero-envelope .script-top,
 body[data-wedding-theme="emerald"] .hero-envelope .spaced-title,
@@ -247,13 +233,8 @@ body[data-wedding-theme="botanical"] .hero-envelope .click-hint {
 }
 
 body[data-wedding-theme="emerald"] .hero-envelope .guest-mini strong,
-body[data-wedding-theme="botanical"] .hero-envelope .guest-mini strong {
-    color: #5c1422;
-}
+body[data-wedding-theme="botanical"] .hero-envelope .guest-mini strong { color: #5c1422; }
 
-/* =========================================================
-   SCROLL PROGRESS BAR & THEME SWITCHER PILL
-========================================================= */
 .scroll-progress-bar {
     position: fixed;
     top: 0;
@@ -295,10 +276,7 @@ body[data-wedding-theme="botanical"] .hero-envelope .guest-mini strong {
     transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
 }
 
-.theme-chip:hover {
-    color: #ffffff;
-    background: rgba(217, 190, 140, 0.18);
-}
+.theme-chip:hover { color: #ffffff; background: rgba(217, 190, 140, 0.18); }
 
 .theme-chip.is-active {
     background: linear-gradient(135deg, #e5c485 0%, #c2954b 100%);
@@ -306,17 +284,8 @@ body[data-wedding-theme="botanical"] .hero-envelope .guest-mini strong {
     box-shadow: 0 2px 10px rgba(217, 190, 140, 0.35);
 }
 
-*,
-*::before,
-*::after {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
-html {
-    scroll-behavior: smooth;
-}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
 
 body {
     font-family: var(--font-sans);
@@ -327,9 +296,6 @@ body {
     transition: background-color 0.4s ease, color 0.35s ease;
 }
 
-/* =========================================================
-   BACKGROUND STATIS TIAP SEKSI
-========================================================= */
 .hero-envelope,
 .section-doily-emerald,
 .section-maroon,
@@ -344,10 +310,6 @@ footer {
     background-position: center;
     background-repeat: no-repeat;
 }
-
-/* =========================================================
-   ORNAMEN GARIS BERSIH & BERKILAU HALUS
-========================================================= */
 .top-ornament-line,
 .botanical-flourish {
     display: flex;
@@ -378,9 +340,6 @@ footer {
     animation: starTwinkle 2.6s ease-in-out infinite;
 }
 
-/* =========================================================
-   EFEK KETIKAN (TYPEWRITER) & SCROLL REVEAL MEWAH
-========================================================= */
 .typewriter-text.typing-active::after {
     content: "|";
     display: inline-block;
@@ -406,9 +365,16 @@ footer {
     will-change: opacity, transform, filter;
 }
 
-.anim-visible .anim-item,
-.anim-item.anim-visible,
 .hero-envelope .anim-item {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+    transition: opacity 0.35s ease !important;
+    will-change: auto !important;
+}
+
+.anim-visible .anim-item,
+.anim-item.anim-visible {
     opacity: 1;
     transform: translate3d(0, 0, 0) scale(1);
     filter: blur(0);
@@ -446,9 +412,6 @@ footer {
     animation: shimmerText 3.4s ease-in-out infinite;
 }
 
-/* =========================================================
-   BLINK-BLINK DI SAVE THE DATE
-========================================================= */
 .sparkle-field {
     position: absolute;
     inset: 0;
@@ -491,13 +454,8 @@ footer {
     50% { text-shadow: 0 0 26px rgba(255, 246, 204, 0.98), 0 0 38px rgba(217, 190, 140, 0.72); }
 }
 
-.glow-blink {
-    animation: numberGlow 2.4s ease-in-out infinite;
-}
+.glow-blink { animation: numberGlow 2.4s ease-in-out infinite; }
 
-/* =========================================================
-   SAMPUL / COVER AMPLOP INTERAKTIF
-========================================================= */
 .hero-envelope {
     position: relative;
     min-height: 100svh;
@@ -571,10 +529,7 @@ footer {
     color: #eadcc2;
 }
 
-.guest-mini strong {
-    font-weight: 600;
-    color: #ffffff;
-}
+.guest-mini strong { font-weight: 600; color: #ffffff; }
 
 .envelope-trigger {
     position: relative;
@@ -595,9 +550,7 @@ footer {
     outline: none;
 }
 
-.envelope-trigger.is-open {
-    animation: none;
-}
+.envelope-trigger.is-open { animation: none; }
 
 .envelope-card {
     position: relative;
@@ -744,7 +697,6 @@ footer {
     color: #f4ead5;
 }
 
-/* TOMBOL MUSIK */
 .music-btn {
     position: fixed;
     right: 18px;
@@ -769,9 +721,6 @@ footer {
     box-shadow: 0 10px 24px rgba(0, 0, 0, 0.42), 0 0 14px rgba(217, 190, 140, 0.28);
 }
 
-/* =========================================================
-   BAGIAN 2: KARTU AR-RUM ESTETIK & KANTONG AMPLOP
-========================================================= */
 .section-doily-emerald {
     position: relative;
     padding: 88px 20px;
@@ -956,10 +905,6 @@ footer {
     color: #7c5d32;
     text-align: center;
 }
-
-/* =========================================================
-   BAGIAN 3: PROFIL MEMPELAI
-========================================================= */
 .section-maroon {
     position: relative;
     padding: 90px 20px;
@@ -1080,9 +1025,6 @@ footer {
     margin: 28px 0;
 }
 
-/* =========================================================
-   BAGIAN 4: SAVE THE DATE & DETAIL ACARA
-========================================================= */
 .section-save-date-green {
     position: relative;
     padding: 78px 20px 84px;
@@ -1363,10 +1305,6 @@ footer {
     background-color: #611221;
     box-shadow: 0 12px 22px rgba(0, 0, 0, 0.36);
 }
-
-/* =========================================================
-   BAGIAN 5: WEDDING GIFT & KADO
-========================================================= */
 .section-gift-maroon {
     position: relative;
     padding: 78px 20px 84px;
@@ -1473,9 +1411,6 @@ footer {
     margin-bottom: 16px;
 }
 
-/* =========================================================
-   KOTAK KADO FISIK RAPIH & MENARIK
-========================================================= */
 .physical-gift-box {
     position: relative;
     background:
@@ -1611,9 +1546,6 @@ footer {
     .wa-actions-group { grid-template-columns: 1fr; }
 }
 
-/* =========================================================
-   BAGIAN 6: LOVE STORY
-========================================================= */
 .section-love-story-green {
     position: relative;
     padding: 86px 20px;
@@ -1744,9 +1676,6 @@ footer {
     color: #eef3eb;
 }
 
-/* =========================================================
-   BAGIAN 7: GALERI MOMEN & LIGHTBOX
-========================================================= */
 .section-gallery-classic {
     position: relative;
     padding: 86px 20px;
@@ -1860,9 +1789,6 @@ footer {
     cursor: pointer;
 }
 
-/* =========================================================
-   BAGIAN 8: KARTU PENUTUP AMPLOP MARUN
-========================================================= */
 .section-closing-envelope {
     position: relative;
     padding: 86px 20px;
@@ -1984,9 +1910,6 @@ footer {
     color: #7c5d32;
 }
 
-/* =========================================================
-   BAGIAN 9: UCAPAN & KONFIRMASI HADIR (RSVP)
-========================================================= */
 .section-rsvp-last {
     padding: 86px 20px;
     background-image: var(--bg-ucapan-section);
@@ -2092,9 +2015,6 @@ footer {
     color: #362a24;
 }
 
-/* =========================================================
-   FOOTER
-========================================================= */
 footer {
     padding: 44px 20px 76px;
     background-image:
@@ -2113,9 +2033,6 @@ footer h3 {
     color: var(--gold-bright);
 }
 
-/* =========================================================
-   REDUCED MOTION SUPPORT
-========================================================= */
 @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
