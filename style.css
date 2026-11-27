@@ -2150,17 +2150,35 @@ footer h3 {
     .anim-item { opacity: 1 !important; transform: none !important; filter: none !important; }
     .opening-curtain { display: none !important; }
 }
-/* === FIX BACKGROUND DIEM - TEMPEL PALING BAWAH === */
-.hero-envelope::before,
-.section-doily-emerald::before,
-.section-maroon::before,
-.section-save-date-green::before,
-.section-gift-maroon::before,
-.section-love-story-green::before,
-.section-closing-envelope::before {
+/* === FIX FINAL - GANTI BLOK LAMA DI BAWAH === */
+*, *::before, *::after {
   animation: none !important;
-  transform: none !important;
+  transition: none !important;
 }
-.envelope-trigger, .wax-seal, .gift-wrap-decor {
-  animation: none !important;
+
+.sparkle-field, .typewriter-text::after {
+  display: none !important;
+}
+
+.anim-item, .anim-visible .anim-item {
+  opacity: 1 !important;
+  transform: none !important;
+  filter: none !important;
+}
+
+.hero-envelope {
+  min-height: 760px !important;
+}
+
+.hero-envelope,
+.section-doily-emerald,
+.section-maroon,
+.section-save-date-green,
+.section-gift-maroon,
+.section-love-story-green,
+.section-closing-envelope,
+footer {
+  background-position: center top !important;
+  background-size: cover !important;
+  background-attachment: scroll !important;
 }
