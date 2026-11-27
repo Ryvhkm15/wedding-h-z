@@ -1760,23 +1760,3 @@ footer h3 { font-family: var(--font-serif); font-size: 1rem; line-height: 1.5; l
 }
 .polaroid-left { transform: rotate(-7deg) translateX(12px) translateZ(10px) !important; }
 .polaroid-right { transform: rotate(6deg) translateX(-12px) translateY(12px) translateZ(25px) !important; }
-
-/* GALERI 3D - PAS DI HOVER JADI NONGOL KE DEPAN */
-.gallery-frame {
-    transform-style: preserve-3d;
-    transition: transform 0.4s ease, box-shadow 0.4s ease !important;
-}
-.gallery-frame:hover {
-    transform: translateY(-8px) rotateY(-8deg) rotateX(4deg) translateZ(20px) !important;
-}
-
-/* KARTU AYAT + KARTU PENUTUP 3D */
-.ar-rum-arch-outer, .closing-card-frame, .rsvp-card-form, .physical-gift-box {
-    transform-style: preserve-3d;
-    transition: transform 0.4s ease !important;
-}
-
-/* JUDUL 3D TIMBUL */
-.std-script-title, .gift-script-heading, .love-story-heading {
-    filter: drop-shadow(0 4px 0 rgba(0,0,0,0.25)) drop-shadow(0 8px 14px rgba(0,0,0,0.3));
-}
