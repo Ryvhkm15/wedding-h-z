@@ -2150,3 +2150,17 @@ footer h3 {
     .anim-item { opacity: 1 !important; transform: none !important; filter: none !important; }
     .opening-curtain { display: none !important; }
 }
+/* === FIX BACKGROUND DIEM - TEMPEL PALING BAWAH === */
+.hero-envelope::before,
+.section-doily-emerald::before,
+.section-maroon::before,
+.section-save-date-green::before,
+.section-gift-maroon::before,
+.section-love-story-green::before,
+.section-closing-envelope::before {
+  animation: none !important;
+  transform: none !important;
+}
+.envelope-trigger, .wax-seal, .gift-wrap-decor {
+  animation: none !important;
+}
