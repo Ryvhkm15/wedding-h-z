@@ -1,306 +1,249 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const body = document.body;
-    const curtain = document.getElementById("openingCurtain");
-    const crestBadge = document.querySelector(".curtain-crest-badge");
-    const openBtn = document.getElementById("openInvitationBtn");
-    const envelopeTrigger = document.getElementById("openInvitationBtn");
-    const hintText = document.getElementById("envelope-hint-text");
-    const progressBar = document.getElementById("scrollProgressBar");
-    const music = document.getElementById("bgMusic");
-    const musicBtn = document.getElementById("musicToggleBtn");
-
-    let curtainOpened = false;
-    let isScrolling = false;
-
-    // ===== NAMA TAMU DARI URL ?to= =====
-    const params = new URLSearchParams(window.location.search);
-    const guestParam = params.get("to") || params.get("nama") || params.get("guest");
-    if (guestParam) {
-        const guestNameEl = document.getElementById("guestName");
-        const namaTamuInput = document.getElementById("namaTamu");
-        const decoded = decodeURIComponent(guestParam.replace(/\+/g, " "));
-        if (guestNameEl) guestNameEl.textContent = decoded;
-        if (namaTamuInput) namaTamuInput.value = decoded;
-    }
-
-    // ===== TIRAI - SMOOTH OPEN =====
-    function triggerCurtainOpen() {
-        if (curtainOpened || !curtain) return;
-        curtainOpened = true;
-        curtain.classList.add("is-opening");
-        window.setTimeout(() => {
-            curtain.classList.add("is-done");
-        }, 1150);
-    }
-
-    if (crestBadge) {
-        crestBadge.addEventListener("click", () => {
-            triggerCurtainOpen();
-        });
-    }
-
-    // ===== AMPLOP - BISA BUKA & TUTUP LAGI =====
-    if (openBtn && envelopeTrigger) {
-        openBtn.addEventListener("click", (e) => {
-            e.preventDefault();
-            triggerCurtainOpen();
-
-            const isOpen = envelopeTrigger.classList.contains("is-open");
-
-            if (isOpen) {
-                envelopeTrigger.classList.remove("is-open");
-                if (hintText) hintText.textContent = "CLICK ENVELOPE TO OPEN";
-                return;
-            }
-
-            envelopeTrigger.classList.add("is-open");
-            if (hintText) hintText.textContent = "CLICK ENVELOPE TO CLOSE";
-
-            window.setTimeout(() => {
-                const target = document.getElementById("ayat-pilihan") || document.getElementById("mempelai");
-                if (target) {
-                    target.scrollIntoView({ behavior: "smooth", block: "start" });
-                }
-            }, 650);
-        });
-    }
-
-    // ===== THEME SWITCHER =====
-    const themeChips = document.querySelectorAll(".theme-chip");
-    themeChips.forEach((chip) => {
-        chip.addEventListener("click", () => {
-            themeChips.forEach((c) => c.classList.remove("is-active"));
-            chip.classList.add("is-active");
-            const theme = chip.getAttribute("data-theme");
-            if (theme) body.setAttribute("data-wedding-theme", theme);
-        });
+  const params = new URLSearchParams(window.location.search);
+  const to = params.get("to") || params.get("nama") || params.get("guest");
+  if (to) {
+    const guestEl = document.getElementById("guestName");
+    if (guestEl) guestEl.textContent = decodeURIComponent(to.replace(/\+/g, " "));
+    const namaInput = document.getElementById("namaTamu");
+    if (namaInput && !namaInput.value) namaInput.value = decodeURIComponent(to.replace(/\+/g, " "));
+  }
+  const curtain = document.getElementById("openingCurtain");
+  const badge = document.querySelector(".curtain-crest-badge");
+  let curtainOpened = false;
+  function openCurtain() {
+    if (!curtain || curtainOpened) return;
+    curtainOpened = true;
+    curtain.classList.add("is-opening");
+    setTimeout(() => curtain.classList.add("is-done"), 1200);
+  }
+  if (badge) badge.addEventListener("click", openCurtain);
+  if (curtain) curtain.addEventListener("click", (e) => { if (e.target === curtain) openCurtain(); });
+  setTimeout(openCurtain, 6000);
+  const envelopeBtn = document.getElementById("openInvitationBtn");
+  const hint = document.getElementById("envelope-hint-text");
+  let envelopeOpen = false;
+  if (envelopeBtn) {
+    envelopeBtn.addEventListener("click", () => {
+      envelopeOpen = !envelopeOpen;
+      envelopeBtn.classList.toggle("is-open", envelopeOpen);
+      if (hint) hint.textContent = envelopeOpen ? "CLICK ENVELOPE TO CLOSE" : "CLICK ENVELOPE TO OPEN";
+      if (envelopeOpen) {
+        setTimeout(() => {
+          const ayat = document.getElementById("ayat-pilihan");
+          if (ayat) ayat.scrollIntoView({ behavior: "smooth", block: "start" });
+        }, 900);
+      }
     });
-
-    // ===== MUSIK =====
-    let musicPlaying = false;
-    function updateMusicBtn() {
-        if (!musicBtn) return;
-        musicBtn.textContent = musicPlaying ? "♫ Musik: On" : "♫ Musik: Off";
-    }
-    if (musicBtn && music) {
-        musicBtn.addEventListener("click", () => {
-            if (musicPlaying) {
-                music.pause();
-                musicPlaying = false;
-            } else {
-                music.play().then(() => {
-                    musicPlaying = true;
-                    updateMusicBtn();
-                }).catch(() => {
-                    musicPlaying = false;
-                });
-            }
-            updateMusicBtn();
-        });
-        if (openBtn) {
-            openBtn.addEventListener("click", () => {
-                if (!musicPlaying) {
-                    music.play().then(() => {
-                        musicPlaying = true;
-                        updateMusicBtn();
-                    }).catch(() => {});
-                }
-            }, { once: true });
-        }
-    }
-
-    // ===== COUNTDOWN - 27 MARET 2027 16:00 WIB =====
-    const targetDate = new Date("2027-03-27T16:00:00+07:00").getTime();
-    const daysEl = document.getElementById("days");
-    const hoursEl = document.getElementById("hours");
-    const minutesEl = document.getElementById("minutes");
-    const secondsEl = document.getElementById("seconds");
-
-    function updateCountdown() {
-        if (!daysEl) return;
-        const now = new Date().getTime();
-        let diff = targetDate - now;
-        if (diff < 0) diff = 0;
-        const d = Math.floor(diff / (1000 * 60 * 60 * 24));
-        const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-        const s = Math.floor((diff % (1000 * 60)) / 1000);
-        daysEl.textContent = String(d).padStart(2, "0");
-        hoursEl.textContent = String(h).padStart(2, "0");
-        minutesEl.textContent = String(m).padStart(2, "0");
-        secondsEl.textContent = String(s).padStart(2, "0");
-    }
-    updateCountdown();
-    setInterval(updateCountdown, 1000);
-
-    // ===== SCROLL PROGRESS + ANIMASI MUNCUL =====
-    function onScroll() {
-        if (isScrolling) return;
-        isScrolling = true;
-        requestAnimationFrame(() => {
-            const scrollTop = window.scrollY || document.documentElement.scrollTop;
-            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-            const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
-            if (progressBar) progressBar.style.width = progress + "%";
-            isScrolling = false;
-        });
-    }
-    window.addEventListener("scroll", onScroll, { passive: true });
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add("is-shown");
-                entry.target.classList.add("anim-visible");
-                observer.unobserve(entry.target);
-            }
-        });
-    }, { threshold: 0.12, rootMargin: "0px 0px -40px 0px" });
-
-    document.querySelectorAll(".text-rise, .anim-item, .anim-section").forEach((el) => {
-        observer.observe(el);
+  }
+  const music = document.getElementById("bgMusic");
+  const musicBtn = document.getElementById("musicToggleBtn");
+  let musicOn = false;
+  async function toggleMusic() {
+    if (!music) return;
+    try {
+      if (musicOn) { music.pause(); musicOn = false; }
+      else { await music.play(); musicOn = true; }
+      if (musicBtn) musicBtn.textContent = musicOn ? "♫ Musik: On" : "♫ Musik: Off";
+    } catch (e) {}
+  }
+  if (musicBtn) musicBtn.addEventListener("click", toggleMusic);
+  const chips = document.querySelectorAll(".theme-chip");
+  chips.forEach((chip) => {
+    chip.addEventListener("click", () => {
+      chips.forEach((c) => c.classList.remove("is-active"));
+      chip.classList.add("is-active");
+      document.body.setAttribute("data-wedding-theme", chip.dataset.theme);
     });
-    document.querySelectorAll("#cover .anim-item, #cover .text-rise").forEach((el) => {
-        el.classList.add("is-shown");
-        el.classList.add("anim-visible");
+  });
+  const progress = document.getElementById("scrollProgressBar");
+  const sections = document.querySelectorAll(".anim-section");
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("anim-visible");
+        entry.target.querySelectorAll(".text-rise").forEach((el, i) => {
+          setTimeout(() => el.classList.add("is-shown"), i * 90);
+        });
+        observer.unobserve(entry.target);
+      }
     });
-
-    // ===== SPARKLES SAVE THE DATE =====
-    const sparkleField = document.getElementById("std-sparkles");
-    if (sparkleField) {
-        for (let i = 0; i < 22; i++) {
-            const el = document.createElement("span");
-            const isStar = Math.random() > 0.5;
-            el.className = isStar ? "sparkle-star" : "sparkle-dot";
-            el.textContent = isStar ? "✦" : "";
-            el.style.left = Math.random() * 100 + "%";
-            el.style.top = Math.random() * 100 + "%";
-            el.style.setProperty("--dur", (2 + Math.random() * 2.5) + "s");
-            el.style.setProperty("--delay", (Math.random() * 2) + "s");
-            if (!isStar) {
-                const size = 3 + Math.random() * 4;
-                el.style.width = size + "px";
-                el.style.height = size + "px";
-            } else {
-                el.style.fontSize = (10 + Math.random() * 10) + "px";
-            }
-            sparkleField.appendChild(el);
-        }
-    }
-
-    // ===== SIMPAN KE KALENDER =====
-    const calendarBtn = document.getElementById("addToCalendarBtn");
-    if (calendarBtn) {
-        calendarBtn.addEventListener("click", () => {
-            const title = encodeURIComponent("Pernikahan Herlangga & Zalsa");
-            const details = encodeURIComponent("Akad pukul 16.00 WIB, Resepsi 19.00 - 21.00 WIB di Yayasan Darul Aitama, Jakarta Pusat");
-            const location = encodeURIComponent("Yayasan Darul Aitama, Jl. K.H. Mas Mansyur No.47, Jakarta Pusat");
-            const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=20270327T090000Z/20270327T140000Z&details=${details}&location=${location}`;
-            window.open(url, "_blank");
-        });
-    }
-
-    // ===== COPY REKENING =====
-    document.querySelectorAll(".btn-olive-copy").forEach((btn) => {
-        btn.addEventListener("click", async () => {
-            const text = btn.getAttribute("data-copy") || "";
-            const label = btn.querySelector(".copy-label");
-            try {
-                await navigator.clipboard.writeText(text);
-            } catch (e) {
-                const ta = document.createElement("textarea");
-                ta.value = text;
-                document.body.appendChild(ta);
-                ta.select();
-                document.execCommand("copy");
-                document.body.removeChild(ta);
-            }
-            if (label) label.textContent = "Copied!";
-            btn.classList.add("copied");
-            setTimeout(() => {
-                if (label) label.textContent = "Copy";
-                btn.classList.remove("copied");
-            }, 1800);
-        });
+  }, { threshold: 0.12 });
+  sections.forEach((s) => observer.observe(s));
+  setTimeout(() => {
+    sections.forEach((s) => {
+      s.classList.add("anim-visible");
+      s.querySelectorAll(".text-rise").forEach((el) => el.classList.add("is-shown"));
+      s.querySelectorAll(".anim-item").forEach((el) => el.classList.add("anim-visible"));
     });
-
-    // ===== LIGHTBOX GALERI =====
-    const lightbox = document.getElementById("photoLightbox");
-    const lightboxImg = document.getElementById("photoLightboxImg");
-    const lightboxClose = document.getElementById("photoLightboxClose");
-    document.querySelectorAll(".gallery-frame img").forEach((img) => {
-        img.addEventListener("click", () => {
-            if (!lightbox || !lightboxImg) return;
-            lightboxImg.src = img.src;
-            lightbox.classList.add("is-open");
-            lightbox.setAttribute("aria-hidden", "false");
-        });
+  }, 1500);
+  function onScroll() {
+    const h = document.documentElement;
+    const max = h.scrollHeight - h.clientHeight;
+    if (progress && max > 0) progress.style.width = (h.scrollTop / max * 100) + "%";
+  }
+  window.addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
+  const target = new Date("2027-03-27T16:00:00+07:00").getTime();
+  const dEl = document.getElementById("days");
+  const hEl = document.getElementById("hours");
+  const mEl = document.getElementById("minutes");
+  const sEl = document.getElementById("seconds");
+  function tick() {
+    if (!dEl) return;
+    let diff = target - Date.now();
+    if (diff < 0) diff = 0;
+    const d = Math.floor(diff / 86400000);
+    const h = Math.floor((diff % 86400000) / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+    dEl.textContent = String(d).padStart(2, "0");
+    hEl.textContent = String(h).padStart(2, "0");
+    mEl.textContent = String(m).padStart(2, "0");
+    sEl.textContent = String(s).padStart(2, "0");
+  }
+  tick();
+  setInterval(tick, 1000);
+  const sparkleBox = document.getElementById("std-sparkles");
+  if (sparkleBox && window.innerWidth > 768) {
+    for (let i = 0; i < 22; i++) {
+      const el = document.createElement("span");
+      const isStar = i % 2 === 0;
+      el.className = isStar ? "sparkle-star" : "sparkle-dot";
+      el.textContent = isStar ? "✦" : "";
+      el.style.left = Math.random() * 100 + "%";
+      el.style.top = Math.random() * 100 + "%";
+      el.style.fontSize = (8 + Math.random() * 10) + "px";
+      el.style.setProperty("--dur", (2 + Math.random() * 2) + "s");
+      el.style.setProperty("--delay", (Math.random() * 2) + "s");
+      if (!isStar) { el.style.width = "5px"; el.style.height = "5px"; }
+      sparkleBox.appendChild(el);
+    }
+  }
+  document.querySelectorAll(".btn-olive-copy").forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      const text = btn.dataset.copy || "";
+      try { await navigator.clipboard.writeText(text); } catch (e) {
+        const ta = document.createElement("textarea");
+        ta.value = text; document.body.appendChild(ta); ta.select();
+        document.execCommand("copy"); ta.remove();
+      }
+      const label = btn.querySelector(".copy-label");
+      if (label) label.textContent = "Tersalin!";
+      btn.classList.add("copied");
+      setTimeout(() => { if (label) label.textContent = "Copy"; btn.classList.remove("copied"); }, 1800);
     });
-    function closeLightbox() {
-        if (!lightbox) return;
-        lightbox.classList.remove("is-open");
-        lightbox.setAttribute("aria-hidden", "true");
-    }
-    if (lightboxClose) lightboxClose.addEventListener("click", closeLightbox);
-    if (lightbox) {
-        lightbox.addEventListener("click", (e) => {
-            if (e.target === lightbox) closeLightbox();
-        });
-    }
-    document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape") closeLightbox();
+  });
+  const calBtn = document.getElementById("addToCalendarBtn");
+  if (calBtn) {
+    calBtn.addEventListener("click", () => {
+      const title = encodeURIComponent("Pernikahan Herlangga & Zalsa");
+      const desc = encodeURIComponent("Akad 16.00 WIB - Resepsi 19.00-21.00 WIB di Yayasan Darul Aitama, Jakarta Pusat");
+      const loc = encodeURIComponent("Yayasan Darul Aitama, Jl. K.H. Mas Mansyur No.47, Jakarta Pusat");
+      window.open(`https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=20270327T090000Z/20270327T140000Z&details=${desc}&location=${loc}`, "_blank");
     });
-
-    // ===== RSVP / UCAPAN - SIMPAN DI LOCALSTORAGE =====
-    const rsvpForm = document.getElementById("rsvpForm");
-    const ucapanList = document.getElementById("ucapanList");
-    const STORAGE_KEY = "ucapan_herlangga_zalsa_v1";
-
-    function getUcapan() {
-        try {
-            const raw = localStorage.getItem(STORAGE_KEY);
-            return raw ? JSON.parse(raw) : [];
-        } catch (e) {
-            return [];
-        }
-    }
-    function renderUcapan() {
-        if (!ucapanList) return;
-        const list = getUcapan();
-        if (list.length === 0) {
-            ucapanList.innerHTML = "";
-            return;
-        }
-        ucapanList.innerHTML = list.map((u) => {
-            const safeNama = String(u.nama || "").replace(/</g, "&lt;");
-            const safePesan = String(u.pesan || "").replace(/</g, "&lt;");
-            const safeStatus = String(u.status || "").replace(/</g, "&lt;");
-            return `<div class="ucapan-item"><strong>${safeNama}</strong><span class="ucapan-status">${safeStatus}</span><p>${safePesan}</p></div>`;
-        }).join("");
-    }
-    renderUcapan();
-
-    if (rsvpForm) {
-        rsvpForm.addEventListener("submit", (e) => {
-            e.preventDefault();
-            const nama = document.getElementById("namaTamu")?.value.trim();
-            const status = document.getElementById("statusKehadiran")?.value;
-            const pesan = document.getElementById("pesanUcapan")?.value.trim();
-            if (!nama || !status || !pesan) return;
-            const list = getUcapan();
-            list.unshift({ nama, status, pesan, time: Date.now() });
-            try { localStorage.setItem(STORAGE_KEY, JSON.stringify(list.slice(0, 50))); } catch (err) {}
-            renderUcapan();
-            rsvpForm.reset();
-            if (guestParam) {
-                const namaInput = document.getElementById("namaTamu");
-                if (namaInput) namaInput.value = decodeURIComponent(guestParam.replace(/\+/g, " "));
-            }
-        });
-    }
-});
+  }
+  const lightbox = document.getElementById("photoLightbox");
+  const lightboxImg = document.getElementById("photoLightboxImg");
+  const lightboxClose = document.getElementById("photoLightboxClose");
+  document.querySelectorAll(".gallery-frame img").forEach((img) => {
+    img.addEventListener("click", () => {
+      if (!lightbox || !lightboxImg) return;
+      lightboxImg.src = img.src;
+      lightbox.classList.add("is-open");
+      lightbox.setAttribute("aria-hidden", "false");
+    });
+  });
+  function closeLightbox() {
+    if (!lightbox) return;
+    lightbox.classList.remove("is-open");
+    lightbox.setAttribute("aria-hidden", "true");
+  }
+  if (lightboxClose) lightboxClose.addEventListener("click", closeLightbox);
+  if (lightbox) lightbox.addEventListener("click", (e) => { if (e.target === lightbox) closeLightbox(); });
+  const form = document.getElementById("rsvpForm");
+  const list = document.getElementById("ucapanList");
+  const KEY = "ucapan_herlangga_zalsa_v1";
+  function escapeHtml(str) {
+    return str.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  }
+  function renderUcapan() {
+    if (!list) return;
+    let data = [];
+    try { data = JSON.parse(localStorage.getItem(KEY) || "[]"); } catch (e) { data = []; }
+    if (!data.length) { list.innerHTML = ""; return; }
+    list.innerHTML = data.map((item) =>
+      `<div class="ucapan-item"><strong>${escapeHtml(item.nama)}</strong><span class="ucapan-status">${escapeHtml(item.status)}</span><p>${escapeHtml(item.pesan)}</p></div>`
+    ).join("");
+  }
+  renderUcapan();
+  if (form) {
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const nama = document.getElementById("namaTamu").value.trim();
+      const status = document.getElementById("statusKehadiran").value;
+      const pesan = document.getElementById("pesanUcapan").value.trim();
+      if (!nama || !status || !pesan) return;
+      let data = [];
+      try { data = JSON.parse(localStorage.getItem(KEY) || "[]"); } catch (e) { data = []; }
+      data.unshift({ nama, status, pesan });
+      try { localStorage.setItem(KEY, JSON.stringify(data.slice(0, 50))); } catch (e) {}
       renderUcapan();
       form.reset();
       alert("Terima kasih! Ucapan kamu sudah terkirim.");
     });
   }
+  // === 3D TILT ===
+  function addTilt3D(selector, max = 12) {
+    const els = document.querySelectorAll(selector);
+    els.forEach((el) => {
+      el.addEventListener("touchmove", (e) => {
+        if (!e.touches[0]) return;
+        const rect = el.getBoundingClientRect();
+        const x = e.touches[0].clientX - rect.left;
+        const y = e.touches[0].clientY - rect.top;
+        const rx = ((y / rect.height) - 0.5) * -max;
+        const ry = ((x / rect.width) - 0.5) * max;
+        el.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+      }, { passive: true });
+      el.addEventListener("mousemove", (e) => {
+        const rect = el.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const rx = ((y / rect.height) - 0.5) * -max;
+        const ry = ((x / rect.width) - 0.5) * max;
+        el.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+      });
+      const reset = () => { el.style.transform = ""; };
+      el.addEventListener("mouseleave", reset);
+      el.addEventListener("touchend", reset);
+    });
+  }
+  addTilt3D(".envelope-card", 14);
+  addTilt3D(".oval-frame-wrap", 12);
+  addTilt3D(".polaroid-duo-wrap", 10);
+  addTilt3D(".gallery-frame", 12);
+  addTilt3D(".ar-rum-arch-outer", 8);
+  addTilt3D(".closing-card-frame", 8);
+  addTilt3D(".physical-gift-box", 8);
+  // === REVEAL KAYAK DI VIDEO ===
+  const revealEls = document.querySelectorAll(".reveal-up, .reveal-left, .reveal-right, .reveal-zoom, .reveal-blur");
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("is-in");
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.2 });
+  revealEls.forEach((el) => revealObserver.observe(el));
+  setTimeout(() => {
+    revealEls.forEach((el) => el.classList.add("is-in"));
+  }, 3000);
+  window.addEventListener("scroll", () => {
+    const hero = document.querySelector(".hero-envelope");
+    if (hero) {
+      const y = window.scrollY;
+      hero.style.backgroundPosition = `center ${y * 0.3}px`;
+    }
+  }, { passive: true });
+});
