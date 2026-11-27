@@ -12,46 +12,46 @@
 <body data-wedding-theme="emerald">
 
     <!-- ANIMASI BUKA TIRAI SAAT PERTAMA KALI DIBUKA -->
-    <div class="opening-curtain" id="opening-curtain" aria-hidden="true">
+    <div class="opening-curtain" id="openingCurtain">
         <div class="curtain-panel curtain-panel-left">
             <span class="curtain-gold-trim"></span>
         </div>
-        <div class="curtain-crest-badge">
-            <span>H & Z</span>
+        <button type="button" class="curtain-crest-badge" aria-label="Buka Tirai Undangan">
+            <span>H &amp; Z</span>
             <small>WELCOME</small>
-        </div>
+        </button>
         <div class="curtain-panel curtain-panel-right">
             <span class="curtain-gold-trim"></span>
         </div>
     </div>
 
     <!-- INDIKATOR PROGRES SCROLL -->
-    <div class="scroll-progress-bar" id="scroll-progress-bar" aria-hidden="true"></div>
+    <div class="scroll-progress-bar" id="scrollProgressBar" aria-hidden="true"></div>
 
     <!-- THEME SWITCHER BERTEMA WEDDING -->
     <div class="theme-switcher" role="group" aria-label="Pilih tema tampilan undangan">
-        <button type="button" class="theme-chip is-active" data-theme-option="emerald">Emerald</button>
-        <button type="button" class="theme-chip" data-theme-option="velvet">Velvet</button>
-        <button type="button" class="theme-chip" data-theme-option="botanical">Botanical</button>
+        <button type="button" class="theme-chip is-active" data-theme="emerald">Emerald</button>
+        <button type="button" class="theme-chip" data-theme="velvet">Velvet</button>
+        <button type="button" class="theme-chip" data-theme="botanical">Botanical</button>
     </div>
 
     <!-- SAMPUL / COVER AMPLOP -->
     <section class="hero-envelope anim-section" id="cover">
         <div class="envelope-wrapper">
             <div class="envelope-header anim-item">
-                <p class="script-top typewriter-text" data-speed="55">We're</p>
-                <h2 class="spaced-title">
+                <p class="script-top text-rise">We're</p>
+                <h2 class="spaced-title text-rise">
                     <span class="first-letter-script">G</span>ETTING MARRIED
                 </h2>
-                <h1 class="couple-script shimmer-gold" id="display-nama-pasangan">Herlangga & Zalsa</h1>
-                <p class="date-mini typewriter-text" data-speed="35" id="display-tanggal-hero">Sabtu, 27 Maret 2027</p>
-                <p class="guest-mini">Kepada Yth: <strong id="nama-tamu">Tamu Undangan</strong></p>
+                <h1 class="couple-script text-rise gold-sheen-text" id="display-nama-pasangan">Herlangga &amp; Zalsa</h1>
+                <p class="date-mini text-rise" id="display-tanggal-hero">Sabtu, 27 Maret 2027</p>
+                <p class="guest-mini text-rise">Kepada Yth: <strong id="guestName">Tamu Undangan</strong></p>
             </div>
 
-            <button type="button" id="btn-buka-undangan" class="envelope-trigger anim-item" aria-label="Buka atau tutup amplop undangan">
+            <button type="button" id="openInvitationBtn" class="envelope-trigger anim-item" aria-label="Buka atau tutup amplop undangan">
                 <div class="envelope-card" id="hero-envelope-card">
                     <div class="envelope-pocket-inside">
-                        <span class="pocket-monogram" id="display-monogram-amplop">H & Z</span>
+                        <span class="pocket-monogram" id="display-monogram-amplop">H &amp; Z</span>
                         <span class="pocket-sub">Undangan Pernikahan</span>
                     </div>
                     <div class="envelope-back-lining"></div>
@@ -66,15 +66,15 @@
     </section>
 
     <!-- TOMBOL MUSIK LATAR -->
-    <audio id="bg-music" loop preload="metadata">
+    <audio id="bgMusic" loop preload="metadata">
         <source src="lagu.mp3.mp3" type="audio/mpeg">
     </audio>
-    <button type="button" id="music-toggle" class="music-btn" aria-label="Putar atau jeda musik">
-        Musik: OFF
+    <button type="button" id="musicToggleBtn" class="music-btn" aria-label="Putar atau jeda musik">
+        ♫ Musik: Off
     </button>
 
     <!-- BAGIAN 2: KARTU AR-RUM ESTETIK & KANTONG AMPLOP -->
-    <section class="section-doily-emerald anim-section" id="ayat">
+    <section class="section-doily-emerald anim-section" id="ayat-pilihan">
         <div class="doily-scene anim-item">
             <div class="top-ornament-line light" aria-hidden="true"><span></span><i>✦</i><span></span></div>
 
@@ -85,12 +85,12 @@
                     <span class="arch-corner ac-bl" aria-hidden="true">✦</span>
                     <span class="arch-corner ac-br" aria-hidden="true">✦</span>
 
-                    <p class="ayat-arab" aria-hidden="true">وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُمْ مِنْ أَنْفُسِكُمْ أَزْوَاجًا</p>
-                    <p class="ayat-text typewriter-text" data-speed="16" id="display-ayat-teks">
+                    <p class="ayat-arab text-rise" aria-hidden="true">وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُمْ مِنْ أَنْفُسِكُمْ أَزْوَاجًا</p>
+                    <p class="ayat-text text-rise" id="display-ayat-teks">
                         "Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang. Sungguh, pada yang demikian itu benar-benar terdapat tanda-tanda (kebesaran Allah) bagi kaum yang berpikir."
                     </p>
                     <div class="ayat-divider" aria-hidden="true"><span>✦</span></div>
-                    <p class="ayat-sumber" id="display-ayat-sumber">QS Ar-Rum 21</p>
+                    <p class="ayat-sumber text-rise" id="display-ayat-sumber">QS Ar-Rum 21</p>
                 </div>
             </div>
 
@@ -106,9 +106,9 @@
     <!-- BAGIAN 3: PROFIL MEMPELAI -->
     <section class="section-maroon anim-section" id="mempelai">
         <div class="maroon-container">
-            <p class="bismillah-calligraphy shimmer-gold" id="display-bismillah">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيم</p>
-            <p class="intro-note typewriter-text" data-speed="25">
-                Dengan memohon rahmat & ridho Allah SWT, kami mengundang bapak/ibu/saudara/i untuk hadir pada pernikahan:
+            <p class="bismillah-calligraphy text-rise gold-sheen-text" id="display-bismillah">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيم</p>
+            <p class="intro-note text-rise">
+                Dengan memohon rahmat &amp; ridho Allah SWT, kami mengundang bapak/ibu/saudara/i untuk hadir pada pernikahan:
             </p>
 
             <!-- Mempelai 1 Pria -->
@@ -124,18 +124,18 @@
                 </div>
 
                 <div class="profile-text align-left">
-                    <h3 class="name-script typewriter-text" data-speed="45" id="display-nama-pria">Herlangga Aprilyansah</h3>
-                    <p class="parent-info" id="display-ortu-pria">Putra Pertama dari<br>Bapak Ramlan<br>& Ibu Hernawati</p>
+                    <h3 class="name-script text-rise gold-sheen-text" id="display-nama-pria">Herlangga Aprilyansah</h3>
+                    <p class="parent-info text-rise" id="display-ortu-pria">Putra Pertama dari<br>Bapak Ramlan<br>&amp; Ibu Hernawati</p>
                 </div>
             </div>
 
-            <div class="ampersand-maroon anim-item" aria-hidden="true">&</div>
+            <div class="ampersand-maroon anim-item" aria-hidden="true">&amp;</div>
 
             <!-- Mempelai 2 Wanita -->
             <div class="profile-row reverse-mobile anim-item">
                 <div class="profile-text align-right">
-                    <h3 class="name-script typewriter-text" data-speed="45" id="display-nama-wanita">Zalsa Nabila Putri.S.E</h3>
-                    <p class="parent-info" id="display-ortu-wanita">Putri Pertama dari<br>Bapak Yudi Himawan<br>& Ibu Indri Rastuti</p>
+                    <h3 class="name-script text-rise gold-sheen-text" id="display-nama-wanita">Zalsa Nabila Putri, S.E.</h3>
+                    <p class="parent-info text-rise" id="display-ortu-wanita">Putri Pertama dari<br>Bapak Yudi Himawan<br>&amp; Ibu Indri Rastuti</p>
                 </div>
 
                 <div class="oval-frame-wrap">
@@ -158,13 +158,13 @@
         <div class="top-ornament-line light anim-item" aria-hidden="true"><span></span><i>✦</i><span></span></div>
 
         <div class="std-block anim-item">
-            <h2 class="std-script-title shimmer-white">
+            <h2 class="std-script-title text-rise gold-sheen-text">
                 <span class="std-line-main">Save</span>
                 <span class="std-line-sub">the</span>
                 <span class="std-line-main">Date</span>
             </h2>
 
-            <p class="std-month typewriter-text" data-speed="65" id="display-std-bulan">MARET</p>
+            <p class="std-month text-rise" id="display-std-bulan">MARET</p>
 
             <div class="std-date-split">
                 <div class="std-side-item">
@@ -184,7 +184,7 @@
             <p class="std-time-summary" id="display-std-waktu-lengkap"></p>
 
             <!-- Teks & Countdown Timer di dalam Save the Date -->
-            <p class="toward-happy-text typewriter-text" data-speed="35">menuju hari bahagia kami</p>
+            <p class="toward-happy-text text-rise">menuju hari bahagia kami</p>
 
             <div class="countdown" id="countdown">
                 <div><span id="days">00</span><small>Hari</small></div>
@@ -193,8 +193,8 @@
                 <div><span id="seconds">00</span><small>Detik</small></div>
             </div>
 
-            <button type="button" id="btn-save-calendar" class="btn-calendar-outline">
-                <span>✦</span> Simpan ke Kalender (.ics)
+            <button type="button" id="addToCalendarBtn" class="btn-calendar-outline">
+                <span>✦</span> Simpan ke Kalender
             </button>
 
             <div class="venue-illustration" aria-hidden="true">
@@ -236,7 +236,7 @@
         <hr class="green-divider">
 
         <div class="detail-session-block anim-item">
-            <h3 class="detail-script-heading typewriter-text" data-speed="65">Akad</h3>
+            <h3 class="detail-script-heading text-rise">Akad</h3>
             <p class="detail-date-line" id="display-detail-tanggal-akad">Sabtu, 27 Maret 2027</p>
             <p class="detail-time-line" id="display-detail-jam-akad">16.00 WIB</p>
 
@@ -251,7 +251,7 @@
         <div class="botanical-flourish anim-item" aria-hidden="true"><span></span><i>✦</i><span></span></div>
 
         <div class="detail-session-block anim-item">
-            <h3 class="detail-script-heading typewriter-text" data-speed="65">Resepsi</h3>
+            <h3 class="detail-script-heading text-rise">Resepsi</h3>
             <p class="detail-date-line" id="display-detail-tanggal-resepsi">Sabtu, 27 Maret 2027</p>
             <p class="detail-time-line" id="display-detail-jam-resepsi">19.00 WIB - 21.00 WIB</p>
 
@@ -265,13 +265,12 @@
             <a id="display-link-maps-detail" href="https://maps.app.goo.gl/vtc6LVVJoQGudwiw7" target="_blank" rel="noopener noreferrer" class="btn-maroon-pill">Lihat Lokasi Maps</a>
         </div>
     </section>
-
     <!-- WEDDING GIFT + HIASAN BUNGKUS KADO -->
     <section class="section-gift-maroon anim-section" id="wedding-gift">
         <div class="top-ornament-line light anim-item" aria-hidden="true"><span></span><i>✦</i><span></span></div>
 
         <div class="gift-maroon-inner anim-item">
-            <h2 class="gift-script-heading typewriter-text" data-speed="55">Wedding Gift</h2>
+            <h2 class="gift-script-heading text-rise gold-sheen-text">Wedding Gift</h2>
 
             <!-- Hiasan Bungkus Kado -->
             <div class="gift-wrap-decor" aria-hidden="true">
@@ -287,11 +286,11 @@
                 </svg>
             </div>
 
-            <p class="gift-maroon-text">
+            <p class="gift-maroon-text text-rise">
                 Doa restu dan kehadiran Anda merupakan<br>
                 karunia yang sangat berarti bagi kami.
             </p>
-            <p class="gift-maroon-text">
+            <p class="gift-maroon-text text-rise">
                 Namun, jika memberi adalah ungkapan tanda kasih,<br>
                 Anda dapat memberi melalui dibawah ini.
             </p>
@@ -300,7 +299,7 @@
                 <p class="rek-maroon-num" id="display-rek1-nomor">110293867</p>
                 <p class="rek-maroon-bank" id="display-rek1-bank">BCA</p>
                 <p class="rek-maroon-holder" id="display-rek1-nama">a.n Herlangga Aprilyansah</p>
-                <button type="button" class="btn-olive-copy" data-copy-target="display-rek1-nomor">
+                <button type="button" class="btn-olive-copy" data-copy="110293867">
                     <span class="copy-label">Copy</span>
                 </button>
             </div>
@@ -309,12 +308,12 @@
                 <p class="rek-maroon-num" id="display-rek2-nomor">4183269335</p>
                 <p class="rek-maroon-bank" id="display-rek2-bank">PERMATA BANK</p>
                 <p class="rek-maroon-holder" id="display-rek2-nama">a.n Zalsa Nabila Putri</p>
-                <button type="button" class="btn-olive-copy" data-copy-target="display-rek2-nomor">
+                <button type="button" class="btn-olive-copy" data-copy="4183269335">
                     <span class="copy-label">Copy</span>
                 </button>
             </div>
 
-            <p class="gift-maroon-text gift-closing-note">
+            <p class="gift-maroon-text gift-closing-note text-rise">
                 Dan bisa mengirim dalam bentuk fisik<br>
                 bisa kirim melalui alamat dibawah dan konfirmasi<br>
                 ke nomor berikut:
@@ -323,7 +322,7 @@
             <div class="physical-gift-box">
                 <div class="physical-line">
                     <strong>Penerima</strong>
-                    <span id="display-kado-penerima">Herlangga & Zalsa</span>
+                    <span id="display-kado-penerima">Herlangga &amp; Zalsa</span>
                 </div>
                 <div class="physical-line">
                     <strong>Alamat</strong>
@@ -359,34 +358,34 @@
                 </figure>
                 <figure class="polaroid-card polaroid-right">
                     <img id="display-story-foto-2" src="wanita.jpg" alt="Foto Kisah Cinta 2">
-                    <span class="polaroid-corner-tag" aria-hidden="true">01 & 02</span>
+                    <span class="polaroid-corner-tag" aria-hidden="true">01 &amp; 02</span>
                 </figure>
                 <span class="polaroid-wax-badge" aria-hidden="true">✦</span>
             </div>
 
-            <h2 class="love-story-heading typewriter-text" data-speed="55">Love Story</h2>
+            <h2 class="love-story-heading text-rise gold-sheen-text">Love Story</h2>
 
             <div class="story-timeline">
                 <div class="story-step anim-item">
                     <span class="story-marker" aria-hidden="true">✦</span>
-                    <h3 class="story-step-title typewriter-text" data-speed="45" id="display-story-judul-1">Awal Pertemuan</h3>
-                    <p class="story-step-text typewriter-text" data-speed="14" id="display-story-teks-1">
+                    <h3 class="story-step-title text-rise" id="display-story-judul-1">Awal Pertemuan</h3>
+                    <p class="story-step-text text-rise" id="display-story-teks-1">
                         Tidak ada yang benar-benar kebetulan di dunia ini. Setiap pertemuan telah diatur dengan indah, hanya menunggu waktu yang tepat untuk terjadi. Berawal dari sebuah perkenalan sederhana, tanpa banyak rencana atau harapan berlebihan, kami dipertemukan dalam cara yang tidak pernah kami duga sebelumnya.
                     </p>
                 </div>
 
                 <div class="story-step anim-item">
                     <span class="story-marker" aria-hidden="true">✦</span>
-                    <h3 class="story-step-title typewriter-text" data-speed="45" id="display-story-judul-2">Perjalanan Bersama</h3>
-                    <p class="story-step-text typewriter-text" data-speed="14" id="display-story-teks-2">
+                    <h3 class="story-step-title text-rise" id="display-story-judul-2">Perjalanan Bersama</h3>
+                    <p class="story-step-text text-rise" id="display-story-teks-2">
                         Seiring berjalannya waktu, kebersamaan kecil yang kami lalui perlahan tumbuh menjadi sesuatu yang lebih berarti. Dalam setiap cerita, tentu ada tawa, ada juga tantangan. Namun dari situlah kami belajar untuk saling memahami, menerima, dan melengkapi satu sama lain.
                     </p>
                 </div>
 
                 <div class="story-step story-step-last anim-item">
                     <span class="story-marker" aria-hidden="true">✦</span>
-                    <h3 class="story-step-title typewriter-text" data-speed="45" id="display-story-judul-3">Komitmen</h3>
-                    <p class="story-step-text typewriter-text" data-speed="14" id="display-story-teks-3">
+                    <h3 class="story-step-title text-rise" id="display-story-judul-3">Komitmen</h3>
+                    <p class="story-step-text text-rise" id="display-story-teks-3">
                         Hingga akhirnya kami menyadari bahwa perjalanan ini bukan lagi tentang dua orang yang berjalan sendiri, melainkan tentang dua hati yang memilih untuk melangkah bersama. Dengan penuh rasa syukur dan keyakinan, kami memutuskan untuk mengikat janji suci dan memulai babak baru dalam kehidupan kami.
                     </p>
                 </div>
@@ -397,8 +396,8 @@
     <!-- GALLERY LAMA -->
     <section class="section-gallery-classic anim-section" id="galeri">
         <div class="gallery-classic-inner">
-            <h2 class="gallery-classic-title typewriter-text" data-speed="45">Galeri Momen</h2>
-            <p class="gallery-classic-sub typewriter-text" data-speed="25">Potret kecil penuh cinta menuju hari bahagia kami.</p>
+            <h2 class="gallery-classic-title text-rise">Galeri Momen</h2>
+            <p class="gallery-classic-sub text-rise">Potret kecil penuh cinta menuju hari bahagia kami.</p>
 
             <div class="gallery-grid">
                 <div class="gallery-frame anim-item">
@@ -415,10 +414,10 @@
     </section>
 
     <!-- LIGHTBOX PREVIEW FOTO -->
-    <div class="photo-lightbox" id="photo-lightbox" aria-hidden="true">
+    <div class="photo-lightbox" id="photoLightbox" aria-hidden="true">
         <div class="photo-lightbox-content">
-            <button type="button" class="photo-lightbox-close" id="photo-lightbox-close" aria-label="Tutup preview foto">✕</button>
-            <img id="photo-lightbox-img" src="" alt="Preview Foto Momen">
+            <button type="button" class="photo-lightbox-close" id="photoLightboxClose" aria-label="Tutup preview foto">✕</button>
+            <img id="photoLightboxImg" src="" alt="Preview Foto Momen">
         </div>
     </div>
 
@@ -429,13 +428,13 @@
         <div class="closing-scene anim-item">
             <div class="closing-card-frame">
                 <span class="closing-crest" aria-hidden="true">✦</span>
-                <p class="closing-message typewriter-text" data-speed="18">
+                <p class="closing-message text-rise">
                     Menjadi sebuah kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir dalam hari bahagia kami. Terimakasih atas segala ucapan, doa, dan perhatian yang diberikan.
                 </p>
-                <p class="closing-until-meet typewriter-text" data-speed="30">Sampai jumpa di hari pernikahan kami!</p>
-                <div class="closing-couple-names shimmer-white" id="display-closing-nama">
+                <p class="closing-until-meet text-rise">Sampai jumpa di hari pernikahan kami!</p>
+                <div class="closing-couple-names gold-sheen-text" id="display-closing-nama">
                     <span>Herlangga</span>
-                    <span class="closing-amp">&</span>
+                    <span class="closing-amp">&amp;</span>
                     <span>Zalsa</span>
                 </div>
             </div>
@@ -452,29 +451,29 @@
     <!-- SLIDE TERAKHIR: UCAPAN & KONFIRMASI HADIR -->
     <section class="section-rsvp-last anim-section" id="ucapan">
         <div class="rsvp-last-container anim-item">
-            <h2 class="rsvp-last-title typewriter-text" data-speed="40">Ucapan & Konfirmasi Hadir</h2>
-            <p class="rsvp-last-subtitle typewriter-text" data-speed="25">Kirimkan doa restu serta konfirmasi kehadiran Anda.</p>
+            <h2 class="rsvp-last-title text-rise">Ucapan &amp; Konfirmasi Hadir</h2>
+            <p class="rsvp-last-subtitle text-rise">Kirimkan doa restu serta konfirmasi kehadiran Anda.</p>
 
-            <form id="rsvp-form" class="rsvp-card-form">
-                <input type="text" id="rsvp-nama" placeholder="Nama Anda" required>
-                <select id="rsvp-status" required>
+            <form id="rsvpForm" class="rsvp-card-form">
+                <input type="text" id="namaTamu" placeholder="Nama Anda" required>
+                <select id="statusKehadiran" required>
                     <option value="">Pilih Konfirmasi Kehadiran</option>
                     <option value="Hadir">Hadir</option>
                     <option value="Tidak Hadir">Tidak Hadir</option>
                     <option value="Masih Ragu">Masih Ragu</option>
                 </select>
-                <textarea id="rsvp-pesan" rows="3" placeholder="Tulis ucapan dan doa untuk mempelai..." required></textarea>
+                <textarea id="pesanUcapan" rows="3" placeholder="Tulis ucapan dan doa untuk mempelai..." required></textarea>
                 <button type="submit" class="btn-rsvp-tan">Kirim Ucapan</button>
             </form>
 
-            <div id="daftar-ucapan" class="ucapan-list"></div>
+            <div id="ucapanList" class="ucapan-list"></div>
         </div>
     </section>
 
     <footer class="anim-section">
         <div class="anim-item">
-            <p class="typewriter-text" data-speed="22">Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir.</p>
-            <h3 id="display-footer-nama">HERLANGGA & ZALSA</h3>
+            <p class="text-rise">Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir.</p>
+            <h3 id="display-footer-nama">HERLANGGA &amp; ZALSA</h3>
         </div>
     </footer>
 
