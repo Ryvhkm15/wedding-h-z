@@ -431,3 +431,23 @@ footer h3{font-family:var(--font-serif);font-size:1rem;letter-spacing:.26em;colo
   padding-left: 8px !important;
   padding-right: 8px !important;
 }
+/* FIX S KE-POTONG - PAKSA SEMUA BUNGKUSNYA TERBUKA */
+.section-save-date-green,
+.section-save-date-green *{
+  overflow: visible !important;
+}
+.std-script-title{
+  padding: 12px 32px 12px 38px !important;
+  margin-left: -10px !important;
+  overflow: visible !important;
+}
+.std-line-main{
+  display: inline-block !important;
+  padding: 0 12px 0 18px !important;
+  margin-left: 4px !important;
+  transform: translateX(4px) !important;
+  filter: none !important;
+}
+.std-block{
+  padding-left: 20px !important;
+}
