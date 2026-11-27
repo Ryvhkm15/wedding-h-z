@@ -52,10 +52,10 @@ const CONFIG = {
     rek2Nama: "a.n Zalsa Nabila Putri",
 
     kadoPenerima: "Herlangga & Zalsa",
-    kadoAlamat: "Jl. KS TUBUN IV Rt 04 Rw 07 No 31, Slipi Jakarta Barat",
+    kadoAlamat: "JL. Ks Tubun IV Rt 04 Rw 07 No 31, Slipi, Jakarta Barat",
     kadoWA1: "0895331933432",
     kadoWA1Nama: "(a.n Zalsa)",
-    kadoWA2: "081212708828",
+    kadoWA2: "081212798828",
     kadoWA2Nama: "(a.n Herlangga)",
 
     // Sesuai nama file di repository root
@@ -489,9 +489,11 @@ if (bukaBtn) {
 // EFEK KETIKAN (TYPEWRITER) & SCROLL REVEAL
 // ==========================================
 function runTypewriter(el) {
-  if (!el) return;
-  el.dataset.typedDone = "true";
-}
+    if (!el || el.dataset.typedDone === "true") return;
+    if (el.children.length > 0) {
+        el.dataset.typedDone = "true";
+        return;
+    }
 
     const fullText = el.textContent;
     if (!fullText || !fullText.trim()) return;
