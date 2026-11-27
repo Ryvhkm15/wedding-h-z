@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
         curtainEl.addEventListener("click", triggerCurtainOpen);
     }
 
-    // === GABUNGAN: TEXT-RISE / ANIM-ITEM - HANYA IntersectionObserver ===
+    // === TEXT-RISE / ANIM-ITEM - HANYA IntersectionObserver ===
     const riseTargets = document.querySelectorAll(".text-rise, .anim-item");
 
     if ("IntersectionObserver" in window) {
@@ -62,10 +62,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
         riseTargets.forEach((target) => riseObserver.observe(target));
     } else {
-        // Fallback kalau browser lama gak support Observer
         riseTargets.forEach((el) => el.classList.add("is-shown", "anim-visible"));
     }
-    // === AKHIR BAGIAN GABUNGAN ===
 
     const applyTheme = (themeName) => {
         const validTheme = ["emerald", "velvet", "botanical"].includes(themeName) ? themeName : "emerald";
@@ -98,7 +96,17 @@ document.addEventListener("DOMContentLoaded", () => {
         progressBar.style.width = `${pct}%`;
     };
 
-    window.addEventListener("scroll", updateScrollProgress, { passive: true });
+    // FIX NGELEG: scroll pake requestAnimationFrame, bukan tiap pixel
+    let isTicking = false;
+    window.addEventListener("scroll", () => {
+        if (!isTicking) {
+            window.requestAnimationFrame(() => {
+                updateScrollProgress();
+                isTicking = false;
+            });
+            isTicking = true;
+        }
+    }, { passive: true });
     updateScrollProgress();
 
     const params = new URLSearchParams(window.location.search);
