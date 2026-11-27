@@ -413,3 +413,21 @@ footer h3{font-family:var(--font-serif);font-size:1rem;letter-spacing:.26em;colo
   }
   .countdown span{ font-size: 1.15rem !important; }
 }
+/* FIX HURUF S KE-POTONG */
+.std-script-title{
+  padding-left: 14px !important;
+  padding-right: 14px !important;
+  overflow: visible !important;
+  display: block !important;
+}
+.std-line-main{
+  display: block !important;
+  padding-left: 6px !important;
+  padding-right: 6px !important;
+  overflow: visible !important;
+}
+.std-block{
+  overflow: visible !important;
+  padding-left: 8px !important;
+  padding-right: 8px !important;
+}
