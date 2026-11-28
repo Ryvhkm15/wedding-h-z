@@ -222,54 +222,67 @@ document.addEventListener("DOMContentLoaded", () => {
   addTilt3D(".closing-card-frame", 8);
   addTilt3D(".physical-gift-box", 8);
 
-  // === REVEAL SMOOTH SAAT SCROLL ===
-  const animatedTargets = document.querySelectorAll(
+  // === REVEAL SMOOTH BERTAHAP ALA VIDEO ===
+  const animatedTargets = Array.from(document.querySelectorAll(
     ".text-rise, .video-reveal, .reveal-up, .reveal-left, .reveal-right, .reveal-zoom, .reveal-blur"
-  );
+  ));
 
-  function revealElement(el) {
-    el.classList.add("is-shown", "is-visible", "is-in");
+  function showElementSmooth(el, delayMs = 0) {
+    if (!el || el.dataset.revealed === "1") return;
+    el.dataset.revealed = "1";
+    setTimeout(() => {
+      el.classList.add("is-shown", "is-visible", "is-in");
+    }, delayMs);
+  }
+
+  function revealBatch(elements) {
+    elements.forEach((el, idx) => {
+      showElementSmooth(el, Math.min(idx * 110, 440));
+    });
   }
 
   if ("IntersectionObserver" in window) {
     const smoothObserver = new IntersectionObserver(
       (entries) => {
-        const visibleNow = entries
+        const entering = entries
           .filter((entry) => entry.isIntersecting)
           .map((entry) => entry.target);
 
-        visibleNow.forEach((el, idx) => {
-          setTimeout(() => {
-            revealElement(el);
-          }, idx * 90);
-          smoothObserver.unobserve(el);
-        });
+        if (entering.length) {
+          revealBatch(entering);
+          entering.forEach((el) => smoothObserver.unobserve(el));
+        }
       },
       {
-        threshold: 0.12,
-        rootMargin: "0px 0px -40px 0px"
+        threshold: 0.14,
+        rootMargin: "0px 0px -32px 0px"
       }
     );
 
     animatedTargets.forEach((el) => smoothObserver.observe(el));
 
+    let scrollCheckTimer = null;
     window.addEventListener(
       "scroll",
       () => {
-        const vh = window.innerHeight || document.documentElement.clientHeight;
-        animatedTargets.forEach((el) => {
-          if (el.classList.contains("is-in")) return;
-          const rect = el.getBoundingClientRect();
-          if (rect.top < vh * 0.92) {
-            revealElement(el);
-            smoothObserver.unobserve(el);
+        clearTimeout(scrollCheckTimer);
+        scrollCheckTimer = setTimeout(() => {
+          const vh = window.innerHeight || document.documentElement.clientHeight;
+          const newlyVisible = animatedTargets.filter((el) => {
+            if (el.dataset.revealed === "1") return false;
+            const rect = el.getBoundingClientRect();
+            return rect.top < vh * 0.88 && rect.bottom > 0;
+          });
+          if (newlyVisible.length) {
+            revealBatch(newlyVisible);
+            newlyVisible.forEach((el) => smoothObserver.unobserve(el));
           }
-        });
+        }, 80);
       },
       { passive: true }
     );
   } else {
-    animatedTargets.forEach(revealElement);
+    revealBatch(animatedTargets);
   }
 
   window.addEventListener("scroll", () => {
