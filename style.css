@@ -451,3 +451,23 @@ footer h3{font-family:var(--font-serif);font-size:1rem;letter-spacing:.26em;colo
 .std-block{
   padding-left: 20px !important;
 }
+/* KILAU TULISAN ARAB */
+.arabic,
+.bismillah,
+.arab-text,
+.quran-text,
+.ayat,
+[class*="arab"],
+[class*="bismillah"],
+p[dir="rtl"]{
+  background: linear-gradient(110deg,#d9be8c 20%,#fff9e6 38%,#f5e2ba 50%,#fff9e6 62%,#d9be8c 80%) !important;
+  background-size: 220% 100% !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  color: transparent !important;
+  animation: titleShine 3.8s ease-in-out infinite !important;
+  padding: 4px 10px !important;
+  line-height: 1.8 !important;
+  overflow: visible !important;
+}
