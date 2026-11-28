@@ -1,46 +1,93 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const params = new URLSearchParams(window.location.search);
-  const to = params.get("to") || params.get("nama") || params.get("guest");
-  if (to) { const g = document.getElementById("guestName"); if (g) g.textContent = decodeURIComponent(to.replace(/\+/g," ")); const n = document.getElementById("namaTamu"); if (n && !n.value) n.value = decodeURIComponent(to.replace(/\+/g," ")); }
-  const curtain = document.getElementById("openingCurtain"); const badge = document.querySelector(".curtain-crest-badge"); let opened = false;
-  function openCurtain(){ if(!curtain||opened||curtain.classList.contains("is-done")) return; opened=true; curtain.classList.add("is-opening"); setTimeout(()=>curtain.classList.add("is-done"),1250); }
-  if(badge) badge.addEventListener("click", openCurtain); setTimeout(openCurtain,6000);
-  const envBtn = document.getElementById("openInvitationBtn"); const hint = document.getElementById("envelope-hint-text"); let envOpen=false;
-  if(envBtn) envBtn.addEventListener("click", ()=>{ envOpen=!envOpen; envBtn.classList.toggle("is-open",envOpen); if(hint) hint.textContent = envOpen ? "CLICK ENVELOPE TO CLOSE" : "CLICK ENVELOPE TO OPEN"; if(envOpen) setTimeout(()=>{ const a=document.getElementById("ayat-pilihan"); if(a) a.scrollIntoView({behavior:"smooth"}); },900); });
-  const music=document.getElementById("bgMusic"); const mBtn=document.getElementById("musicToggleBtn"); let mOn=false;
-  if(mBtn) mBtn.addEventListener("click", async()=>{ if(!music) return; try{ if(mOn){music.pause();mOn=false;} else{await music.play();mOn=true;} mBtn.textContent=mOn?"♫ Musik: On":"♫ Musik: Off"; }catch(e){} });
-  document.querySelectorAll(".theme-chip").forEach(c=>{ c.addEventListener("click",()=>{ document.querySelectorAll(".theme-chip").forEach(x=>x.classList.remove("is-active")); c.classList.add("is-active"); document.body.setAttribute("data-wedding-theme",c.dataset.theme); }); });
-  const prog=document.getElementById("scrollProgressBar"); function onScroll(){ const h=document.documentElement; const max=h.scrollHeight-h.clientHeight; if(prog&&max>0) prog.style.width=(h.scrollTop/max*100)+"%"; } window.addEventListener("scroll",onScroll,{passive:true}); onScroll();
-  const target=new Date("2027-03-27T16:00:00+07:00").getTime(); const dEl=document.getElementById("days"),hEl=document.getElementById("hours"),mEl=document.getElementById("minutes"),sEl=document.getElementById("seconds");
-  function tick(){ if(!dEl) return; let diff=target-Date.now(); if(diff<0) diff=0; dEl.textContent=String(Math.floor(diff/86400000)).padStart(2,"0"); hEl.textContent=String(Math.floor(diff%86400000/3600000)).padStart(2,"0"); mEl.textContent=String(Math.floor(diff%3600000/60000)).padStart(2,"0"); sEl.textContent=String(Math.floor(diff%60000/1000)).padStart(2,"0"); } tick(); setInterval(tick,1000);
-  const spark=document.getElementById("std-sparkles"); if(spark&&window.innerWidth>768){ for(let i=0;i<22;i++){ const el=document.createElement("span"); const isStar=i%2===0; el.className=isStar?"sparkle-star":"sparkle-dot"; el.textContent=isStar?"✦":""; el.style.left=Math.random()*100+"%"; el.style.top=Math.random()*100+"%"; el.style.fontSize=(8+Math.random()*10)+"px"; el.style.setProperty("--dur",(2+Math.random()*2)+"s"); el.style.setProperty("--delay",(Math.random()*2)+"s"); if(!isStar){el.style.width="5px";el.style.height="5px";} spark.appendChild(el); } }
-  document.querySelectorAll(".btn-olive-copy").forEach(btn=>{ btn.addEventListener("click", async()=>{ const t=btn.dataset.copy||""; try{await navigator.clipboard.writeText(t);}catch(e){ const ta=document.createElement("textarea"); ta.value=t; document.body.appendChild(ta); ta.select(); document.execCommand("copy"); ta.remove(); } const l=btn.querySelector(".copy-label"); if(l) l.textContent="Tersalin!"; btn.classList.add("copied"); setTimeout(()=>{ if(l) l.textContent="Copy"; btn.classList.remove("copied"); },1800); }); });
-  const cal=document.getElementById("addToCalendarBtn"); if(cal) cal.addEventListener("click",()=>{ const ti=encodeURIComponent("Pernikahan Herlangga & Zalsa"); const de=encodeURIComponent("Akad 16.00 WIB - Resepsi 19.00-21.00 WIB di Yayasan Daarul Aitam"); const lo=encodeURIComponent("Yayasan Daarul Aitam, Jakarta Pusat"); window.open(`https://calendar.google.com/calendar/render?action=TEMPLATE&text=${ti}&dates=20270327T090000Z/20270327T140000Z&details=${de}&location=${lo}`,"_blank"); });
-  const lb=document.getElementById("photoLightbox"); const lbImg=document.getElementById("photoLightboxImg"); const lbClose=document.getElementById("photoLightboxClose");
-  document.querySelectorAll(".gallery-frame img").forEach(img=>{ img.addEventListener("click",()=>{ if(!lb||!lbImg) return; lbImg.src=img.src; lb.classList.add("is-open"); }); });
-  if(lbClose) lbClose.addEventListener("click",()=>lb.classList.remove("is-open")); if(lb) lb.addEventListener("click",e=>{ if(e.target===lb) lb.classList.remove("is-open"); });
-  const form=document.getElementById("rsvpForm"); const list=document.getElementById("ucapanList"); const KEY="ucapan_herlangga_zalsa_v1";
-  function esc(s){ return s.replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
-  function render(){ if(!list) return; let d=[]; try{d=JSON.parse(localStorage.getItem(KEY)||"[]");}catch(e){d=[];} if(!d.length){list.innerHTML="";return;} list.innerHTML=d.map(it=>`<div class="ucapan-item"><strong>${esc(it.nama)}</strong><span class="ucapan-status">${esc(it.status)}</span><p>${esc(it.pesan)}</p></div>`).join(""); } render();
-  if(form) form.addEventListener("submit",e=>{ e.preventDefault(); const nama=document.getElementById("namaTamu").value.trim(); const st=document.getElementById("statusKehadiran").value; const ps=document.getElementById("pesanUcapan").value.trim(); if(!nama||!st||!ps) return; let d=[]; try{d=JSON.parse(localStorage.getItem(KEY)||"[]");}catch(e){d=[];} d.unshift({nama,status:st,pesan:ps}); try{localStorage.setItem(KEY,JSON.stringify(d.slice(0,50)));}catch(e){} render(); form.reset(); alert("Terima kasih! Ucapan kamu sudah terkirim."); });
-  // ANIMASI CUMA SEKALI - PAS SCROLL BALIK KE ATAS TETAP DIAM
-  const animated = Array.from(document.querySelectorAll(".anim-item"));
-  if("IntersectionObserver" in window){
-    const obs = new IntersectionObserver((entries)=>{
-      entries.forEach(en=>{
-        if(en.isIntersecting){
-          const section = en.target.closest("section, footer") || document;
-          const siblings = Array.from(section.querySelectorAll(".anim-item"));
-          const idx = siblings.indexOf(en.target);
-          const extra = en.target.classList.contains("anim-photo") ? 220 : 0;
-          clearTimeout(en.target._animTimer);
-          en.target._animTimer = setTimeout(()=>{
-            en.target.classList.add("is-shown");
-            obs.unobserve(en.target);
-          }, idx*120 + extra);
-        }
-      });
-    },{threshold:0.12, rootMargin:"0px 0px -30px 0px"});
-    animated.forEach(el=>obs.observe(el));
-  } else { animated.forEach(el=>el.classList.add("is-shown")); }
-});
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Undangan Pernikahan - Herlangga &amp; Zalsa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Great+Vibes&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=9000">
+</head>
+<body>
+<div class="opening-curtain" id="openingCurtain"><div class="curtain-panel curtain-panel-left"><span class="curtain-gold-trim"></span></div><button type="button" class="curtain-crest-badge"><span>H &amp; Z</span><small>WELCOME</small></button><div class="curtain-panel curtain-panel-right"><span class="curtain-gold-trim"></span></div></div>
+<div class="scroll-progress-bar" id="scrollProgressBar"></div>
+<div class="theme-switcher"><button type="button" class="theme-chip is-active" data-theme="emerald">Emerald</button><button type="button" class="theme-chip" data-theme="velvet">Velvet</button><button type="button" class="theme-chip" data-theme="botanical">Botanical</button></div>
+
+<!-- 1. COVER -->
+<section class="hero-envelope" id="cover"><div class="envelope-wrapper">
+<div class="anim-item anim-from-bottom"><p class="script-top">We're</p></div>
+<div class="anim-item anim-from-bottom"><h2 class="spaced-title">Getting Married</h2></div>
+<div class="anim-item anim-from-bottom"><h1 class="couple-script">Herlangga &amp; Zalsa</h1></div>
+<div class="anim-item anim-from-bottom"><p class="date-mini">Sabtu, 27 Maret 2027</p><p class="guest-mini">Kepada Yth: <strong id="guestName">Tamu Undangan</strong></p></div>
+<div class="anim-item anim-from-bottom"><button type="button" id="openInvitationBtn" class="envelope-trigger"><div class="envelope-card"><div class="envelope-pocket-inside"><span class="pocket-monogram">H &amp; Z</span><span class="pocket-sub">Undangan Pernikahan</span></div><div class="envelope-back-lining"></div><div class="envelope-flap-lace"></div><div class="envelope-gold-trim"></div><div class="wax-seal">✦</div></div><span class="click-hint" id="envelope-hint-text">CLICK ENVELOPE TO OPEN</span></button></div>
+</div></section>
+<audio id="bgMusic" loop preload="metadata"><source src="lagu.mp3.mp3" type="audio/mpeg"></audio>
+<button type="button" id="musicToggleBtn" class="music-btn">♫ Musik: Off</button>
+
+<!-- 2. AYAT -->
+<section class="section-doily-emerald" id="ayat-pilihan"><div class="doily-scene">
+<div class="anim-item anim-from-top"><div class="top-ornament-line light"><span></span><i>✦</i><span></span></div></div>
+<div class="anim-item anim-from-bottom"><div class="ar-rum-frame-new"><div class="frame-ornament-top">❦</div><div class="frame-inner-dashed"><span class="frame-star s1">✦</span><span class="frame-star s2">✦</span><span class="frame-star s3">✦</span><span class="frame-star s4">✦</span><span class="frame-star s5">✦</span><span class="frame-star s6">✦</span><span class="frame-leaf left-leaf">❦</span><span class="frame-leaf right-leaf">❦</span><span class="ar-rum-pill">QS. AR-RUM • 21</span><p class="ayat-arab-new" lang="ar" dir="rtl">وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُمْ مِنْ أَنْفُسِكُمْ أَزْوَاجًا</p><div class="ayat-quote-box"><p class="ayat-text-new">"Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang. Sungguh, pada yang demikian itu benar-benar terdapat tanda-tanda (kebesaran Allah) bagi kaum yang berpikir."</p></div><div class="ayat-divider-new"><span class="line"></span><i>✦</i><span class="line"></span></div><p class="ayat-sumber-new">QS AR-RUM 21</p></div><div class="frame-ornament-bottom">❦</div></div></div>
+<div class="anim-item anim-from-bottom"><div class="tassel-maroon"></div><div class="bottom-envelope-pocket"><div class="pocket-flap-accent"></div><div class="pocket-label">Sakinah • Mawaddah • Warahmah</div></div></div>
+</div></section>
+
+<!-- 3. MEMPELAI - TANPA BRIDE & GROOM -->
+<section class="section-maroon" id="mempelai"><div class="maroon-container">
+<div class="anim-item anim-from-top"><p class="bismillah-calligraphy" lang="ar" dir="rtl">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيم</p></div>
+<div class="anim-item anim-from-bottom"><p class="intro-note">Dengan memohon rahmat &amp; ridho Allah SWT, kami mengundang bapak/ibu/saudara/i untuk hadir pada pernikahan:</p></div>
+<div class="profile-row">
+<div class="anim-item anim-photo anim-from-left"><div class="oval-frame-wrap"><span class="corner-ornament tl">✦</span><span class="corner-ornament tr">✦</span><span class="corner-ornament bl">✦</span><span class="corner-ornament br">✦</span><div class="oval-photo"><img src="pria.jpg" alt="Herlangga Aprilyansah" loading="lazy"></div></div></div>
+<div class="profile-text align-left"><div class="anim-item anim-from-right"><h3 class="name-script">Herlangga Aprilyansah</h3></div><div class="anim-item anim-from-right"><p class="parent-info">Putra Pertama dari<br>Bapak Ramlan<br>&amp; Ibu Hernawati</p></div></div>
+</div>
+<div class="anim-item anim-from-bottom"><div class="ampersand-maroon">&amp;</div></div>
+<div class="profile-row">
+<div class="profile-text align-right"><div class="anim-item anim-from-left"><h3 class="name-script">Zalsa Nabila Putri, S.E.</h3></div><div class="anim-item anim-from-left"><p class="parent-info">Putri Pertama dari<br>Bapak Yudi Himawan<br>&amp; Ibu Indri Rastuti</p></div></div>
+<div class="anim-item anim-photo anim-from-right"><div class="oval-frame-wrap"><span class="corner-ornament tl">✦</span><span class="corner-ornament tr">✦</span><span class="corner-ornament bl">✦</span><span class="corner-ornament br">✦</span><div class="oval-photo"><img src="wanita.jpg" alt="Zalsa Nabila Putri" loading="lazy"></div></div></div>
+</div>
+</div></section>
+
+<!-- 4. SAVE THE DATE -->
+<section class="section-save-date-green" id="save-the-date"><div class="sparkle-field" id="std-sparkles" aria-hidden="true"></div>
+<div class="anim-item anim-from-right"><div class="top-ornament-line light"><span></span><i>✦</i><span></span></div></div>
+<div class="anim-item anim-from-right"><h2 class="std-script-title"><span class="std-line-main">Save</span><span class="std-line-sub">the</span><span class="std-line-main">Date</span></h2></div>
+<div class="anim-item anim-from-right"><p class="std-month">MARET</p></div>
+<div class="anim-item anim-from-left"><div class="std-date-split"><div class="std-side-item"><span class="std-side-script">Akad</span><small>Pukul 16.00 WIB</small></div><div class="std-day-number glow-blink">27</div><div class="std-side-item"><span class="std-side-script">Resepsi</span><small>Pukul 19.00 - 21.00 WIB</small></div></div><p class="std-year">2027</p></div>
+<div class="anim-item anim-from-bottom"><p class="toward-happy-text">menuju hari bahagia kami</p></div>
+<div class="anim-item anim-from-right"><div class="countdown" id="countdown"><div><span id="days">00</span><small>Hari</small></div><div><span id="hours">00</span><small>Jam</small></div><div><span id="minutes">00</span><small>Menit</small></div><div><span id="seconds">00</span><small>Detik</small></div></div></div>
+<div class="anim-item anim-from-left"><button type="button" id="addToCalendarBtn" class="btn-calendar-outline"><span>✦</span> Simpan ke Kalender</button></div>
+<div class="anim-item anim-photo anim-from-bottom"><div class="gedung-yayasan"><div class="building-new-wrap"><div class="building-new"><div class="wing left-wing"><span class="wing-roof"></span><i class="win w1"></i><i class="win w2"></i><i class="win w3"></i><i class="win w4"></i><i class="win w5"></i><i class="win w6"></i><span class="wing-door"></span></div><div class="center-new"><span class="center-roof"></span><span class="center-ornament"></span><div class="yayasan-on-building">Yayasan<br>Daarul Aitam</div><i class="win c1"></i><i class="win c2"></i><i class="win c3"></i><i class="win c4"></i><span class="center-door"></span></div><div class="wing right-wing"><span class="wing-roof"></span><i class="win w1"></i><i class="win w2"></i><i class="win w3"></i><i class="win w4"></i><i class="win w5"></i><i class="win w6"></i><span class="wing-door"></span></div><div class="tree t-left"></div><div class="tree t-center-left"></div><div class="tree t-center-right"></div><div class="tree t-right"></div></div><div class="fountain-pond"><div class="pond"></div><div class="fountain-new"><div class="f-jet f1"></div><div class="f-jet f2"></div><div class="f-jet f3"></div><div class="f-jet f4"></div><div class="f-jet f5"></div><div class="f-base"></div></div></div></div></div></div>
+<hr class="green-divider">
+<div class="anim-item anim-from-top"><h3 class="detail-script-heading">Akad</h3></div>
+<div class="anim-item anim-from-top"><p class="detail-date-line">Sabtu, 27 Maret 2027</p><p class="detail-time-line">16.00 WIB</p></div>
+<div class="anim-item anim-from-top"><p class="detail-venue-name">YAYASAN DAARUL AITAM</p><p class="detail-address-line">Jl. K.H. Mas Mansyur No.47, Kb. Melati,<br>Kec. Tanah Abang, Kota Jakarta Pusat,<br>Daerah Khusus Ibukota Jakarta 10230</p></div>
+<div class="anim-item anim-from-bottom"><div class="botanical-flourish"><span></span><i>✦</i><span></span></div></div>
+<div class="anim-item anim-from-top"><h3 class="detail-script-heading">Resepsi</h3></div>
+<div class="anim-item anim-from-top"><p class="detail-date-line">Sabtu, 27 Maret 2027</p><p class="detail-time-line">19.00 WIB - 21.00 WIB</p></div>
+<div class="anim-item anim-from-top"><p class="detail-venue-name">YAYASAN DAARUL AITAM</p><p class="detail-address-line">Jl. K.H. Mas Mansyur No.47, Kb. Melati,<br>Kec. Tanah Abang, Kota Jakarta Pusat,<br>Daerah Khusus Ibukota Jakarta 10230</p></div>
+<div class="anim-item anim-from-bottom"><a href="https://maps.app.goo.gl/vtc6LVVJoQGudwiw7" target="_blank" rel="noopener noreferrer" class="btn-maroon-pill">Lihat Lokasi Maps</a></div>
+</section>
+
+<!-- 5. GIFT -->
+<section class="section-gift-maroon" id="wedding-gift"><div class="anim-item anim-from-top"><div class="top-ornament-line light"><span></span><i>✦</i><span></span></div></div><div class="gift-maroon-inner"><div class="anim-item anim-from-bottom"><h2 class="gift-script-heading">Wedding Gift</h2></div><div class="anim-item anim-from-bottom"><div class="gift-wrap-decor"><svg viewBox="0 0 120 112" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M60 28 C46 11, 24 14, 28 28 C31 36, 48 34, 60 28 Z" fill="#e6c88c" stroke="#fff7e3" stroke-width="1.5"/><path d="M60 28 C74 11, 96 14, 92 28 C89 36, 72 34, 60 28 Z" fill="#e6c88c" stroke="#fff7e3" stroke-width="1.5"/><circle cx="60" cy="28" r="6" fill="#9b1831" stroke="#fff7e3" stroke-width="1.5"/><rect x="20" y="34" width="80" height="18" rx="4" fill="#fbf3e4" stroke="#d9be8c" stroke-width="1.8"/><rect x="53" y="34" width="14" height="18" fill="#c99f57"/><rect x="25" y="52" width="70" height="48" rx="5" fill="#f5ead4" stroke="#d9be8c" stroke-width="1.8"/><rect x="53" y="52" width="14" height="48" fill="#d9be8c"/><line x1="25" y1="68" x2="95" y2="68" stroke="#c99f57" stroke-width="1.2" stroke-dasharray="4 4"/></svg></div></div><div class="anim-item anim-from-bottom"><p class="gift-maroon-text">Doa restu dan kehadiran Anda merupakan<br>karunia yang sangat berarti bagi kami.</p><p class="gift-maroon-text">Namun, jika memberi adalah ungkapan tanda kasih,<br>Anda dapat memberi melalui dibawah ini.</p></div><div class="anim-item anim-from-left"><div class="rek-maroon-item"><p class="rek-maroon-num">1110293867</p><p class="rek-maroon-bank">BCA</p><p class="rek-maroon-holder">a.n Herlangga Aprilyansah</p><button type="button" class="btn-olive-copy" data-copy="1110293867"><span class="copy-label">Copy</span></button></div></div><div class="anim-item anim-from-right"><div class="rek-maroon-item"><p class="rek-maroon-num">4183269335</p><p class="rek-maroon-bank">PERMATA BANK</p><p class="rek-maroon-holder">a.n Zalsa Nabila Putri</p><button type="button" class="btn-olive-copy" data-copy="4183269335"><span class="copy-label">Copy</span></button></div></div><div class="anim-item anim-from-bottom"><p class="gift-maroon-text gift-closing-note">Dan bisa mengirim dalam bentuk fisik<br>bisa kirim melalui alamat dibawah dan konfirmasi<br>ke nomor berikut:</p></div><div class="anim-item anim-from-bottom"><div class="physical-gift-box"><div class="gift-info-row"><span class="gift-info-label">Penerima</span><span class="gift-info-value name">Herlangga &amp; Zalsa</span></div><div class="gift-info-divider"></div><div class="gift-info-row"><span class="gift-info-label">Alamat</span><span class="gift-info-value">Jl. Ks Tubun IV Rt 04 Rw 07 No 31,<br>Slipi Jakarta Barat</span></div><div class="gift-info-divider"></div><div class="gift-info-row"><span class="gift-info-label">WhatsApp</span><div class="wa-list"><div class="wa-row"><span class="wa-num">0895331933432</span><span class="wa-owner">(a.n Zalsa)</span></div><div class="wa-row"><span class="wa-num">081212798828</span><span class="wa-owner">(a.n Herlangga)</span></div></div></div><div class="wa-actions-group"><a href="https://wa.me/62895331933432?text=Halo%20Zalsa%2C%20saya%20ingin%20konfirmasi%20pengiriman%20kado%20pernikahan%20untuk%20Herlangga%20%26%20Zalsa." target="_blank" rel="noopener noreferrer" class="btn-wa-gift">WhatsApp Zalsa</a><a href="https://wa.me/6281212798828?text=Halo%20Herlangga%2C%20saya%20ingin%20konfirmasi%20pengiriman%20kado%20pernikahan%20untuk%20Herlangga%20%26%20Zalsa." target="_blank" rel="noopener noreferrer" class="btn-wa-gift">WhatsApp Herlangga</a></div></div></div></div></section>
+
+<!-- 6. LOVE STORY - TANPA KOTAK, BALIK KE AWAL -->
+<section class="section-love-story-green" id="love-story"><div class="love-story-inner">
+<div class="anim-item anim-photo anim-from-bottom"><div class="polaroid-duo-wrap"><figure class="polaroid-card polaroid-left"><img src="pria.jpg" alt="Foto 1" loading="lazy"></figure><figure class="polaroid-card polaroid-right"><img src="wanita.jpg" alt="Foto 2" loading="lazy"><span class="polaroid-corner-tag">01 &amp; 02</span></figure><span class="polaroid-wax-badge">✦</span></div></div>
+<div class="anim-item anim-from-bottom"><h2 class="love-story-heading">Love Story</h2></div>
+<div class="story-timeline"><div class="anim-item anim-from-left"><div class="story-step"><span class="story-marker">✦</span><h3 class="story-step-title">Awal Pertemuan</h3><p class="story-step-text">Tidak ada yang benar-benar kebetulan di dunia ini. Setiap pertemuan telah diatur dengan indah, hanya menunggu waktu yang tepat untuk terjadi. Berawal dari sebuah perkenalan sederhana, tanpa banyak rencana atau harapan berlebihan, kami dipertemukan dalam cara yang tidak pernah kami duga sebelumnya.</p></div></div><div class="anim-item anim-from-right"><div class="story-step"><span class="story-marker">✦</span><h3 class="story-step-title">Perjalanan Bersama</h3><p class="story-step-text">Seiring berjalannya waktu, kebersamaan kecil yang kami lalui perlahan tumbuh menjadi sesuatu yang lebih berarti. Dalam setiap cerita, tentu ada tawa, ada juga tantangan. Namun dari situlah kami belajar untuk saling memahami, menerima, dan melengkapi satu sama lain.</p></div></div><div class="anim-item anim-from-left"><div class="story-step story-step-last"><span class="story-marker">✦</span><h3 class="story-step-title">Komitmen</h3><p class="story-step-text">Hingga akhirnya kami menyadari bahwa perjalanan ini bukan lagi tentang dua orang yang berjalan sendiri, melainkan tentang dua hati yang memilih untuk melangkah bersama. Dengan penuh rasa syukur dan keyakinan, kami memutuskan untuk mengikat janji suci dan memulai babak baru dalam kehidupan kami.</p></div></div></div>
+</div></section>
+
+<!-- 7. GALERI -->
+<section class="section-gallery-classic" id="galeri"><div class="gallery-classic-inner"><div class="anim-item anim-from-top"><h2 class="gallery-classic-title">Galeri Momen</h2></div><div class="anim-item anim-from-bottom"><p class="gallery-classic-sub">Potret kecil penuh cinta menuju hari bahagia kami.</p></div><div class="gallery-grid"><div class="anim-item anim-photo anim-from-left"><div class="gallery-frame"><img src="pria.jpg" alt="Galeri 1" loading="lazy"></div></div><div class="anim-item anim-photo anim-from-bottom"><div class="gallery-frame"><img src="wanita.jpg" alt="Galeri 2" loading="lazy"></div></div><div class="anim-item anim-photo anim-from-right"><div class="gallery-frame"><img src="pria.jpg" alt="Galeri 3" loading="lazy"></div></div></div></div></section>
+<div class="photo-lightbox" id="photoLightbox"><div class="photo-lightbox-content"><button type="button" class="photo-lightbox-close" id="photoLightboxClose">✕</button><img id="photoLightboxImg" src="" alt="Preview Foto"></div></div>
+
+<!-- 8. PENUTUP -->
+<section class="section-closing-envelope" id="penutup"><div class="anim-item anim-from-top"><div class="top-ornament-line light"><span></span><i>✦</i><span></span></div></div><div class="anim-item anim-from-bottom"><div class="closing-scene"><div class="closing-card-frame"><span class="closing-crest">✦</span><p class="closing-message">Menjadi sebuah kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir dalam hari bahagia kami. Terimakasih atas segala ucapan, doa, dan perhatian yang diberikan.</p><p class="closing-until-meet">Sampai jumpa di hari pernikahan kami!</p><div class="closing-couple-names"><span>Herlangga</span><span class="closing-amp">&amp;</span><span>Zalsa</span></div></div><div class="closing-tassel"></div><div class="closing-envelope-base"><div class="closing-envelope-flap"></div><div class="closing-pocket-tag">WITH LOVE</div></div></div></div></section>
+
+<!-- 9. RSVP -->
+<section class="section-rsvp-last" id="ucapan"><div class="rsvp-last-container"><div class="anim-item anim-from-top"><h2 class="rsvp-last-title">Ucapan &amp; Konfirmasi Hadir</h2></div><div class="anim-item anim-from-bottom"><p class="rsvp-last-subtitle">Kirimkan doa restu serta konfirmasi kehadiran Anda.</p></div><div class="anim-item anim-from-bottom"><form id="rsvpForm" class="rsvp-card-form"><input type="text" id="namaTamu" placeholder="Nama Anda" required><select id="statusKehadiran" required><option value="">Pilih Konfirmasi Kehadiran</option><option value="Hadir">Hadir</option><option value="Tidak Hadir">Tidak Hadir</option><option value="Masih Ragu">Masih Ragu</option></select><textarea id="pesanUcapan" rows="3" placeholder="Tulis ucapan dan doa untuk mempelai..." required></textarea><button type="submit" class="btn-rsvp-tan">Kirim Ucapan</button></form></div><div id="ucapanList" class="ucapan-list"></div></div></section>
+<footer><div class="anim-item anim-from-bottom"><p>Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir.</p><h3>HERLANGGA &amp; ZALSA</h3></div></footer>
+<script>(function(){var t;function o(){var c=document.getElementById('openingCurtain');if(!c||c.classList.contains('is-done'))return;c.classList.add('is-opening');clearTimeout(t);t=setTimeout(function(){c.classList.add('is-done')},1250)}setTimeout(o,4500);document.addEventListener('click',function(e){var b=e.target&&e.target.closest?e.target.closest('.curtain-crest-badge'):null;if(b)o()})})();</script>
+<script src="script.js?v=9000"></script>
+</body>
+</html>
