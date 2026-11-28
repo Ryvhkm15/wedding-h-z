@@ -17,9 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
     curtain.classList.add("is-opening");
     curtain.setAttribute("aria-hidden", "true");
     clearTimeout(curtainDoneTimer);
-    curtainDoneTimer = setTimeout(() => {
-      curtain.classList.add("is-done");
-    }, 1250);
+    curtainDoneTimer = setTimeout(() => { curtain.classList.add("is-done"); }, 1250);
   }
   if (badge) badge.addEventListener("click", openCurtain);
   if (curtain) curtain.addEventListener("click", (e) => { if (e.target === curtain || e.target.closest(".curtain-panel")) openCurtain(); });
@@ -55,12 +53,12 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   if (musicBtn) musicBtn.addEventListener("click", toggleMusic);
 
+  // TEMA DIMATIKAN - BIAR BACKGROUND TETAP KAYAK AWAL
   const chips = document.querySelectorAll(".theme-chip");
   chips.forEach((chip) => {
     chip.addEventListener("click", () => {
       chips.forEach((c) => c.classList.remove("is-active"));
       chip.classList.add("is-active");
-      document.body.setAttribute("data-wedding-theme", chip.dataset.theme);
     });
   });
 
@@ -188,7 +186,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // === 3D TILT ===
   function addTilt3D(selector, max = 12) {
     const els = document.querySelectorAll(selector);
     els.forEach((el) => {
@@ -222,74 +219,46 @@ document.addEventListener("DOMContentLoaded", () => {
   addTilt3D(".closing-card-frame", 8);
   addTilt3D(".physical-gift-box", 8);
 
-  // === REVEAL AGAK LAMA & SMOOTH SAAT SCROLL ===
   const animatedTargets = Array.from(document.querySelectorAll(
     ".text-rise, .video-reveal, .reveal-up, .reveal-left, .reveal-right, .reveal-zoom, .reveal-blur"
   ));
-
   function showElementSmooth(el, delayMs = 0) {
     if (!el || el.dataset.revealed === "1") return;
     el.dataset.revealed = "1";
-    setTimeout(() => {
-      el.classList.add("is-shown", "is-visible", "is-in");
-    }, delayMs);
+    setTimeout(() => { el.classList.add("is-shown", "is-visible", "is-in"); }, delayMs);
   }
-
   function revealBatch(elements) {
-    elements.forEach((el, idx) => {
-      showElementSmooth(el, Math.min(idx * 170, 680));
-    });
+    elements.forEach((el, idx) => { showElementSmooth(el, Math.min(idx * 170, 680)); });
   }
-
   if ("IntersectionObserver" in window) {
     const smoothObserver = new IntersectionObserver(
       (entries) => {
-        const entering = entries
-          .filter((entry) => entry.isIntersecting)
-          .map((entry) => entry.target);
-
+        const entering = entries.filter((entry) => entry.isIntersecting).map((entry) => entry.target);
         if (entering.length) {
           revealBatch(entering);
           entering.forEach((el) => smoothObserver.unobserve(el));
         }
       },
-      {
-        threshold: 0.14,
-        rootMargin: "0px 0px -36px 0px"
-      }
+      { threshold: 0.14, rootMargin: "0px 0px -36px 0px" }
     );
-
     animatedTargets.forEach((el) => smoothObserver.observe(el));
-
     let scrollCheckTimer = null;
-    window.addEventListener(
-      "scroll",
-      () => {
-        clearTimeout(scrollCheckTimer);
-        scrollCheckTimer = setTimeout(() => {
-          const vh = window.innerHeight || document.documentElement.clientHeight;
-          const newlyVisible = animatedTargets.filter((el) => {
-            if (el.dataset.revealed === "1") return false;
-            const rect = el.getBoundingClientRect();
-            return rect.top < vh * 0.86 && rect.bottom > 0;
-          });
-          if (newlyVisible.length) {
-            revealBatch(newlyVisible);
-            newlyVisible.forEach((el) => smoothObserver.unobserve(el));
-          }
-        }, 120);
-      },
-      { passive: true }
-    );
+    window.addEventListener("scroll", () => {
+      clearTimeout(scrollCheckTimer);
+      scrollCheckTimer = setTimeout(() => {
+        const vh = window.innerHeight || document.documentElement.clientHeight;
+        const newlyVisible = animatedTargets.filter((el) => {
+          if (el.dataset.revealed === "1") return false;
+          const rect = el.getBoundingClientRect();
+          return rect.top < vh * 0.86 && rect.bottom > 0;
+        });
+        if (newlyVisible.length) {
+          revealBatch(newlyVisible);
+          newlyVisible.forEach((el) => smoothObserver.unobserve(el));
+        }
+      }, 120);
+    }, { passive: true });
   } else {
     revealBatch(animatedTargets);
   }
-
-  window.addEventListener("scroll", () => {
-    const hero = document.querySelector(".hero-envelope");
-    if (hero) {
-      const y = window.scrollY;
-      hero.style.backgroundPosition = `center ${y * 0.3}px`;
-    }
-  }, { passive: true });
 });
