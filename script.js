@@ -24,6 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (badge) badge.addEventListener("click", openCurtain);
   if (curtain) curtain.addEventListener("click", (e) => { if (e.target === curtain || e.target.closest(".curtain-panel")) openCurtain(); });
   setTimeout(openCurtain, 6000);
+
   const envelopeBtn = document.getElementById("openInvitationBtn");
   const hint = document.getElementById("envelope-hint-text");
   let envelopeOpen = false;
@@ -40,6 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
+
   const music = document.getElementById("bgMusic");
   const musicBtn = document.getElementById("musicToggleBtn");
   let musicOn = false;
@@ -52,6 +54,7 @@ document.addEventListener("DOMContentLoaded", () => {
     } catch (e) {}
   }
   if (musicBtn) musicBtn.addEventListener("click", toggleMusic);
+
   const chips = document.querySelectorAll(".theme-chip");
   chips.forEach((chip) => {
     chip.addEventListener("click", () => {
@@ -60,6 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
       document.body.setAttribute("data-wedding-theme", chip.dataset.theme);
     });
   });
+
   const progress = document.getElementById("scrollProgressBar");
   const sections = document.querySelectorAll(".anim-section");
   const observer = new IntersectionObserver((entries) => {
@@ -67,7 +71,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (entry.isIntersecting) {
         entry.target.classList.add("anim-visible");
         entry.target.querySelectorAll(".text-rise").forEach((el, i) => {
-          setTimeout(() => el.classList.add("is-shown"), i * 90);
+          setTimeout(() => el.classList.add("is-shown"), i * 95);
         });
         observer.unobserve(entry.target);
       }
@@ -80,7 +84,8 @@ document.addEventListener("DOMContentLoaded", () => {
       s.querySelectorAll(".text-rise").forEach((el) => el.classList.add("is-shown"));
       s.querySelectorAll(".anim-item").forEach((el) => el.classList.add("anim-visible"));
     });
-  }, 1500);
+  }, 1800);
+
   function onScroll() {
     const h = document.documentElement;
     const max = h.scrollHeight - h.clientHeight;
@@ -88,6 +93,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
+
   const target = new Date("2027-03-27T16:00:00+07:00").getTime();
   const dEl = document.getElementById("days");
   const hEl = document.getElementById("hours");
@@ -108,6 +114,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   tick();
   setInterval(tick, 1000);
+
   const sparkleBox = document.getElementById("std-sparkles");
   if (sparkleBox && window.innerWidth > 768) {
     for (let i = 0; i < 22; i++) {
@@ -124,6 +131,7 @@ document.addEventListener("DOMContentLoaded", () => {
       sparkleBox.appendChild(el);
     }
   }
+
   document.querySelectorAll(".btn-olive-copy").forEach((btn) => {
     btn.addEventListener("click", async () => {
       const text = btn.dataset.copy || "";
@@ -138,6 +146,7 @@ document.addEventListener("DOMContentLoaded", () => {
       setTimeout(() => { if (label) label.textContent = "Copy"; btn.classList.remove("copied"); }, 1800);
     });
   });
+
   const calBtn = document.getElementById("addToCalendarBtn");
   if (calBtn) {
     calBtn.addEventListener("click", () => {
@@ -147,6 +156,7 @@ document.addEventListener("DOMContentLoaded", () => {
       window.open(`https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=20270327T090000Z/20270327T140000Z&details=${desc}&location=${loc}`, "_blank");
     });
   }
+
   const lightbox = document.getElementById("photoLightbox");
   const lightboxImg = document.getElementById("photoLightboxImg");
   const lightboxClose = document.getElementById("photoLightboxClose");
@@ -165,6 +175,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   if (lightboxClose) lightboxClose.addEventListener("click", closeLightbox);
   if (lightbox) lightbox.addEventListener("click", (e) => { if (e.target === lightbox) closeLightbox(); });
+
   const form = document.getElementById("rsvpForm");
   const list = document.getElementById("ucapanList");
   const KEY = "ucapan_herlangga_zalsa_v1";
@@ -197,6 +208,7 @@ document.addEventListener("DOMContentLoaded", () => {
       alert("Terima kasih! Ucapan kamu sudah terkirim.");
     });
   }
+
   // === 3D TILT ===
   function addTilt3D(selector, max = 12) {
     const els = document.querySelectorAll(selector);
@@ -230,7 +242,8 @@ document.addEventListener("DOMContentLoaded", () => {
   addTilt3D(".ar-rum-arch-outer", 8);
   addTilt3D(".closing-card-frame", 8);
   addTilt3D(".physical-gift-box", 8);
-  // === REVEAL KAYAK DI VIDEO ===
+
+  // === REVEAL SMOOTH ALA VIDEO ===
   const revealEls = document.querySelectorAll(".reveal-up, .reveal-left, .reveal-right, .reveal-zoom, .reveal-blur");
   const revealObserver = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
@@ -239,11 +252,25 @@ document.addEventListener("DOMContentLoaded", () => {
         revealObserver.unobserve(entry.target);
       }
     });
-  }, { threshold: 0.2 });
+  }, { threshold: 0.16, rootMargin: "0px 0px -24px 0px" });
   revealEls.forEach((el) => revealObserver.observe(el));
+
+  const videoReveals = document.querySelectorAll(".video-reveal");
+  const vrObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("is-visible");
+        vrObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15, rootMargin: "0px 0px -24px 0px" });
+  videoReveals.forEach((el) => vrObserver.observe(el));
+
   setTimeout(() => {
     revealEls.forEach((el) => el.classList.add("is-in"));
-  }, 3000);
+    videoReveals.forEach((el) => el.classList.add("is-visible"));
+  }, 3200);
+
   window.addEventListener("scroll", () => {
     const hero = document.querySelector(".hero-envelope");
     if (hero) {
