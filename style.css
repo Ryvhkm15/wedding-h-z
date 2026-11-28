@@ -68,7 +68,8 @@ footer{
   z-index:95;
   display:flex;
   overflow:hidden;
-  transition:opacity .55s ease 1s,visibility .55s ease 1s;
+  pointer-events:auto;
+  transition:opacity .5s ease 1.05s,visibility .5s ease 1.05s;
 }
 .opening-curtain.is-done{
   opacity:0;
@@ -82,22 +83,30 @@ footer{
   height:100%;
   background-image:linear-gradient(180deg,rgba(246,241,231,.34) 0%,rgba(45,7,14,.34) 100%),url("./bg-cover-garden.jpg");
   background-size:200% 100%;
-  background-position:center;
+  background-repeat:no-repeat;
   border-bottom:3px solid rgba(217,190,140,.75);
+  transform:translateX(0);
   transition:transform 1.15s cubic-bezier(.22,1,.36,1);
   will-change:transform;
 }
 .curtain-panel-left{
   background-position:left center;
   border-right:2px solid rgba(217,190,140,.85);
-  box-shadow:6px 0 28px rgba(0,0,0,.35);
+  box-shadow:8px 0 30px rgba(0,0,0,.38);
 }
 .curtain-panel-right{
   background-position:right center;
   border-left:2px solid rgba(217,190,140,.85);
-  box-shadow:-6px 0 28px rgba(0,0,0,.35);
+  box-shadow:-8px 0 30px rgba(0,0,0,.38);
 }
-.curtain-gold-trim{position:absolute;top:0;bottom:0;width:10px;background:linear-gradient(180deg,#f5e2ba 0%,#c99f57 50%,#f5e2ba 100%);opacity:.75}
+.curtain-gold-trim{
+  position:absolute;
+  top:0;
+  bottom:0;
+  width:10px;
+  background:linear-gradient(180deg,#f5e2ba 0%,#c99f57 50%,#f5e2ba 100%);
+  opacity:.78;
+}
 .curtain-panel-left .curtain-gold-trim{right:6px}
 .curtain-panel-right .curtain-gold-trim{left:6px}
 
@@ -140,14 +149,15 @@ footer{
 .curtain-crest-badge span{font-family:var(--font-script);font-size:2.1rem;line-height:1;white-space:nowrap}
 .curtain-crest-badge small{font-family:var(--font-sans);font-size:.58rem;font-weight:700;letter-spacing:.28em;color:#7c5d32;padding-left:.28em}
 
+.opening-curtain.is-opening{pointer-events:none}
 .opening-curtain.is-opening .curtain-panel-left,
-.opening-curtain.is-done .curtain-panel-left{transform:translateX(-102%)}
+.opening-curtain.is-done .curtain-panel-left{transform:translateX(-100%)}
 .opening-curtain.is-opening .curtain-panel-right,
-.opening-curtain.is-done .curtain-panel-right{transform:translateX(102%)}
+.opening-curtain.is-done .curtain-panel-right{transform:translateX(100%)}
 .opening-curtain.is-opening .curtain-crest-badge,
 .opening-curtain.is-done .curtain-crest-badge{
   animation:none;
-  transform:translate(calc(-50% - 36px),-50%) scale(.82);
+  transform:translate(-50%,-50%) scale(.82);
   opacity:0;
   pointer-events:none;
 }
@@ -218,46 +228,14 @@ body[data-wedding-theme="botanical"] .hero-envelope .guest-mini strong{color:#5c
 @keyframes numberGlow{0%,100%{text-shadow:0 0 10px rgba(255,255,255,.35)}50%{text-shadow:0 0 26px rgba(255,246,204,.98),0 0 38px rgba(217,190,140,.72)}}
 .glow-blink{animation:numberGlow 2.4s ease-in-out infinite}
 
-/* KILAU SMOOTH & ESTETIK */
+/* KILAU SMOOTH & ESTETIK (PELAN) */
 @keyframes smoothShimmer{
-  0%{background-position:260% center}
-  100%{background-position:-260% center}
+  0%{background-position:280% center}
+  100%{background-position:-280% center}
 }
 @keyframes softAuraGlow{
-  0%,100%{filter:drop-shadow(0 2px 10px rgba(217,190,140,.22))}
-  50%{filter:drop-shadow(0 3px 18px rgba(255,243,205,.52))}
-}
-
-.shimmer-light{
-  background:linear-gradient(
-    112deg,
-    #f3e4c3 0%,
-    #fffdf7 34%,
-    #ffffff 50%,
-    #e6c484 66%,
-    #f3e4c3 100%
-  );
-  background-size:280% auto;
-  -webkit-background-clip:text;
-  background-clip:text;
-  color:transparent;
-  animation:smoothShimmer 7.5s cubic-bezier(.4,0,.2,1) infinite, softAuraGlow 4.5s ease-in-out infinite;
-}
-
-.shimmer-dark{
-  background:linear-gradient(
-    112deg,
-    var(--maroon-velvet) 0%,
-    #8f5b22 36%,
-    #d9be8c 50%,
-    #7a1829 64%,
-    var(--maroon-velvet) 100%
-  );
-  background-size:280% auto;
-  -webkit-background-clip:text;
-  background-clip:text;
-  color:transparent;
-  animation:smoothShimmer 8s cubic-bezier(.4,0,.2,1) infinite;
+  0%,100%{filter:drop-shadow(0 2px 10px rgba(217,190,140,.2))}
+  50%{filter:drop-shadow(0 3px 16px rgba(255,243,205,.45))}
 }
 
 .sparkle-field{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:1}
@@ -275,19 +253,17 @@ body[data-wedding-theme="botanical"] .hero-envelope .guest-mini strong{color:#5c
   line-height:1.24;
   padding:6px 8px;
   margin:2px 0 12px;
-}
-.couple-script:not(.shimmer-light):not(.shimmer-dark){
   background:linear-gradient(112deg,#fffdf8 0%,#f5e2ba 40%,#ffffff 50%,#e2be7a 62%,#fffdf8 100%);
-  background-size:280% auto;
+  background-size:300% auto;
   -webkit-background-clip:text;
   background-clip:text;
   color:transparent;
-  animation:smoothShimmer 7.5s cubic-bezier(.4,0,.2,1) infinite;
+  animation:smoothShimmer 10.5s cubic-bezier(.37,0,.63,1) infinite, softAuraGlow 5s ease-in-out infinite;
 }
-body[data-wedding-theme="emerald"] .couple-script:not(.shimmer-light),
-body[data-wedding-theme="botanical"] .couple-script:not(.shimmer-light){
+body[data-wedding-theme="emerald"] .couple-script,
+body[data-wedding-theme="botanical"] .couple-script{
   background:linear-gradient(112deg,#5c1422 0%,#9e6b24 38%,#fff7dc 50%,#6e1828 62%,#5c1422 100%);
-  background-size:280% auto;
+  background-size:300% auto;
   -webkit-background-clip:text;
   background-clip:text;
   color:transparent;
@@ -340,11 +316,11 @@ body[data-wedding-theme="botanical"] .couple-script:not(.shimmer-light){
   margin-bottom:12px;
   padding:2px 6px;
   background:linear-gradient(112deg,#c89d54 0%,#fff9e3 36%,#ffffff 50%,#e5be78 64%,#b6893e 100%);
-  background-size:280% auto;
+  background-size:300% auto;
   -webkit-background-clip:text;
   background-clip:text;
   color:transparent;
-  animation:smoothShimmer 7.5s cubic-bezier(.4,0,.2,1) infinite, softAuraGlow 4.5s ease-in-out infinite;
+  animation:smoothShimmer 11s cubic-bezier(.37,0,.63,1) infinite, softAuraGlow 5s ease-in-out infinite;
 }
 .ar-rum-arch-inner .ayat-text{font-family:var(--font-serif);font-style:italic;font-size:clamp(1.12rem,2.5vw,1.38rem);line-height:1.82;color:#2b211c;padding:16px 18px;margin:10px auto 16px;max-width:94%;border-left:2.5px solid #9b763d;border-right:2.5px solid #9b763d;border-radius:10px}
 .ayat-divider{display:flex;align-items:center;justify-content:center;gap:10px;color:#9b763d;margin-bottom:10px}
@@ -365,11 +341,11 @@ body[data-wedding-theme="botanical"] .couple-script:not(.shimmer-light){
   margin-bottom:18px;
   padding:2px 6px;
   background:linear-gradient(112deg,#d9be8c 0%,#fff9e6 36%,#ffffff 50%,#f0cf8e 64%,#cfa55b 100%);
-  background-size:280% auto;
+  background-size:300% auto;
   -webkit-background-clip:text;
   background-clip:text;
   color:transparent;
-  animation:smoothShimmer 7.5s cubic-bezier(.4,0,.2,1) infinite, softAuraGlow 4.5s ease-in-out infinite;
+  animation:smoothShimmer 11s cubic-bezier(.37,0,.63,1) infinite, softAuraGlow 5s ease-in-out infinite;
 }
 .intro-note{font-family:var(--font-serif);font-size:clamp(1.08rem,2.4vw,1.3rem);line-height:1.75;color:#f5ebd8;margin-bottom:48px}
 .profile-row{display:flex;align-items:center;justify-content:center;gap:36px;flex-wrap:wrap}
@@ -391,11 +367,11 @@ body[data-wedding-theme="botanical"] .couple-script:not(.shimmer-light){
   margin-bottom:8px;
   padding:0 4px;
   background:linear-gradient(112deg,#d9be8c 0%,#fff9e6 38%,#ffffff 50%,#f0cf8e 62%,#cfa55b 100%);
-  background-size:280% auto;
+  background-size:300% auto;
   -webkit-background-clip:text;
   background-clip:text;
   color:transparent;
-  animation:smoothShimmer 7.8s cubic-bezier(.4,0,.2,1) infinite;
+  animation:smoothShimmer 11s cubic-bezier(.37,0,.63,1) infinite;
 }
 .parent-info{font-family:var(--font-serif);font-size:1.12rem;line-height:1.7;color:#f6ede0;white-space:pre-line}
 .ampersand-maroon{font-family:var(--font-script);font-size:3rem;color:var(--gold-accent);margin:28px 0}
@@ -418,16 +394,14 @@ body[data-wedding-theme="botanical"] .couple-script:not(.shimmer-light){
   padding:14px 18px 8px;
   overflow:visible;
   background:linear-gradient(112deg,#f3e4c3 0%,#fffdf7 35%,#ffffff 50%,#e6c484 65%,#f3e4c3 100%);
-  background-size:280% auto;
+  background-size:300% auto;
   -webkit-background-clip:text;
   background-clip:text;
   color:transparent;
-  animation:smoothShimmer 7.5s cubic-bezier(.4,0,.2,1) infinite, softAuraGlow 4.5s ease-in-out infinite;
+  animation:smoothShimmer 11s cubic-bezier(.37,0,.63,1) infinite, softAuraGlow 5s ease-in-out infinite;
 }
 .std-script-title.text-rise,
-.std-script-title .std-line-main{
-  overflow:visible;
-}
+.std-script-title .std-line-main{overflow:visible}
 .std-line-main{
   display:inline-block;
   font-size:clamp(3.1rem,8.5vw,4.6rem);
@@ -550,11 +524,11 @@ body[data-wedding-theme="botanical"] .couple-script:not(.shimmer-light){
   padding:2px 6px;
   margin-bottom:10px;
   background:linear-gradient(112deg,#f3e4c3 0%,#fffdf7 36%,#ffffff 50%,#e6c484 64%,#f3e4c3 100%);
-  background-size:280% auto;
+  background-size:300% auto;
   -webkit-background-clip:text;
   background-clip:text;
   color:transparent;
-  animation:smoothShimmer 7.8s cubic-bezier(.4,0,.2,1) infinite, softAuraGlow 4.5s ease-in-out infinite;
+  animation:smoothShimmer 11s cubic-bezier(.37,0,.63,1) infinite, softAuraGlow 5s ease-in-out infinite;
 }
 .detail-date-line{font-size:.96rem;font-weight:500;margin-bottom:4px}
 .detail-time-line{font-size:.92rem;color:#e2ebe1;margin-bottom:22px}
@@ -572,11 +546,11 @@ body[data-wedding-theme="botanical"] .couple-script:not(.shimmer-light){
   padding:2px 8px;
   margin-bottom:16px;
   background:linear-gradient(112deg,#f3e4c3 0%,#fffdf7 36%,#ffffff 50%,#e6c484 64%,#f3e4c3 100%);
-  background-size:280% auto;
+  background-size:300% auto;
   -webkit-background-clip:text;
   background-clip:text;
   color:transparent;
-  animation:smoothShimmer 7.8s cubic-bezier(.4,0,.2,1) infinite, softAuraGlow 4.5s ease-in-out infinite;
+  animation:smoothShimmer 11s cubic-bezier(.37,0,.63,1) infinite, softAuraGlow 5s ease-in-out infinite;
 }
 .gift-wrap-decor{max-width:112px;margin:0 auto 20px;animation:floatGentle 3.3s ease-in-out infinite}
 .gift-wrap-decor svg{width:100%;height:auto;display:block}
@@ -618,11 +592,11 @@ body[data-wedding-theme="botanical"] .couple-script:not(.shimmer-light){
   padding:2px 8px;
   margin-bottom:32px;
   background:linear-gradient(112deg,#f3e4c3 0%,#fffdf7 36%,#ffffff 50%,#e6c484 64%,#f3e4c3 100%);
-  background-size:280% auto;
+  background-size:300% auto;
   -webkit-background-clip:text;
   background-clip:text;
   color:transparent;
-  animation:smoothShimmer 7.8s cubic-bezier(.4,0,.2,1) infinite, softAuraGlow 4.5s ease-in-out infinite;
+  animation:smoothShimmer 11s cubic-bezier(.37,0,.63,1) infinite, softAuraGlow 5s ease-in-out infinite;
 }
 .story-timeline{text-align:left;padding-left:28px;border-left:1px dashed rgba(217,190,140,.45);margin-left:10px}
 .story-step{position:relative;margin-bottom:30px}
@@ -641,11 +615,11 @@ body[data-wedding-theme="botanical"] .couple-script:not(.shimmer-light){
   padding:2px 8px;
   margin-bottom:6px;
   background:linear-gradient(112deg,var(--maroon-velvet) 0%,#8f5b22 36%,#e8ca8e 50%,#7a1829 64%,var(--maroon-velvet) 100%);
-  background-size:280% auto;
+  background-size:300% auto;
   -webkit-background-clip:text;
   background-clip:text;
   color:transparent;
-  animation:smoothShimmer 8s cubic-bezier(.4,0,.2,1) infinite;
+  animation:smoothShimmer 11.5s cubic-bezier(.37,0,.63,1) infinite;
 }
 .gallery-classic-sub{font-family:var(--font-serif);font-style:italic;font-size:1.15rem;color:var(--text-muted);margin-bottom:36px}
 .gallery-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
@@ -676,11 +650,11 @@ body[data-wedding-theme="botanical"] .couple-script:not(.shimmer-light){
   flex-wrap:nowrap;
   white-space:nowrap;
   background:linear-gradient(112deg,var(--maroon-velvet) 0%,#8f5b22 36%,#e8ca8e 50%,#7a1829 64%,var(--maroon-velvet) 100%);
-  background-size:280% auto;
+  background-size:300% auto;
   -webkit-background-clip:text;
   background-clip:text;
   color:transparent;
-  animation:smoothShimmer 8s cubic-bezier(.4,0,.2,1) infinite;
+  animation:smoothShimmer 11s cubic-bezier(.37,0,.63,1) infinite;
 }
 .closing-amp{font-size:.82em;color:#9b763d}
 .closing-tassel{width:12px;height:38px;background:#550917;border-radius:0 0 8px 8px;margin-top:-2px}
@@ -691,7 +665,20 @@ body[data-wedding-theme="botanical"] .couple-script:not(.shimmer-light){
 /* RSVP */
 .section-rsvp-last{padding:90px 20px;background-image:var(--bg-ucapan-section)}
 .rsvp-last-container{max-width:580px;margin:0 auto;text-align:center}
-.rsvp-last-title{font-family:var(--font-script);font-size:clamp(2.5rem,7vw,3.4rem);color:var(--maroon-velvet);margin-bottom:6px}
+.rsvp-last-title{
+  font-family:var(--font-script);
+  font-size:clamp(2.5rem,7vw,3.4rem);
+  line-height:1.28;
+  padding:4px 10px;
+  margin-bottom:6px;
+  background:linear-gradient(112deg,#3d0913 0%,#470c17 34%,#9e6c2b 46%,#f3dfb4 50%,#9e6c2b 54%,#470c17 66%,#3d0913 100%);
+  background-size:320% auto;
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  animation:smoothShimmer 11.5s cubic-bezier(.37,0,.63,1) infinite;
+  filter:drop-shadow(0 1px 6px rgba(183,148,88,.18));
+}
 .rsvp-last-subtitle{font-family:var(--font-serif);font-size:1.1rem;color:var(--text-muted);margin-bottom:28px}
 .rsvp-card-form{background:#fffdf9;border:1px solid rgba(183,148,88,.55);border-radius:14px;padding:22px;display:flex;flex-direction:column;gap:14px;text-align:left;transform-style:preserve-3d;transition:transform .4s ease}
 .rsvp-card-form input,.rsvp-card-form select,.rsvp-card-form textarea{width:100%;padding:11px 14px;border-radius:8px;border:1px solid rgba(155,118,61,.42);background:#fcf9f3;font-family:var(--font-sans);font-size:.9rem;color:var(--text-dark)}
@@ -716,11 +703,11 @@ footer h3{
   max-width:100%;
   padding:4px 6px;
   background:linear-gradient(112deg,#d9be8c 0%,#fff9e6 36%,#ffffff 50%,#f0cf8e 64%,#cfa55b 100%);
-  background-size:280% auto;
+  background-size:300% auto;
   -webkit-background-clip:text;
   background-clip:text;
   color:transparent;
-  animation:smoothShimmer 7.8s cubic-bezier(.4,0,.2,1) infinite, softAuraGlow 4.5s ease-in-out infinite;
+  animation:smoothShimmer 11s cubic-bezier(.37,0,.63,1) infinite, softAuraGlow 5s ease-in-out infinite;
 }
 
 /* RESPONSIVE */
@@ -747,8 +734,6 @@ footer h3{
 }
 
 @media (prefers-reduced-motion:reduce){
-  .shimmer-light,
-  .shimmer-dark,
   .couple-script,
   .ayat-arab,
   .bismillah-calligraphy,
@@ -759,6 +744,7 @@ footer h3{
   .love-story-heading,
   .gallery-classic-title,
   .closing-couple-names,
+  .rsvp-last-title,
   footer h3{
     animation:none;
     background:none;
