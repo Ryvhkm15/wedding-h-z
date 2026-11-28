@@ -2,42 +2,16 @@ document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(window.location.search);
   const to = params.get("to") || params.get("nama") || params.get("guest");
   if (to) {
-    const cleanName = to.replace(/\+/g, " ").trim();
     const guestEl = document.getElementById("guestName");
-    if (guestEl) guestEl.textContent = cleanName;
+    if (guestEl) guestEl.textContent = decodeURIComponent(to.replace(/\+/g, " "));
     const namaInput = document.getElementById("namaTamu");
-    if (namaInput && !namaInput.value) namaInput.value = cleanName;
+    if (namaInput && !namaInput.value) namaInput.value = decodeURIComponent(to.replace(/\+/g, " "));
   }
-
-  const music = document.getElementById("bgMusic");
-  const musicBtn = document.getElementById("musicToggleBtn");
-  let musicOn = false;
-
-  async function toggleMusic() {
-    if (!music) return;
-    try {
-      if (musicOn) {
-        music.pause();
-        musicOn = false;
-      } else {
-        await music.play();
-        musicOn = true;
-      }
-      if (musicBtn) {
-        musicBtn.textContent = musicOn ? "♫ Musik: On" : "♫ Musik: Off";
-        musicBtn.setAttribute("aria-pressed", String(musicOn));
-      }
-    } catch (e) {}
-  }
-
-  if (musicBtn) musicBtn.addEventListener("click", toggleMusic);
-
   const curtain = document.getElementById("openingCurtain");
   const badge = document.querySelector(".curtain-crest-badge");
   let curtainOpened = false;
   let curtainDoneTimer = null;
-
-  function openCurtain(fromUserClick = false) {
+  function openCurtain() {
     if (!curtain || curtainOpened || curtain.classList.contains("is-done")) return;
     curtainOpened = true;
     curtain.classList.add("is-opening");
@@ -46,38 +20,21 @@ document.addEventListener("DOMContentLoaded", () => {
     curtainDoneTimer = setTimeout(() => {
       curtain.classList.add("is-done");
     }, 1250);
-    if (fromUserClick && !musicOn) {
-      toggleMusic();
-    }
   }
-
-  if (badge) badge.addEventListener("click", () => openCurtain(true));
-  if (curtain) {
-    curtain.addEventListener("click", (e) => {
-      if (e.target === curtain || e.target.closest(".curtain-panel")) {
-        openCurtain(true);
-      }
-    });
-  }
-  setTimeout(() => openCurtain(false), 4500);
+  if (badge) badge.addEventListener("click", openCurtain);
+  if (curtain) curtain.addEventListener("click", (e) => { if (e.target === curtain || e.target.closest(".curtain-panel")) openCurtain(); });
+  setTimeout(openCurtain, 6000);
 
   const envelopeBtn = document.getElementById("openInvitationBtn");
   const hint = document.getElementById("envelope-hint-text");
   let envelopeOpen = false;
-  let autoScrollTimer = null;
-
   if (envelopeBtn) {
     envelopeBtn.addEventListener("click", () => {
       envelopeOpen = !envelopeOpen;
       envelopeBtn.classList.toggle("is-open", envelopeOpen);
-      envelopeBtn.setAttribute("aria-expanded", String(envelopeOpen));
-      if (hint) {
-        hint.textContent = envelopeOpen ? "CLICK ENVELOPE TO CLOSE" : "CLICK ENVELOPE TO OPEN";
-      }
-      clearTimeout(autoScrollTimer);
+      if (hint) hint.textContent = envelopeOpen ? "CLICK ENVELOPE TO CLOSE" : "CLICK ENVELOPE TO OPEN";
       if (envelopeOpen) {
-        if (!musicOn) toggleMusic();
-        autoScrollTimer = setTimeout(() => {
+        setTimeout(() => {
           const ayat = document.getElementById("ayat-pilihan");
           if (ayat) ayat.scrollIntoView({ behavior: "smooth", block: "start" });
         }, 900);
@@ -85,106 +42,36 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  const music = document.getElementById("bgMusic");
+  const musicBtn = document.getElementById("musicToggleBtn");
+  let musicOn = false;
+  async function toggleMusic() {
+    if (!music) return;
+    try {
+      if (musicOn) { music.pause(); musicOn = false; }
+      else { await music.play(); musicOn = true; }
+      if (musicBtn) musicBtn.textContent = musicOn ? "♫ Musik: On" : "♫ Musik: Off";
+    } catch (e) {}
+  }
+  if (musicBtn) musicBtn.addEventListener("click", toggleMusic);
+
   const chips = document.querySelectorAll(".theme-chip");
   chips.forEach((chip) => {
     chip.addEventListener("click", () => {
-      chips.forEach((c) => {
-        c.classList.remove("is-active");
-        c.setAttribute("aria-pressed", "false");
-      });
+      chips.forEach((c) => c.classList.remove("is-active"));
       chip.classList.add("is-active");
-      chip.setAttribute("aria-pressed", "true");
       document.body.setAttribute("data-wedding-theme", chip.dataset.theme);
     });
   });
 
   const progress = document.getElementById("scrollProgressBar");
-  const hero = document.querySelector(".hero-envelope");
-  const animatedTargets = Array.from(document.querySelectorAll(
-    ".text-rise, .video-reveal, .reveal-up, .reveal-left, .reveal-right, .reveal-zoom, .reveal-blur"
-  ));
-
-  let smoothObserver = null;
-
-  function showElementSmooth(el, delayMs = 0) {
-    if (!el || el.dataset.revealed === "1") return;
-    el.dataset.revealed = "1";
-    setTimeout(() => {
-      el.classList.add("is-shown", "is-visible", "is-in");
-    }, delayMs);
-  }
-
-  function revealBatch(elements) {
-    elements.forEach((el, idx) => {
-      showElementSmooth(el, Math.min(idx * 90, 450));
-    });
-  }
-
-  function checkVisibleElements() {
-    const vh = window.innerHeight || document.documentElement.clientHeight;
-    const newlyVisible = animatedTargets.filter((el) => {
-      if (el.dataset.revealed === "1") return false;
-      const rect = el.getBoundingClientRect();
-      return rect.top < vh * 0.96 && rect.bottom > -40;
-    });
-    if (newlyVisible.length) {
-      revealBatch(newlyVisible);
-      if (smoothObserver) {
-        newlyVisible.forEach((el) => smoothObserver.unobserve(el));
-      }
-    }
-  }
-
-  function updateScrollMetrics() {
+  function onScroll() {
     const h = document.documentElement;
     const max = h.scrollHeight - h.clientHeight;
-    if (progress && max > 0) {
-      progress.style.width = ((h.scrollTop / max) * 100) + "%";
-    }
-    if (hero) {
-      hero.style.backgroundPosition = `center ${window.scrollY * 0.3}px`;
-    }
+    if (progress && max > 0) progress.style.width = (h.scrollTop / max * 100) + "%";
   }
-
-  let rafScrollId = null;
-  let fallbackRevealTimer = null;
-  window.addEventListener("scroll", () => {
-    if (!rafScrollId) {
-      rafScrollId = requestAnimationFrame(() => {
-        updateScrollMetrics();
-        rafScrollId = null;
-      });
-    }
-    clearTimeout(fallbackRevealTimer);
-    fallbackRevealTimer = setTimeout(checkVisibleElements, 80);
-  }, { passive: true });
-
-  if ("IntersectionObserver" in window) {
-    smoothObserver = new IntersectionObserver(
-      (entries) => {
-        const entering = entries
-          .filter((entry) => entry.isIntersecting)
-          .map((entry) => entry.target);
-
-        if (entering.length) {
-          revealBatch(entering);
-          entering.forEach((el) => smoothObserver.unobserve(el));
-        }
-      },
-      {
-        threshold: 0.05,
-        rootMargin: "0px 0px 40px 0px"
-      }
-    );
-
-    animatedTargets.forEach((el) => smoothObserver.observe(el));
-  } else {
-    revealBatch(animatedTargets);
-  }
-
-  updateScrollMetrics();
-  checkVisibleElements();
-  setTimeout(checkVisibleElements, 250);
+  window.addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
 
   const target = new Date("2027-03-27T16:00:00+07:00").getTime();
   const dEl = document.getElementById("days");
@@ -219,10 +106,7 @@ document.addEventListener("DOMContentLoaded", () => {
       el.style.fontSize = (8 + Math.random() * 10) + "px";
       el.style.setProperty("--dur", (2 + Math.random() * 2) + "s");
       el.style.setProperty("--delay", (Math.random() * 2) + "s");
-      if (!isStar) {
-        el.style.width = "5px";
-        el.style.height = "5px";
-      }
+      if (!isStar) { el.style.width = "5px"; el.style.height = "5px"; }
       sparkleBox.appendChild(el);
     }
   }
@@ -230,23 +114,15 @@ document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll(".btn-olive-copy").forEach((btn) => {
     btn.addEventListener("click", async () => {
       const text = btn.dataset.copy || "";
-      try {
-        await navigator.clipboard.writeText(text);
-      } catch (e) {
+      try { await navigator.clipboard.writeText(text); } catch (e) {
         const ta = document.createElement("textarea");
-        ta.value = text;
-        document.body.appendChild(ta);
-        ta.select();
-        document.execCommand("copy");
-        ta.remove();
+        ta.value = text; document.body.appendChild(ta); ta.select();
+        document.execCommand("copy"); ta.remove();
       }
       const label = btn.querySelector(".copy-label");
       if (label) label.textContent = "Tersalin!";
       btn.classList.add("copied");
-      setTimeout(() => {
-        if (label) label.textContent = "Copy";
-        btn.classList.remove("copied");
-      }, 1800);
+      setTimeout(() => { if (label) label.textContent = "Copy"; btn.classList.remove("copied"); }, 1800);
     });
   });
 
@@ -254,8 +130,8 @@ document.addEventListener("DOMContentLoaded", () => {
   if (calBtn) {
     calBtn.addEventListener("click", () => {
       const title = encodeURIComponent("Pernikahan Herlangga & Zalsa");
-      const desc = encodeURIComponent("Akad 16.00 WIB - Resepsi 19.00-21.00 WIB di Yayasan Daarul Aitam, Jakarta Pusat");
-      const loc = encodeURIComponent("Yayasan Daarul Aitam, Jl. K.H. Mas Mansyur No.47, Jakarta Pusat");
+      const desc = encodeURIComponent("Akad 16.00 WIB - Resepsi 19.00-21.00 WIB di Yayasan Darul Aitama, Jakarta Pusat");
+      const loc = encodeURIComponent("Yayasan Darul Aitama, Jl. K.H. Mas Mansyur No.47, Jakarta Pusat");
       window.open(`https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=20270327T090000Z/20270327T140000Z&details=${desc}&location=${loc}`, "_blank");
     });
   }
@@ -263,64 +139,33 @@ document.addEventListener("DOMContentLoaded", () => {
   const lightbox = document.getElementById("photoLightbox");
   const lightboxImg = document.getElementById("photoLightboxImg");
   const lightboxClose = document.getElementById("photoLightboxClose");
-  let lastTriggerEl = null;
-
   document.querySelectorAll(".gallery-frame img").forEach((img) => {
     img.addEventListener("click", () => {
       if (!lightbox || !lightboxImg) return;
-      lastTriggerEl = img.closest(".gallery-frame") || img;
       lightboxImg.src = img.src;
       lightbox.classList.add("is-open");
       lightbox.setAttribute("aria-hidden", "false");
     });
   });
-
   function closeLightbox() {
     if (!lightbox) return;
     lightbox.classList.remove("is-open");
     lightbox.setAttribute("aria-hidden", "true");
-    if (lastTriggerEl && typeof lastTriggerEl.focus === "function") {
-      lastTriggerEl.focus();
-      lastTriggerEl = null;
-    }
   }
-
   if (lightboxClose) lightboxClose.addEventListener("click", closeLightbox);
-  if (lightbox) {
-    lightbox.addEventListener("click", (e) => {
-      if (e.target === lightbox) closeLightbox();
-    });
-  }
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && lightbox && lightbox.classList.contains("is-open")) {
-      closeLightbox();
-    }
-  });
+  if (lightbox) lightbox.addEventListener("click", (e) => { if (e.target === lightbox) closeLightbox(); });
 
   const form = document.getElementById("rsvpForm");
   const list = document.getElementById("ucapanList");
   const KEY = "ucapan_herlangga_zalsa_v1";
   function escapeHtml(str) {
-    return str.replace(/[&<>"']/g, (c) => ({
-      "&": "&",
-      "<": "<",
-      ">": ">",
-      '"': """,
-      "'": "'"
-    }[c]));
+    return str.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   }
   function renderUcapan() {
     if (!list) return;
     let data = [];
-    try {
-      data = JSON.parse(localStorage.getItem(KEY) || "[]");
-    } catch (e) {
-      data = [];
-    }
-    if (!data.length) {
-      list.innerHTML = "";
-      return;
-    }
+    try { data = JSON.parse(localStorage.getItem(KEY) || "[]"); } catch (e) { data = []; }
+    if (!data.length) { list.innerHTML = ""; return; }
     list.innerHTML = data.map((item) =>
       `<div class="ucapan-item"><strong>${escapeHtml(item.nama)}</strong><span class="ucapan-status">${escapeHtml(item.status)}</span><p>${escapeHtml(item.pesan)}</p></div>`
     ).join("");
@@ -334,52 +179,41 @@ document.addEventListener("DOMContentLoaded", () => {
       const pesan = document.getElementById("pesanUcapan").value.trim();
       if (!nama || !status || !pesan) return;
       let data = [];
-      try {
-        data = JSON.parse(localStorage.getItem(KEY) || "[]");
-      } catch (e) {
-        data = [];
-      }
+      try { data = JSON.parse(localStorage.getItem(KEY) || "[]"); } catch (e) { data = []; }
       data.unshift({ nama, status, pesan });
-      try {
-        localStorage.setItem(KEY, JSON.stringify(data.slice(0, 50)));
-      } catch (e) {}
+      try { localStorage.setItem(KEY, JSON.stringify(data.slice(0, 50))); } catch (e) {}
       renderUcapan();
       form.reset();
       alert("Terima kasih! Ucapan kamu sudah terkirim.");
     });
   }
 
+  // === 3D TILT ===
   function addTilt3D(selector, max = 12) {
     const els = document.querySelectorAll(selector);
     els.forEach((el) => {
-      const applyTilt = (clientX, clientY) => {
-        const rect = el.getBoundingClientRect();
-        const x = clientX - rect.left;
-        const y = clientY - rect.top;
-        const rx = ((y / rect.height) - 0.5) * -max;
-        const ry = ((x / rect.width) - 0.5) * max;
-        el.style.transition = "transform 0.08s ease-out";
-        el.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg)`;
-      };
-
       el.addEventListener("touchmove", (e) => {
         if (!e.touches[0]) return;
-        applyTilt(e.touches[0].clientX, e.touches[0].clientY);
+        const rect = el.getBoundingClientRect();
+        const x = e.touches[0].clientX - rect.left;
+        const y = e.touches[0].clientY - rect.top;
+        const rx = ((y / rect.height) - 0.5) * -max;
+        const ry = ((x / rect.width) - 0.5) * max;
+        el.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg)`;
       }, { passive: true });
-
       el.addEventListener("mousemove", (e) => {
-        applyTilt(e.clientX, e.clientY);
+        const rect = el.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const rx = ((y / rect.height) - 0.5) * -max;
+        const ry = ((x / rect.width) - 0.5) * max;
+        el.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg)`;
       });
-
-      const reset = () => {
-        el.style.transition = "";
-        el.style.transform = "";
-      };
+      const reset = () => { el.style.transform = ""; };
       el.addEventListener("mouseleave", reset);
       el.addEventListener("touchend", reset);
     });
   }
-
   addTilt3D(".envelope-card", 14);
   addTilt3D(".oval-frame-wrap", 12);
   addTilt3D(".polaroid-duo-wrap", 10);
@@ -387,4 +221,75 @@ document.addEventListener("DOMContentLoaded", () => {
   addTilt3D(".ar-rum-arch-outer", 8);
   addTilt3D(".closing-card-frame", 8);
   addTilt3D(".physical-gift-box", 8);
+
+  // === REVEAL AGAK LAMA & SMOOTH SAAT SCROLL ===
+  const animatedTargets = Array.from(document.querySelectorAll(
+    ".text-rise, .video-reveal, .reveal-up, .reveal-left, .reveal-right, .reveal-zoom, .reveal-blur"
+  ));
+
+  function showElementSmooth(el, delayMs = 0) {
+    if (!el || el.dataset.revealed === "1") return;
+    el.dataset.revealed = "1";
+    setTimeout(() => {
+      el.classList.add("is-shown", "is-visible", "is-in");
+    }, delayMs);
+  }
+
+  function revealBatch(elements) {
+    elements.forEach((el, idx) => {
+      showElementSmooth(el, Math.min(idx * 170, 680));
+    });
+  }
+
+  if ("IntersectionObserver" in window) {
+    const smoothObserver = new IntersectionObserver(
+      (entries) => {
+        const entering = entries
+          .filter((entry) => entry.isIntersecting)
+          .map((entry) => entry.target);
+
+        if (entering.length) {
+          revealBatch(entering);
+          entering.forEach((el) => smoothObserver.unobserve(el));
+        }
+      },
+      {
+        threshold: 0.14,
+        rootMargin: "0px 0px -36px 0px"
+      }
+    );
+
+    animatedTargets.forEach((el) => smoothObserver.observe(el));
+
+    let scrollCheckTimer = null;
+    window.addEventListener(
+      "scroll",
+      () => {
+        clearTimeout(scrollCheckTimer);
+        scrollCheckTimer = setTimeout(() => {
+          const vh = window.innerHeight || document.documentElement.clientHeight;
+          const newlyVisible = animatedTargets.filter((el) => {
+            if (el.dataset.revealed === "1") return false;
+            const rect = el.getBoundingClientRect();
+            return rect.top < vh * 0.86 && rect.bottom > 0;
+          });
+          if (newlyVisible.length) {
+            revealBatch(newlyVisible);
+            newlyVisible.forEach((el) => smoothObserver.unobserve(el));
+          }
+        }, 120);
+      },
+      { passive: true }
+    );
+  } else {
+    revealBatch(animatedTargets);
+  }
+
+  window.addEventListener("scroll", () => {
+    const hero = document.querySelector(".hero-envelope");
+    if (hero) {
+      const y = window.scrollY;
+      hero.style.backgroundPosition = `center ${y * 0.3}px`;
+    }
+  }, { passive: true });
 });
