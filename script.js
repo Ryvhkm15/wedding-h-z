@@ -10,14 +10,19 @@ document.addEventListener("DOMContentLoaded", () => {
   const curtain = document.getElementById("openingCurtain");
   const badge = document.querySelector(".curtain-crest-badge");
   let curtainOpened = false;
+  let curtainDoneTimer = null;
   function openCurtain() {
-    if (!curtain || curtainOpened) return;
+    if (!curtain || curtainOpened || curtain.classList.contains("is-done")) return;
     curtainOpened = true;
     curtain.classList.add("is-opening");
-    setTimeout(() => curtain.classList.add("is-done"), 1200);
+    curtain.setAttribute("aria-hidden", "true");
+    clearTimeout(curtainDoneTimer);
+    curtainDoneTimer = setTimeout(() => {
+      curtain.classList.add("is-done");
+    }, 1250);
   }
   if (badge) badge.addEventListener("click", openCurtain);
-  if (curtain) curtain.addEventListener("click", (e) => { if (e.target === curtain) openCurtain(); });
+  if (curtain) curtain.addEventListener("click", (e) => { if (e.target === curtain || e.target.closest(".curtain-panel")) openCurtain(); });
   setTimeout(openCurtain, 6000);
   const envelopeBtn = document.getElementById("openInvitationBtn");
   const hint = document.getElementById("envelope-hint-text");
