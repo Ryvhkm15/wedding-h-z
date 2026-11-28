@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Great+Vibes&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=20261154">
+<link rel="stylesheet" href="style.css?v=20261155">
 </head>
 <body data-wedding-theme="emerald">
 
@@ -192,7 +192,7 @@
     <p class="gift-maroon-text gift-closing-note text-rise reveal-up">Dan bisa mengirim dalam bentuk fisik<br>bisa kirim melalui alamat dibawah dan konfirmasi<br>ke nomor berikut:</p>
     <div class="physical-gift-box reveal-zoom">
       <div class="physical-line"><strong>Penerima</strong><span>Herlangga &amp; Zalsa</span></div>
-      <div class="physical-line"><strong>Alamat</strong><span>Jl. KS TUBUN IV Rt 04 Rw 07 No 31, Slipi Jakarta Barat</span></div>
+      <div class="physical-line"><strong>Alamat</strong><span>Jl. Ks Tubun IV Rt 04 Rw 07 No 31, Slipi Jakarta Barat</span></div>
       <div class="physical-line"><strong>Konfirmasi WA</strong>
         <div class="wa-contact-stack">
           <div class="wa-contact-row"><span class="wa-contact-num">0895331933432</span><span class="wa-contact-owner">(a.n Zalsa)</span></div>
@@ -307,13 +307,16 @@
 <!-- DARURAT TIRAI - JANGAN DIHAPUS -->
 <script>
   (function () {
+    var curtainTimer;
     function openEmergencyCurtain() {
       var c = document.getElementById('openingCurtain');
-      if (c) {
-        c.classList.add('is-opening');
+      if (!c || c.classList.contains('is-done')) return;
+      c.classList.add('is-opening');
+      c.setAttribute('aria-hidden', 'true');
+      clearTimeout(curtainTimer);
+      curtainTimer = setTimeout(function () {
         c.classList.add('is-done');
-        c.setAttribute('aria-hidden', 'true');
-      }
+      }, 1250);
     }
     setTimeout(openEmergencyCurtain, 4000);
     document.addEventListener('click', function (e) {
