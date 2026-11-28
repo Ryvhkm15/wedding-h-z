@@ -1,103 +1,462 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Herlangga & Zalsa</title>
-<link rel="stylesheet" href="style.css?v=20261149">
-<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:wght@400;500;600&family=Playfair+Display:wght@500;600&family=Amiri:wght@400;700&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Undangan Pernikahan - Herlangga & Zalsa</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Great+Vibes&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css?v=20261136">
 </head>
-<body data-theme="velvet">
+<body data-wedding-theme="emerald">
 
-<!-- TOMBOL TEMA DI ATAS -->
-<div class="theme-switcher">
-  <button class="theme-chip" onclick="setTheme('emerald')">Emerald</button>
-  <button class="theme-chip active" onclick="setTheme('velvet')">Velvet</button>
-  <button class="theme-chip" onclick="setTheme('botanical')">Botanical</button>
-</div>
-<button class="music-btn" id="musicBtn" onclick="toggleMusic()">Musik: Off</button>
-
-<!-- COVER -->
-<section class="cover">
-  <div class="orn-top">✦</div>
-  <p class="cover-top">The Wedding Of</p>
-  <h1 class="cover-names">Herlangga<br><span class="amp">&</span><br>Zalsa</h1>
-  <p class="cover-date">27 . 12 . 2026</p>
-  <div class="cover-divider">— ✦ —</div>
-  <p class="cover-to">Kepada Yth<br><b>Bapak / Ibu / Saudara/i</b></p>
-  <p class="cover-guest">Tamu Undangan</p>
-  <button class="btn-open" onclick="openInvitation()">Buka Undangan</button>
-  <div class="orn-bottom">✦</div>
-</section>
-
-<!-- ARAB + DOA -->
-<section class="section-doa">
-  <div class="orn">❧</div>
-  <p class="arabic" dir="rtl">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</p>
-  <p class="arabic-latin">Dengan menyebut nama Allah Yang Maha Pengasih lagi Maha Penyayang</p>
-  <p class="doa-text">Dengan memohon rahmat dan ridho Allah SWT,<br>kami bermaksud menyempurnakan separuh agama kami.</p>
-</section>
-
-<!-- SAVE THE DATE -->
-<section class="section-save-date-green" id="saveDate">
-  <div class="orn">❧</div>
-  <div class="std-block">
-    <div class="std-script-title">
-      <span class="std-line-main">&nbsp;Save</span>
-      <span class="std-line-sub">the Date</span>
+    <div class="opening-curtain" id="openingCurtain">
+        <div class="curtain-panel curtain-panel-left">
+            <span class="curtain-gold-trim"></span>
+        </div>
+        <button type="button" class="curtain-crest-badge" aria-label="Buka Tirai Undangan">
+            <span>H &amp; Z</span>
+            <small>WELCOME</small>
+        </button>
+        <div class="curtain-panel curtain-panel-right">
+            <span class="curtain-gold-trim"></span>
+        </div>
     </div>
-    <div class="std-month">MARET</div>
-    <div class="std-date-row"><span>MINGGU</span><b>27</b><span>2026</span></div>
-    <p class="std-desc">Dengan memohon rahmat dan ridho Allah SWT,<br>kami bermaksud menyempurnakan separuh agama kami.</p>
-    <div class="countdown">
-      <div><span id="cdHari">119</span><small>Hari</small></div>
-      <div><span id="cdJam">13</span><small>Jam</small></div>
-      <div><span id="cdMenit">15</span><small>Menit</small></div>
-      <div><span id="cdDetik">41</span><small>Detik</small></div>
+
+    <div class="scroll-progress-bar" id="scrollProgressBar" aria-hidden="true"></div>
+
+    <div class="theme-switcher" role="group" aria-label="Pilih tema tampilan undangan">
+        <button type="button" class="theme-chip is-active" data-theme="emerald">Emerald</button>
+        <button type="button" class="theme-chip" data-theme="velvet">Velvet</button>
+        <button type="button" class="theme-chip" data-theme="botanical">Botanical</button>
     </div>
-    <button class="btn-gold">Save The Date</button>
-  </div>
-  <div class="orn">❧</div>
-</section>
 
-<!-- MEMPELAI -->
-<section class="section-mempelai">
-  <p class="label">MEMPELAI</p>
-  <h2 class="title-shine">Mempelai</h2>
-  <p class="subtitle">Dengan penuh syukur, kami mempersembahkan<br>dua insan yang dipersatukan dalam ikatan suci.</p>
-  <div class="couple-card">
-    <div class="photo-oval"><img src="herlangga.jpg" alt="Herlangga"></div>
-    <h3 class="name-script">Herlangga Aprilyansah</h3>
-    <p class="parents">Putra dari pasangan<br><b>Bapak ...... & Ibu ......</b></p>
-    <p class="ig">@herlangga</p>
-  </div>
-  <div class="ampersand-big">&</div>
-  <div class="couple-card">
-    <div class="photo-oval"><img src="zalsa.jpg" alt="Zalsa"></div>
-    <h3 class="name-script">Zalsa Nabila Putri</h3>
-    <p class="parents">Putri dari pasangan<br><b>Bapak ...... & Ibu ......</b></p>
-    <p class="ig">@zalsa</p>
-  </div>
-</section>
+    <section class="hero-envelope anim-section" id="cover">
+        <div class="envelope-wrapper">
+            <div class="envelope-header anim-item">
+                <p class="script-top text-rise">We're</p>
+                <h2 class="spaced-title text-rise">
+                    <span class="first-letter-script">G</span>ETTING MARRIED
+                </h2>
+                <h1 class="couple-script text-rise" id="display-nama-pasangan">Herlangga &amp; Zalsa</h1>
+                <p class="date-mini text-rise" id="display-tanggal-hero">Sabtu, 27 Maret 2027</p>
+                <p class="guest-mini text-rise">Kepada Yth: <strong id="guestName">Tamu Undangan</strong></p>
+            </div>
 
-<!-- AKAD -->
-<section class="section-acara">
-  <h2 class="title-shine">Akad & Resepsi</h2>
-  <p>Minggu, 27 Desember 2026<br>Jakarta, Indonesia</p>
-</section>
+            <button type="button" id="openInvitationBtn" class="envelope-trigger anim-item" aria-label="Buka atau tutup amplop undangan">
+                <div class="envelope-card" id="hero-envelope-card">
+                    <div class="envelope-pocket-inside">
+                        <span class="pocket-monogram" id="display-monogram-amplop">H &amp; Z</span>
+                        <span class="pocket-sub">Undangan Pernikahan</span>
+                    </div>
+                    <div class="envelope-back-lining"></div>
+                    <div class="envelope-flap-lace"></div>
+                    <div class="envelope-gold-trim"></div>
+                    <div class="wax-seal" id="hero-wax-seal" title="Klik amplop untuk membuka">✦</div>
+                </div>
 
-<script>
-function setTheme(t){ document.body.dataset.theme=t; document.querySelectorAll('.theme-chip').forEach(b=>b.classList.remove('active')); event.target.classList.add('active'); }
-function openInvitation(){ document.getElementById('saveDate').scrollIntoView({behavior:'smooth'}); }
-function toggleMusic(){ let b=document.getElementById('musicBtn'); b.textContent = b.textContent.includes('Off') ? 'Musik: On' : 'Musik: Off'; }
-const target = new Date('2026-12-27T08:00:00').getTime();
-setInterval(()=>{
-  let d = target - Date.now(); if(d<0) d=0;
-  document.getElementById('cdHari').textContent = Math.floor(d/86400000);
-  document.getElementById('cdJam').textContent = Math.floor(d%86400000/3600000);
-  document.getElementById('cdMenit').textContent = Math.floor(d%3600000/60000);
-  document.getElementById('cdDetik').textContent = Math.floor(d%60000/1000);
-},1000);
-</script>
+                <span class="click-hint" id="envelope-hint-text">CLICK ENVELOPE TO OPEN</span>
+            </button>
+        </div>
+    </section>
+
+    <audio id="bgMusic" loop preload="metadata">
+        <source src="lagu.mp3.mp3" type="audio/mpeg">
+    </audio>
+    <button type="button" id="musicToggleBtn" class="music-btn" aria-label="Putar atau jeda musik">
+        ♫ Musik: Off
+    </button>
+
+    <section class="section-doily-emerald anim-section" id="ayat-pilihan">
+        <div class="doily-scene anim-item">
+            <div class="top-ornament-line light" aria-hidden="true"><span></span><i>✦</i><span></span></div>
+
+            <div class="ar-rum-arch-outer">
+                <div class="ar-rum-arch-inner">
+                    <span class="arch-corner ac-tl" aria-hidden="true">✦</span>
+                    <span class="arch-corner ac-tr" aria-hidden="true">✦</span>
+                    <span class="arch-corner ac-bl" aria-hidden="true">✦</span>
+                    <span class="arch-corner ac-br" aria-hidden="true">✦</span>
+
+                    <p class="ayat-arab text-rise" aria-hidden="true">وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُمْ مِنْ أَنْفُسِكُمْ أَزْوَاجًا</p>
+                    <p class="ayat-text text-rise" id="display-ayat-teks">
+                        "Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang. Sungguh, pada yang demikian itu benar-benar terdapat tanda-tanda (kebesaran Allah) bagi kaum yang berpikir."
+                    </p>
+                    <div class="ayat-divider" aria-hidden="true"><span>✦</span></div>
+                    <p class="ayat-sumber text-rise" id="display-ayat-sumber">QS Ar-Rum 21</p>
+                </div>
+            </div>
+
+            <div class="tassel-maroon" aria-hidden="true"></div>
+
+            <div class="bottom-envelope-pocket" id="ayat-envelope-pocket">
+                <div class="pocket-flap-accent"></div>
+                <div class="pocket-label">Sakinah • Mawaddah • Warahmah</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-maroon anim-section" id="mempelai">
+        <div class="maroon-container">
+            <p class="bismillah-calligraphy text-rise" id="display-bismillah">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيم</p>
+            <p class="intro-note text-rise">
+                Dengan memohon rahmat &amp; ridho Allah SWT, kami mengundang bapak/ibu/saudara/i untuk hadir pada pernikahan:
+            </p>
+
+            <div class="profile-row anim-item">
+                <div class="oval-frame-wrap">
+                    <span class="corner-ornament tl" aria-hidden="true">✦</span>
+                    <span class="corner-ornament tr" aria-hidden="true">✦</span>
+                    <span class="corner-ornament bl" aria-hidden="true">✦</span>
+                    <span class="corner-ornament br" aria-hidden="true">✦</span>
+                    <div class="oval-photo">
+                        <img src="pria.jpg" alt="Foto Mempelai Pria">
+                    </div>
+                </div>
+
+                <div class="profile-text align-left">
+                    <h3 class="name-script text-rise" id="display-nama-pria">Herlangga Aprilyansah</h3>
+                    <p class="parent-info text-rise" id="display-ortu-pria">Putra Pertama dari<br>Bapak Ramlan<br>&amp; Ibu Hernawati</p>
+                </div>
+            </div>
+
+            <div class="ampersand-maroon anim-item" aria-hidden="true">&amp;</div>
+
+            <div class="profile-row reverse-mobile anim-item">
+                <div class="profile-text align-right">
+                    <h3 class="name-script text-rise" id="display-nama-wanita">Zalsa Nabila Putri, S.E.</h3>
+                    <p class="parent-info text-rise" id="display-ortu-wanita">Putri Pertama dari<br>Bapak Yudi Himawan<br>&amp; Ibu Indri Rastuti</p>
+                </div>
+
+                <div class="oval-frame-wrap">
+                    <span class="corner-ornament tl" aria-hidden="true">✦</span>
+                    <span class="corner-ornament tr" aria-hidden="true">✦</span>
+                    <span class="corner-ornament bl" aria-hidden="true">✦</span>
+                    <span class="corner-ornament br" aria-hidden="true">✦</span>
+                    <div class="oval-photo">
+                        <img src="wanita.jpg" alt="Foto Mempelai Wanita">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-save-date-green anim-section" id="save-the-date">
+        <div class="sparkle-field" id="std-sparkles" aria-hidden="true"></div>
+
+        <div class="top-ornament-line light anim-item" aria-hidden="true"><span></span><i>✦</i><span></span></div>
+
+        <div class="std-block anim-item">
+            <h2 class="std-script-title text-rise">
+                <span class="std-line-main">Save</span>
+                <span class="std-line-sub">the</span>
+                <span class="std-line-main">Date</span>
+            </h2>
+
+            <p class="std-month text-rise" id="display-std-bulan">MARET</p>
+
+            <div class="std-date-split">
+                <div class="std-side-item">
+                    <span class="std-side-script">Akad</span>
+                    <small id="display-std-jam-akad">Pukul 16.00 WIB</small>
+                </div>
+
+                <div class="std-day-number glow-blink" id="display-std-tanggal">27</div>
+
+                <div class="std-side-item">
+                    <span class="std-side-script">Resepsi</span>
+                    <small id="display-std-jam-resepsi">Pukul 19.00 - 21.00 WIB</small>
+                </div>
+            </div>
+
+            <p class="std-year" id="display-std-tahun">2027</p>
+            <p class="std-time-summary" id="display-std-waktu-lengkap"></p>
+
+            <p class="toward-happy-text text-rise">menuju hari bahagia kami</p>
+
+            <div class="countdown" id="countdown">
+                <div><span id="days">00</span><small>Hari</small></div>
+                <div><span id="hours">00</span><small>Jam</small></div>
+                <div><span id="minutes">00</span><small>Menit</small></div>
+                <div><span id="seconds">00</span><small>Detik</small></div>
+            </div>
+
+            <button type="button" id="addToCalendarBtn" class="btn-calendar-outline">
+                <span>✦</span> Simpan ke Kalender
+            </button>
+
+            <div class="venue-illustration" aria-hidden="true">
+                <svg viewBox="0 0 560 155" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <line x1="25" y1="142" x2="535" y2="142" stroke="#d5dfd8" stroke-width="2" stroke-linecap="round"/>
+                    <rect x="42" y="64" width="130" height="78" fill="#cbd6ce" stroke="#edf3ee" stroke-width="1.8"/>
+                    <polygon points="34,64 107,32 180,64" fill="#dbe4dd" stroke="#edf3ee" stroke-width="1.8"/>
+                    <rect x="62" y="78" width="16" height="22" fill="#6b8072"/>
+                    <rect x="99" y="78" width="16" height="22" fill="#6b8072"/>
+                    <rect x="136" y="78" width="16" height="22" fill="#6b8072"/>
+                    <rect x="62" y="109" width="16" height="22" fill="#6b8072"/>
+                    <rect x="99" y="109" width="16" height="22" fill="#6b8072"/>
+                    <rect x="136" y="109" width="16" height="22" fill="#6b8072"/>
+                    <rect x="172" y="48" width="216" height="94" fill="#d5dfd8" stroke="#edf3ee" stroke-width="1.8"/>
+                    <polygon points="166,48 280,18 394,48" fill="#e2eae4" stroke="#edf3ee" stroke-width="1.8"/>
+                    <rect x="262" y="102" width="36" height="40" fill="#7c9183"/>
+                    <rect x="196" y="66" width="18" height="24" fill="#6b8072"/>
+                    <rect x="232" y="66" width="18" height="24" fill="#6b8072"/>
+                    <rect x="310" y="66" width="18" height="24" fill="#6b8072"/>
+                    <rect x="346" y="66" width="18" height="24" fill="#6b8072"/>
+                    <rect x="196" y="102" width="18" height="24" fill="#6b8072"/>
+                    <rect x="346" y="102" width="18" height="24" fill="#6b8072"/>
+                    <rect x="388" y="64" width="130" height="78" fill="#cbd6ce" stroke="#edf3ee" stroke-width="1.8"/>
+                    <polygon points="380,64 453,32 526,64" fill="#dbe4dd" stroke="#edf3ee" stroke-width="1.8"/>
+                    <rect x="408" y="78" width="16" height="22" fill="#6b8072"/>
+                    <rect x="445" y="78" width="16" height="22" fill="#6b8072"/>
+                    <rect x="482" y="78" width="16" height="22" fill="#6b8072"/>
+                    <rect x="408" y="109" width="16" height="22" fill="#6b8072"/>
+                    <rect x="445" y="109" width="16" height="22" fill="#6b8072"/>
+                    <rect x="482" y="109" width="16" height="22" fill="#6b8072"/>
+                    <ellipse cx="182" cy="112" rx="14" ry="30" fill="#e6eee8"/>
+                    <ellipse cx="378" cy="112" rx="14" ry="30" fill="#e6eee8"/>
+                    <ellipse cx="280" cy="143" rx="46" ry="8" fill="#dbe4dd" stroke="#edf3ee" stroke-width="1.5"/>
+                    <path d="M266 142 Q280 124 294 142" stroke="#f4f8f5" stroke-width="2" fill="none"/>
+                </svg>
+            </div>
+        </div>
+
+        <hr class="green-divider">
+
+        <div class="detail-session-block anim-item">
+            <h3 class="detail-script-heading text-rise">Akad</h3>
+            <p class="detail-date-line" id="display-detail-tanggal-akad">Sabtu, 27 Maret 2027</p>
+            <p class="detail-time-line" id="display-detail-jam-akad">16.00 WIB</p>
+            <p class="detail-venue-name" id="display-detail-lokasi-akad">YAYASAN DARUL AITAMA</p>
+            <p class="detail-address-line" id="display-detail-alamat-akad">
+                Jl. K.H. Mas Mansyur No.47, Kb. Melati,<br>
+                Kec. Tanah Abang, Kota Jakarta Pusat,<br>
+                Daerah Khusus Ibukota Jakarta 10230
+            </p>
+        </div>
+
+        <div class="botanical-flourish anim-item" aria-hidden="true"><span></span><i>✦</i><span></span></div>
+
+        <div class="detail-session-block anim-item">
+            <h3 class="detail-script-heading text-rise">Resepsi</h3>
+            <p class="detail-date-line" id="display-detail-tanggal-resepsi">Sabtu, 27 Maret 2027</p>
+            <p class="detail-time-line" id="display-detail-jam-resepsi">19.00 WIB - 21.00 WIB</p>
+            <p class="detail-venue-name" id="display-detail-lokasi-resepsi">YAYASAN DARUL AITAMA</p>
+            <p class="detail-address-line" id="display-detail-alamat-resepsi">
+                Jl. K.H. Mas Mansyur No.47, Kb. Melati,<br>
+                Kec. Tanah Abang, Kota Jakarta Pusat,<br>
+                Daerah Khusus Ibukota Jakarta 10230
+            </p>
+            <a id="display-link-maps-detail" href="https://maps.app.goo.gl/vtc6LVVJoQGudwiw7" target="_blank" rel="noopener noreferrer" class="btn-maroon-pill">Lihat Lokasi Maps</a>
+        </div>
+    </section>
+
+    <section class="section-gift-maroon anim-section" id="wedding-gift">
+        <div class="top-ornament-line light anim-item" aria-hidden="true"><span></span><i>✦</i><span></span></div>
+
+        <div class="gift-maroon-inner anim-item">
+            <h2 class="gift-script-heading text-rise">Wedding Gift</h2>
+
+            <div class="gift-wrap-decor" aria-hidden="true">
+                <svg viewBox="0 0 120 112" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M60 28 C46 11, 24 14, 28 28 C31 36, 48 34, 60 28 Z" fill="#e6c88c" stroke="#fff7e3" stroke-width="1.5"/>
+                    <path d="M60 28 C74 11, 96 14, 92 28 C89 36, 72 34, 60 28 Z" fill="#e6c88c" stroke="#fff7e3" stroke-width="1.5"/>
+                    <circle cx="60" cy="28" r="6" fill="#9b1831" stroke="#fff7e3" stroke-width="1.5"/>
+                    <rect x="20" y="34" width="80" height="18" rx="4" fill="#fbf3e4" stroke="#d9be8c" stroke-width="1.8"/>
+                    <rect x="53" y="34" width="14" height="18" fill="#c99f57"/>
+                    <rect x="25" y="52" width="70" height="48" rx="5" fill="#f5ead4" stroke="#d9be8c" stroke-width="1.8"/>
+                    <rect x="53" y="52" width="14" height="48" fill="#d9be8c"/>
+                    <line x1="25" y1="68" x2="95" y2="68" stroke="#c99f57" stroke-width="1.2" stroke-dasharray="4 4"/>
+                </svg>
+            </div>
+
+            <p class="gift-maroon-text text-rise">
+                Doa restu dan kehadiran Anda merupakan<br>
+                karunia yang sangat berarti bagi kami.
+            </p>
+            <p class="gift-maroon-text text-rise">
+                Namun, jika memberi adalah ungkapan tanda kasih,<br>
+                Anda dapat memberi melalui dibawah ini.
+            </p>
+
+            <div class="rek-maroon-item">
+                <p class="rek-maroon-num" id="display-rek1-nomor">110293867</p>
+                <p class="rek-maroon-bank" id="display-rek1-bank">BCA</p>
+                <p class="rek-maroon-holder" id="display-rek1-nama">a.n Herlangga Aprilyansah</p>
+                <button type="button" class="btn-olive-copy" data-copy="110293867">
+                    <span class="copy-label">Copy</span>
+                </button>
+            </div>
+
+            <div class="rek-maroon-item">
+                <p class="rek-maroon-num" id="display-rek2-nomor">4183269335</p>
+                <p class="rek-maroon-bank" id="display-rek2-bank">PERMATA BANK</p>
+                <p class="rek-maroon-holder" id="display-rek2-nama">a.n Zalsa Nabila Putri</p>
+                <button type="button" class="btn-olive-copy" data-copy="4183269335">
+                    <span class="copy-label">Copy</span>
+                </button>
+            </div>
+
+            <p class="gift-maroon-text gift-closing-note text-rise">
+                Dan bisa mengirim dalam bentuk fisik<br>
+                bisa kirim melalui alamat dibawah dan konfirmasi<br>
+                ke nomor berikut:
+            </p>
+
+            <div class="physical-gift-box">
+                <div class="physical-line">
+                    <strong>Penerima</strong>
+                    <span id="display-kado-penerima">Herlangga &amp; Zalsa</span>
+                </div>
+                <div class="physical-line">
+                    <strong>Alamat</strong>
+                    <span id="display-kado-alamat">Jl. KS TUBUN IV Rt 04 Rw 07 No 31, Slipi Jakarta Barat</span>
+                </div>
+                <div class="physical-line">
+                    <strong>Konfirmasi WA</strong>
+                    <div class="wa-contact-stack">
+                        <div class="wa-contact-row">
+                            <span class="wa-contact-num" id="display-kado-wa-1">0895331933432</span>
+                            <span class="wa-contact-owner" id="display-kado-wa-1-nama">(a.n Zalsa)</span>
+                        </div>
+                        <div class="wa-contact-row">
+                            <span class="wa-contact-num" id="display-kado-wa-2">081212798828</span>
+                            <span class="wa-contact-owner" id="display-kado-wa-2-nama">(a.n Herlangga)</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="wa-actions-group">
+                    <a id="btn-wa-kado-1" href="https://wa.me/62895331933432?text=Halo%20Zalsa%2C%20saya%20ingin%20konfirmasi%20pengiriman%20kado%20pernikahan%20untuk%20Herlangga%20%26%20Zalsa." target="_blank" rel="noopener noreferrer" class="btn-wa-gift">WA Zalsa</a>
+                    <a id="btn-wa-kado-2" href="https://wa.me/6281212798828?text=Halo%20Herlangga%2C%20saya%20ingin%20konfirmasi%20pengiriman%20kado%20pernikahan%20untuk%20Herlangga%20%26%20Zalsa." target="_blank" rel="noopener noreferrer" class="btn-wa-gift">WA Herlangga</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-love-story-green anim-section" id="love-story">
+        <div class="love-story-inner">
+            <div class="polaroid-duo-wrap anim-item">
+                <figure class="polaroid-card polaroid-left">
+                    <img id="display-story-foto-1" src="pria.jpg" alt="Foto Kisah Cinta 1">
+                </figure>
+                <figure class="polaroid-card polaroid-right">
+                    <img id="display-story-foto-2" src="wanita.jpg" alt="Foto Kisah Cinta 2">
+                    <span class="polaroid-corner-tag" aria-hidden="true">01 &amp; 02</span>
+                </figure>
+                <span class="polaroid-wax-badge" aria-hidden="true">✦</span>
+            </div>
+
+            <h2 class="love-story-heading text-rise">Love Story</h2>
+
+            <div class="story-timeline">
+                <div class="story-step anim-item">
+                    <span class="story-marker" aria-hidden="true">✦</span>
+                    <h3 class="story-step-title text-rise" id="display-story-judul-1">Awal Pertemuan</h3>
+                    <p class="story-step-text text-rise" id="display-story-teks-1">
+                        Tidak ada yang benar-benar kebetulan di dunia ini. Setiap pertemuan telah diatur dengan indah, hanya menunggu waktu yang tepat untuk terjadi. Berawal dari sebuah perkenalan sederhana, tanpa banyak rencana atau harapan berlebihan, kami dipertemukan dalam cara yang tidak pernah kami duga sebelumnya.
+                    </p>
+                </div>
+
+                <div class="story-step anim-item">
+                    <span class="story-marker" aria-hidden="true">✦</span>
+                    <h3 class="story-step-title text-rise" id="display-story-judul-2">Perjalanan Bersama</h3>
+                    <p class="story-step-text text-rise" id="display-story-teks-2">
+                        Seiring berjalannya waktu, kebersamaan kecil yang kami lalui perlahan tumbuh menjadi sesuatu yang lebih berarti. Dalam setiap cerita, tentu ada tawa, ada juga tantangan. Namun dari situlah kami belajar untuk saling memahami, menerima, dan melengkapi satu sama lain.
+                    </p>
+                </div>
+
+                <div class="story-step story-step-last anim-item">
+                    <span class="story-marker" aria-hidden="true">✦</span>
+                    <h3 class="story-step-title text-rise" id="display-story-judul-3">Komitmen</h3>
+                    <p class="story-step-text text-rise" id="display-story-teks-3">
+                        Hingga akhirnya kami menyadari bahwa perjalanan ini bukan lagi tentang dua orang yang berjalan sendiri, melainkan tentang dua hati yang memilih untuk melangkah bersama. Dengan penuh rasa syukur dan keyakinan, kami memutuskan untuk mengikat janji suci dan memulai babak baru dalam kehidupan kami.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-gallery-classic anim-section" id="galeri">
+        <div class="gallery-classic-inner">
+            <h2 class="gallery-classic-title text-rise">Galeri Momen</h2>
+            <p class="gallery-classic-sub text-rise">Potret kecil penuh cinta menuju hari bahagia kami.</p>
+
+            <div class="gallery-grid">
+                <div class="gallery-frame anim-item">
+                    <img id="display-galeri-1" src="pria.jpg" alt="Galeri 1">
+                </div>
+                <div class="gallery-frame anim-item">
+                    <img id="display-galeri-2" src="wanita.jpg" alt="Galeri 2">
+                </div>
+                <div class="gallery-frame anim-item">
+                    <img id="display-galeri-3" src="pria.jpg" alt="Galeri 3">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="photo-lightbox" id="photoLightbox" aria-hidden="true">
+        <div class="photo-lightbox-content">
+            <button type="button" class="photo-lightbox-close" id="photoLightboxClose" aria-label="Tutup preview foto">✕</button>
+            <img id="photoLightboxImg" src="" alt="Preview Foto Momen">
+        </div>
+    </div>
+
+    <section class="section-closing-envelope anim-section" id="penutup">
+        <div class="top-ornament-line light anim-item" aria-hidden="true"><span></span><i>✦</i><span></span></div>
+
+        <div class="closing-scene anim-item">
+            <div class="closing-card-frame">
+                <span class="closing-crest" aria-hidden="true">✦</span>
+                <p class="closing-message text-rise">
+                    Menjadi sebuah kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir dalam hari bahagia kami. Terimakasih atas segala ucapan, doa, dan perhatian yang diberikan.
+                </p>
+                <p class="closing-until-meet text-rise">Sampai jumpa di hari pernikahan kami!</p>
+                <div class="closing-couple-names" id="display-closing-nama">
+                    <span>Herlangga</span>
+                    <span class="closing-amp">&amp;</span>
+                    <span>Zalsa</span>
+                </div>
+            </div>
+
+            <div class="closing-tassel" aria-hidden="true"></div>
+
+            <div class="closing-envelope-base" id="closing-envelope-base">
+                <div class="closing-envelope-flap"></div>
+                <div class="closing-pocket-tag">WITH LOVE</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-rsvp-last anim-section" id="ucapan">
+        <div class="rsvp-last-container anim-item">
+            <h2 class="rsvp-last-title text-rise">Ucapan &amp; Konfirmasi Hadir</h2>
+            <p class="rsvp-last-subtitle text-rise">Kirimkan doa restu serta konfirmasi kehadiran Anda.</p>
+
+            <form id="rsvpForm" class="rsvp-card-form">
+                <input type="text" id="namaTamu" placeholder="Nama Anda" required>
+                <select id="statusKehadiran" required>
+                    <option value="">Pilih Konfirmasi Kehadiran</option>
+                    <option value="Hadir">Hadir</option>
+                    <option value="Tidak Hadir">Tidak Hadir</option>
+                    <option value="Masih Ragu">Masih Ragu</option>
+                </select>
+                <textarea id="pesanUcapan" rows="3" placeholder="Tulis ucapan dan doa untuk mempelai..." required></textarea>
+                <button type="submit" class="btn-rsvp-tan">Kirim Ucapan</button>
+            </form>
+
+            <div id="ucapanList" class="ucapan-list"></div>
+        </div>
+    </section>
+
+    <footer class="anim-section">
+        <div class="anim-item">
+            <p class="text-rise">Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir.</p>
+            <h3 id="display-footer-nama">HERLANGGA &amp; ZALSA</h3>
+        </div>
+    </footer>
+
+    <script src="script.js?v=20261136"></script>
 </body>
 </html>
