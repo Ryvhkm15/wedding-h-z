@@ -261,3 +261,39 @@ footer>*{position:relative;z-index:2}
 footer p{max-width:520px;margin:0 auto 16px;font-family:var(--font-serif);font-size:1.05rem;line-height:1.7;color:#f3e6d3}
 footer h3{font-family:var(--font-serif);font-size:clamp(1.22rem,4.6vw,1.85rem);font-weight:600;letter-spacing:.18em;text-transform:uppercase;white-space:nowrap;background:linear-gradient(112deg,#e8c97e,#fff9e6 36%,#fff 50%,#f0cf8e 64%,#e8c97e);background-size:300% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:smoothShimmer 8s linear infinite}
 @media(max-width:768px){.gallery-grid{grid-template-columns:1fr;max-width:360px;margin:0 auto}.gallery-frame img{height:240px}.align-left,.align-right{text-align:center}.physical-gift-box{padding:22px 18px 18px}.wa-actions-group{gap:8px}.btn-wa-gift{font-size:.82rem}.closing-couple-names{font-size:clamp(2.1rem,8.5vw,2.8rem);gap:6px}.music-btn{bottom:12px;right:12px}.frame-inner-dashed{padding:42px 18px 32px}.ayat-arab-new{font-size:1.25rem}}
+/* BALIKIN KONTRAS KETERANGAN KE AWAL - HAPUS BAYANGAN */
+.intro-note, .parent-info, .std-month, .std-year, .std-side-script,
+.std-side-item small, .std-day-number, .toward-happy-text,
+.detail-date-line, .detail-time-line, .detail-venue-name,
+.detail-address-line, .gift-maroon-text, .rek-maroon-num,
+.rek-maroon-bank, .rek-maroon-holder, .story-step-title,
+.story-step-text, .gallery-classic-sub, .rsvp-last-subtitle,
+.closing-message, .closing-until-meet, .bismillah-calligraphy,
+.name-script, .std-script-title, .detail-script-heading,
+.gift-script-heading, .love-story-heading{
+  text-shadow:none !important;
+  filter:none !important;
+}
+
+/* Warna keterangan balik ke awal yang lembut */
+.intro-note{ color:#fdeec8 !important; }
+.parent-info{ color:#f7ead0 !important; }
+.std-month, .std-year, .detail-date-line, .detail-time-line,
+.detail-venue-name, .detail-address-line{ color:#f5f7f3 !important; }
+.std-side-script, .std-side-item small, .std-day-number{ color:#f5f7f3 !important; }
+.toward-happy-text{ color:#ffe9a8 !important; }
+.gift-maroon-text{ color:#f7ead0 !important; }
+.rek-maroon-num{ color:#fff !important; }
+.rek-maroon-bank, .rek-maroon-holder{ color:#ffe9c0 !important; }
+.story-step-title{ color:#f5e2ba !important; }
+.story-step-text{ color:#f4f7f2 !important; }
+.gallery-classic-sub{ color:#5e534d !important; }
+.rsvp-last-subtitle{ color:#5e534d !important; }
+.closing-message{ color:#231b18 !important; }
+.closing-until-meet{ color:#7c5d32 !important; }
+
+/* Countdown balik ke awal - tanpa background hitam */
+.countdown > div{
+  background:rgba(255,255,255,.12) !important;
+  border-color:rgba(255,255,255,.45) !important;
+}
