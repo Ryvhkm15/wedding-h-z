@@ -360,3 +360,43 @@ footer h3{font-family:var(--font-serif);font-size:clamp(1.22rem,4.6vw,1.85rem);f
   .couple-script,.ayat-arab-new,.bismillah-calligraphy,.name-script,.std-script-title,.detail-script-heading,.gift-script-heading,.love-story-heading,.gallery-classic-title,.closing-couple-names,.rsvp-last-title,footer h3{animation:none;background:none;color:var(--gold-bright);filter:none}
   .bird,.b-wing{animation:none !important}
 }
+/* FIX TULISAN ILANG - PAKSA MUNCUL KALO JS GAGAL */
+.text-rise,
+.video-reveal,
+.reveal-up,
+.reveal-left,
+.reveal-right,
+.reveal-zoom,
+.reveal-blur{
+  animation: forceShowText 0.1s ease 2.8s forwards;
+}
+@keyframes forceShowText{
+  to{ opacity:1 !important; transform:none !important; filter:none !important; }
+}
+
+/* Pastikan konten gak ketutupan overlay */
+.hero-envelope > *,
+.section-doily-emerald > *,
+.section-maroon > *,
+.section-save-date-green > *,
+.section-gift-maroon > *,
+.section-love-story-green > *,
+.section-gallery-classic > *,
+.section-closing-envelope > *,
+.section-rsvp-last > *,
+footer > *{
+  position:relative;
+  z-index:2 !important;
+}
+.hero-envelope::before,
+.section-doily-emerald::before,
+.section-maroon::before,
+.section-save-date-green::before,
+.section-gift-maroon::before,
+.section-love-story-green::before,
+.section-gallery-classic::before,
+.section-closing-envelope::before,
+.section-rsvp-last::before,
+footer::before{
+  z-index:0 !important;
+}
