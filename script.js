@@ -9,6 +9,29 @@ document.addEventListener("DOMContentLoaded", () => {
     if (namaInput && !namaInput.value) namaInput.value = cleanName;
   }
 
+  const music = document.getElementById("bgMusic");
+  const musicBtn = document.getElementById("musicToggleBtn");
+  let musicOn = false;
+
+  async function toggleMusic() {
+    if (!music) return;
+    try {
+      if (musicOn) {
+        music.pause();
+        musicOn = false;
+      } else {
+        await music.play();
+        musicOn = true;
+      }
+      if (musicBtn) {
+        musicBtn.textContent = musicOn ? "♫ Musik: On" : "♫ Musik: Off";
+        musicBtn.setAttribute("aria-pressed", String(musicOn));
+      }
+    } catch (e) {}
+  }
+
+  if (musicBtn) musicBtn.addEventListener("click", toggleMusic);
+
   const curtain = document.getElementById("openingCurtain");
   const badge = document.querySelector(".curtain-crest-badge");
   let curtainOpened = false;
@@ -36,11 +59,13 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
-  setTimeout(() => openCurtain(false), 6000);
+  setTimeout(() => openCurtain(false), 4500);
 
   const envelopeBtn = document.getElementById("openInvitationBtn");
   const hint = document.getElementById("envelope-hint-text");
   let envelopeOpen = false;
+  let autoScrollTimer = null;
+
   if (envelopeBtn) {
     envelopeBtn.addEventListener("click", () => {
       envelopeOpen = !envelopeOpen;
@@ -49,36 +74,16 @@ document.addEventListener("DOMContentLoaded", () => {
       if (hint) {
         hint.textContent = envelopeOpen ? "CLICK ENVELOPE TO CLOSE" : "CLICK ENVELOPE TO OPEN";
       }
+      clearTimeout(autoScrollTimer);
       if (envelopeOpen) {
         if (!musicOn) toggleMusic();
-        setTimeout(() => {
+        autoScrollTimer = setTimeout(() => {
           const ayat = document.getElementById("ayat-pilihan");
           if (ayat) ayat.scrollIntoView({ behavior: "smooth", block: "start" });
         }, 900);
       }
     });
   }
-
-  const music = document.getElementById("bgMusic");
-  const musicBtn = document.getElementById("musicToggleBtn");
-  let musicOn = false;
-  async function toggleMusic() {
-    if (!music) return;
-    try {
-      if (musicOn) {
-        music.pause();
-        musicOn = false;
-      } else {
-        await music.play();
-        musicOn = true;
-      }
-      if (musicBtn) {
-        musicBtn.textContent = musicOn ? "♫ Musik: On" : "♫ Musik: Off";
-        musicBtn.setAttribute("aria-pressed", String(musicOn));
-      }
-    } catch (e) {}
-  }
-  if (musicBtn) musicBtn.addEventListener("click", toggleMusic);
 
   const chips = document.querySelectorAll(".theme-chip");
   chips.forEach((chip) => {
@@ -99,6 +104,8 @@ document.addEventListener("DOMContentLoaded", () => {
     ".text-rise, .video-reveal, .reveal-up, .reveal-left, .reveal-right, .reveal-zoom, .reveal-blur"
   ));
 
+  let smoothObserver = null;
+
   function showElementSmooth(el, delayMs = 0) {
     if (!el || el.dataset.revealed === "1") return;
     el.dataset.revealed = "1";
@@ -109,8 +116,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function revealBatch(elements) {
     elements.forEach((el, idx) => {
-      showElementSmooth(el, Math.min(idx * 170, 680));
+      showElementSmooth(el, Math.min(idx * 90, 450));
     });
+  }
+
+  function checkVisibleElements() {
+    const vh = window.innerHeight || document.documentElement.clientHeight;
+    const newlyVisible = animatedTargets.filter((el) => {
+      if (el.dataset.revealed === "1") return false;
+      const rect = el.getBoundingClientRect();
+      return rect.top < vh * 0.96 && rect.bottom > -40;
+    });
+    if (newlyVisible.length) {
+      revealBatch(newlyVisible);
+      if (smoothObserver) {
+        newlyVisible.forEach((el) => smoothObserver.unobserve(el));
+      }
+    }
   }
 
   function updateScrollMetrics() {
@@ -134,22 +156,35 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
     clearTimeout(fallbackRevealTimer);
-    fallbackRevealTimer = setTimeout(() => {
-      const vh = window.innerHeight || document.documentElement.clientHeight;
-      const newlyVisible = animatedTargets.filter((el) => {
-        if (el.dataset.revealed === "1") return false;
-        const rect = el.getBoundingClientRect();
-        return rect.top < vh * 0.86 && rect.bottom > 0;
-      });
-      if (newlyVisible.length) {
-        revealBatch(newlyVisible);
-        if (smoothObserver) {
-          newlyVisible.forEach((el) => smoothObserver.unobserve(el));
-        }
-      }
-    }, 120);
+    fallbackRevealTimer = setTimeout(checkVisibleElements, 80);
   }, { passive: true });
+
+  if ("IntersectionObserver" in window) {
+    smoothObserver = new IntersectionObserver(
+      (entries) => {
+        const entering = entries
+          .filter((entry) => entry.isIntersecting)
+          .map((entry) => entry.target);
+
+        if (entering.length) {
+          revealBatch(entering);
+          entering.forEach((el) => smoothObserver.unobserve(el));
+        }
+      },
+      {
+        threshold: 0.05,
+        rootMargin: "0px 0px 40px 0px"
+      }
+    );
+
+    animatedTargets.forEach((el) => smoothObserver.observe(el));
+  } else {
+    revealBatch(animatedTargets);
+  }
+
   updateScrollMetrics();
+  checkVisibleElements();
+  setTimeout(checkVisibleElements, 250);
 
   const target = new Date("2027-03-27T16:00:00+07:00").getTime();
   const dEl = document.getElementById("days");
@@ -352,28 +387,4 @@ document.addEventListener("DOMContentLoaded", () => {
   addTilt3D(".ar-rum-arch-outer", 8);
   addTilt3D(".closing-card-frame", 8);
   addTilt3D(".physical-gift-box", 8);
-
-  let smoothObserver = null;
-  if ("IntersectionObserver" in window) {
-    smoothObserver = new IntersectionObserver(
-      (entries) => {
-        const entering = entries
-          .filter((entry) => entry.isIntersecting)
-          .map((entry) => entry.target);
-
-        if (entering.length) {
-          revealBatch(entering);
-          entering.forEach((el) => smoothObserver.unobserve(el));
-        }
-      },
-      {
-        threshold: 0.14,
-        rootMargin: "0px 0px -36px 0px"
-      }
-    );
-
-    animatedTargets.forEach((el) => smoothObserver.observe(el));
-  } else {
-    revealBatch(animatedTargets);
-  }
 });
