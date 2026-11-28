@@ -65,27 +65,6 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   const progress = document.getElementById("scrollProgressBar");
-  const sections = document.querySelectorAll(".anim-section");
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("anim-visible");
-        entry.target.querySelectorAll(".text-rise").forEach((el, i) => {
-          setTimeout(() => el.classList.add("is-shown"), i * 95);
-        });
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.12 });
-  sections.forEach((s) => observer.observe(s));
-  setTimeout(() => {
-    sections.forEach((s) => {
-      s.classList.add("anim-visible");
-      s.querySelectorAll(".text-rise").forEach((el) => el.classList.add("is-shown"));
-      s.querySelectorAll(".anim-item").forEach((el) => el.classList.add("anim-visible"));
-    });
-  }, 1800);
-
   function onScroll() {
     const h = document.documentElement;
     const max = h.scrollHeight - h.clientHeight;
@@ -243,33 +222,55 @@ document.addEventListener("DOMContentLoaded", () => {
   addTilt3D(".closing-card-frame", 8);
   addTilt3D(".physical-gift-box", 8);
 
-  // === REVEAL SMOOTH ALA VIDEO ===
-  const revealEls = document.querySelectorAll(".reveal-up, .reveal-left, .reveal-right, .reveal-zoom, .reveal-blur");
-  const revealObserver = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("is-in");
-        revealObserver.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.16, rootMargin: "0px 0px -24px 0px" });
-  revealEls.forEach((el) => revealObserver.observe(el));
+  // === REVEAL SMOOTH SAAT SCROLL ===
+  const animatedTargets = document.querySelectorAll(
+    ".text-rise, .video-reveal, .reveal-up, .reveal-left, .reveal-right, .reveal-zoom, .reveal-blur"
+  );
 
-  const videoReveals = document.querySelectorAll(".video-reveal");
-  const vrObserver = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("is-visible");
-        vrObserver.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.15, rootMargin: "0px 0px -24px 0px" });
-  videoReveals.forEach((el) => vrObserver.observe(el));
+  function revealElement(el) {
+    el.classList.add("is-shown", "is-visible", "is-in");
+  }
 
-  setTimeout(() => {
-    revealEls.forEach((el) => el.classList.add("is-in"));
-    videoReveals.forEach((el) => el.classList.add("is-visible"));
-  }, 3200);
+  if ("IntersectionObserver" in window) {
+    const smoothObserver = new IntersectionObserver(
+      (entries) => {
+        const visibleNow = entries
+          .filter((entry) => entry.isIntersecting)
+          .map((entry) => entry.target);
+
+        visibleNow.forEach((el, idx) => {
+          setTimeout(() => {
+            revealElement(el);
+          }, idx * 90);
+          smoothObserver.unobserve(el);
+        });
+      },
+      {
+        threshold: 0.12,
+        rootMargin: "0px 0px -40px 0px"
+      }
+    );
+
+    animatedTargets.forEach((el) => smoothObserver.observe(el));
+
+    window.addEventListener(
+      "scroll",
+      () => {
+        const vh = window.innerHeight || document.documentElement.clientHeight;
+        animatedTargets.forEach((el) => {
+          if (el.classList.contains("is-in")) return;
+          const rect = el.getBoundingClientRect();
+          if (rect.top < vh * 0.92) {
+            revealElement(el);
+            smoothObserver.unobserve(el);
+          }
+        });
+      },
+      { passive: true }
+    );
+  } else {
+    animatedTargets.forEach(revealElement);
+  }
 
   window.addEventListener("scroll", () => {
     const hero = document.querySelector(".hero-envelope");
