@@ -297,3 +297,67 @@ footer h3{font-family:var(--font-serif);font-size:clamp(1.22rem,4.6vw,1.85rem);f
   background:rgba(255,255,255,.12) !important;
   border-color:rgba(255,255,255,.45) !important;
 }
+/* ===== BALIK TOTAL KE WARNA AWAL ===== */
+
+/* Hapus variable gantian, balik ke gradient awal + kilau */
+.couple-script, .bismillah-calligraphy, .name-script,
+.std-script-title, .detail-script-heading, .gift-script-heading,
+.love-story-heading, .gallery-classic-title, .rsvp-last-title,
+.closing-couple-names, .ayat-arab-new, footer h3{
+  background:linear-gradient(112deg,#e8c97e,#fff9e6 36%,#fff 50%,#f0cf8e 64%,#e8c97e) !important;
+  background-size:300% auto !important;
+  -webkit-background-clip:text !important;
+  background-clip:text !important;
+  color:transparent !important;
+  animation:smoothShimmer 8s linear infinite !important;
+  text-shadow:none !important;
+  filter:none !important;
+}
+/* Yang di background terang, gradientnya versi gelap kayak awal */
+.couple-script{
+  background:linear-gradient(112deg,#5c1422 0%,#9e6b24 38%,#fff7dc 50%,#6e1828 62%,#5c1422 100%) !important;
+  background-size:300% auto !important;
+  -webkit-background-clip:text !important; background-clip:text !important; color:transparent !important;
+}
+.love-story-heading{
+  background:linear-gradient(112deg,#7a5a1a,#b89a3a 36%,#fff9e3 50%,#e5be78 64%,#7a5a1a) !important;
+  background-size:300% auto !important;
+  -webkit-background-clip:text !important; background-clip:text !important; color:transparent !important;
+}
+.gallery-classic-title, .rsvp-last-title, .closing-couple-names{
+  background:linear-gradient(112deg,#470c17,#8a6a22 36%,#e8ca8e 50%,#7a1829 64%,#470c17) !important;
+  background-size:300% auto !important;
+  -webkit-background-clip:text !important; background-clip:text !important; color:transparent !important;
+}
+.ayat-arab-new{
+  background:linear-gradient(112deg,#7a5a1a,#b89a3a 36%,#fff9e3 50%,#e5be78 64%,#7a5a1a) !important;
+  background-size:300% auto !important;
+  -webkit-background-clip:text !important; background-clip:text !important; color:transparent !important;
+}
+
+/* Warna teks keterangan balik ke awal */
+.script-top, .spaced-title, .date-mini, .guest-mini{ color:#4b0e1a !important; }
+.intro-note{ color:#fff6e8 !important; }
+.parent-info{ color:#fff8ec !important; }
+.std-month, .std-year, .std-side-script, .std-side-item small, .std-day-number,
+.detail-date-line, .detail-time-line, .detail-venue-name, .detail-address-line{ color:#fff !important; }
+.toward-happy-text{ color:#fff2b8 !important; }
+.gift-maroon-text{ color:#fff6e8 !important; }
+.rek-maroon-num{ color:#fff !important; }
+.rek-maroon-bank, .rek-maroon-holder{ color:#ffe9c0 !important; }
+.story-step-title{ color:#f5e2ba !important; }
+.story-step-text{ color:#fff !important; }
+.ayat-text-new{ color:#2b211c !important; }
+.gallery-classic-sub, .rsvp-last-subtitle{ color:#4a3a2e !important; }
+.closing-message{ color:#2e2620 !important; }
+.closing-until-meet{ color:#7a5a1a !important; }
+
+/* Background + kontras balik ke awal */
+.hero-envelope::after, .section-doily-emerald::after, .section-maroon::after,
+.section-save-date-green::after, .section-gift-maroon::after,
+.section-love-story-green::after, .section-gallery-classic::after,
+.section-closing-envelope::after, .section-rsvp-last::after, footer::after{
+  display:none !important; background:none !important;
+}
+.story-step{ background:transparent !important; border:none !important; box-shadow:none !important; padding:0 !important; }
+.countdown > div{ background:rgba(255,255,255,.12) !important; border-color:rgba(255,255,255,.45) !important; }
