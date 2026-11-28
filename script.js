@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function esc(s){ return s.replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
   function render(){ if(!list) return; let d=[]; try{d=JSON.parse(localStorage.getItem(KEY)||"[]");}catch(e){d=[];} if(!d.length){list.innerHTML="";return;} list.innerHTML=d.map(it=>`<div class="ucapan-item"><strong>${esc(it.nama)}</strong><span class="ucapan-status">${esc(it.status)}</span><p>${esc(it.pesan)}</p></div>`).join(""); } render();
   if(form) form.addEventListener("submit",e=>{ e.preventDefault(); const nama=document.getElementById("namaTamu").value.trim(); const st=document.getElementById("statusKehadiran").value; const ps=document.getElementById("pesanUcapan").value.trim(); if(!nama||!st||!ps) return; let d=[]; try{d=JSON.parse(localStorage.getItem(KEY)||"[]");}catch(e){d=[];} d.unshift({nama,status:st,pesan:ps}); try{localStorage.setItem(KEY,JSON.stringify(d.slice(0,50)));}catch(e){} render(); form.reset(); alert("Terima kasih! Ucapan kamu sudah terkirim."); });
-  // ANIMASI 4 ARAH - PER ELEMEN, URUTAN DALAM SECTION
+  // ANIMASI NGULANG TIAP BARU DI-SCROLL
   const animated = Array.from(document.querySelectorAll(".anim-item"));
   if("IntersectionObserver" in window){
     const obs = new IntersectionObserver((entries)=>{
@@ -33,12 +33,14 @@ document.addEventListener("DOMContentLoaded", () => {
           const siblings = Array.from(section.querySelectorAll(".anim-item"));
           const idx = siblings.indexOf(en.target);
           const extra = en.target.classList.contains("anim-photo") ? 220 : 0;
-          setTimeout(()=>en.target.classList.add("is-shown"), idx*200 + extra);
-          obs.unobserve(en.target);
+          clearTimeout(en.target._animTimer);
+          en.target._animTimer = setTimeout(()=>en.target.classList.add("is-shown"), idx*120 + extra);
+        } else {
+          clearTimeout(en.target._animTimer);
+          en.target.classList.remove("is-shown");
         }
       });
     },{threshold:0.12, rootMargin:"0px 0px -30px 0px"});
     animated.forEach(el=>obs.observe(el));
   } else { animated.forEach(el=>el.classList.add("is-shown")); }
-  setTimeout(()=>{ animated.forEach((el,i)=>setTimeout(()=>el.classList.add("is-shown"), i*80)); },4000);
 });
