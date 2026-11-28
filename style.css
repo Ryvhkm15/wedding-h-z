@@ -265,3 +265,54 @@ footer>*{position:relative;z-index:2}
 footer p{max-width:520px;margin:0 auto 16px;font-family:var(--font-serif);font-size:1.05rem;line-height:1.7;color:#f3e6d3}
 footer h3{font-family:var(--font-serif);font-size:clamp(1.22rem,4.6vw,1.85rem);font-weight:600;letter-spacing:.18em;text-transform:uppercase;white-space:nowrap;background:linear-gradient(112deg,#d9be8c,#fff9e6 36%,#fff 50%,#f0cf8e 64%,#cfa55b);background-size:300% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:smoothShimmer 11s cubic-bezier(.37,0,.63,1) infinite,softAuraGlow 5s ease-in-out infinite}
 @media(max-width:768px){.gallery-grid{grid-template-columns:1fr;max-width:360px;margin:0 auto}.gallery-frame img{height:240px}.align-left,.align-right{text-align:center}.physical-gift-box{padding:22px 18px 18px}.wa-actions-group{gap:8px}.btn-wa-gift{font-size:.82rem}.closing-couple-names{font-size:clamp(2.1rem,8.5vw,2.8rem);gap:6px}.music-btn{bottom:12px;right:12px}.frame-inner-dashed{padding:42px 18px 32px}.ayat-arab-new{font-size:1.25rem}}
+/* ===== WARNA FONT MEWAH + KEBACA - GANTI PUTIH YANG NYARUH ===== */
+
+/* --- Love Story: background terang, font harus gelap --- */
+.section-love-story-green{ color:#2e2620 !important; }
+.love-story-heading{
+  background:linear-gradient(112deg,#7a5a1a,#b89a3a 35%,#8a6a22 50%,#5e4512 65%,#a8872e) !important;
+  -webkit-background-clip:text !important; background-clip:text !important; color:transparent !important;
+}
+.story-step{ background:rgba(255,253,248,.78); border:1px solid rgba(183,148,88,.45); border-radius:14px; padding:16px 18px 16px 18px; backdrop-filter:blur(2px); }
+.story-step-title{ color:#470c17 !important; }
+.story-step-text{ color:#2e2620 !important; }
+
+/* --- Galeri + RSVP: background terang --- */
+.gallery-classic-title{
+  background:linear-gradient(112deg,#470c17,#8a6a22 35%,#b89a3a 50%,#470c17) !important;
+  -webkit-background-clip:text !important; background-clip:text !important; color:transparent !important;
+}
+.gallery-classic-sub{ color:#4a3a2e !important; }
+.rsvp-last-title{
+  background:linear-gradient(112deg,#470c17,#8a6a22 35%,#c9a24b 50%,#470c17) !important;
+  -webkit-background-clip:text !important; background-clip:text !important; color:transparent !important;
+}
+.rsvp-last-subtitle{ color:#4a3a2e !important; }
+
+/* --- Mempelai / Save The Date / Gift: background gelap, font terang tapi dikasih bayangan biar gak nyaruh --- */
+.section-maroon, .section-save-date-green, .section-gift-maroon{ text-shadow:0 1px 8px rgba(0,0,0,.35); }
+.name-script{
+  background:linear-gradient(112deg,#e8c97e,#fff9e6 35%,#fff 50%,#e8c97e 65%,#b89a3a) !important;
+  -webkit-background-clip:text !important; background-clip:text !important; color:transparent !important;
+  filter:drop-shadow(0 2px 6px rgba(0,0,0,.45));
+}
+.parent-info{ color:#fff8ec !important; text-shadow:0 1px 6px rgba(0,0,0,.5); }
+.intro-note{ color:#fff6e8 !important; }
+.std-script-title, .detail-script-heading, .gift-script-heading{
+  background:linear-gradient(112deg,#e8c97e,#fffdf7 35%,#fff 50%,#e8c97e 65%,#b89a3a) !important;
+  -webkit-background-clip:text !important; background-clip:text !important; color:transparent !important;
+  filter:drop-shadow(0 2px 8px rgba(0,0,0,.5));
+}
+.std-month, .std-year, .detail-date-line, .detail-time-line, .detail-venue-name, .detail-address-line{ color:#fffaf0 !important; text-shadow:0 1px 6px rgba(0,0,0,.55); }
+.toward-happy-text{ color:#ffe9a8 !important; }
+.gift-maroon-text{ color:#fff6e8 !important; }
+.rek-maroon-num{ color:#fff !important; text-shadow:0 1px 6px rgba(0,0,0,.5); }
+.rek-maroon-bank, .rek-maroon-holder{ color:#ffe9c0 !important; }
+
+/* --- Penutup: kartunya terang, font di dalam kartu harus gelap --- */
+.closing-message{ color:#2e2620 !important; }
+.closing-until-meet{ color:#7a5a1a !important; }
+.closing-couple-names{
+  background:linear-gradient(112deg,#470c17,#8a6a22 35%,#b89a3a 50%,#470c17) !important;
+  -webkit-background-clip:text !important; background-clip:text !important; color:transparent !important;
+}
