@@ -531,3 +531,105 @@ footer h3{font-family:var(--font-script);font-size:2.1rem;font-weight:400;color:
     padding-bottom:96px;
   }
 }
+/* === EFEK BERKILAU (HERLANGGA & ZALSA + ARAB) === */
+@keyframes shimmerGold{
+  0%{background-position:200% center}
+  100%{background-position:-200% center}
+}
+
+@keyframes arabShimmerGlow{
+  0%,100%{
+    text-shadow:0 0 8px rgba(245,226,186,.35),0 0 18px rgba(217,190,140,.22);
+    filter:brightness(1);
+  }
+  50%{
+    text-shadow:0 0 14px rgba(255,248,220,.9),0 0 28px rgba(217,190,140,.65);
+    filter:brightness(1.14);
+  }
+}
+
+/* 1. Judul Utama Herlangga & Zalsa */
+.couple-script,
+.closing-couple-names{
+  background:linear-gradient(
+    115deg,
+    #fffdf8 0%,
+    #f5e2ba 28%,
+    #ffffff 50%,
+    #e2be7a 72%,
+    #fffdf8 100%
+  );
+  background-size:220% auto;
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  animation:shimmerGold 5.5s linear infinite;
+  filter:drop-shadow(0 2px 12px rgba(217,190,140,.32));
+}
+
+/* Jika di tema Emerald / Botanical latar belakangnya terang, perkuat kontras bayangan */
+body[data-wedding-theme="emerald"] .couple-script,
+body[data-wedding-theme="botanical"] .couple-script{
+  background:linear-gradient(
+    115deg,
+    #5c1422 0%,
+    #9e6b24 28%,
+    #fff5d6 50%,
+    #6e1828 72%,
+    #5c1422 100%
+  );
+  background-size:220% auto;
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  filter:drop-shadow(0 2px 10px rgba(255,250,240,.85));
+}
+
+/* 2. Nama di bagian Mempelai */
+.name-script{
+  background:linear-gradient(
+    110deg,
+    #d9be8c 0%,
+    #fff9e6 45%,
+    #f0cf8e 55%,
+    #cfa55b 100%
+  );
+  background-size:220% auto;
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  animation:shimmerGold 6s linear infinite;
+}
+
+/* 3. Tulisan Arab Berkilaunya */
+.ayat-arab,
+.bismillah-calligraphy{
+  background:linear-gradient(
+    110deg,
+    #c89d54 0%,
+    #fff8e1 35%,
+    #ffffff 50%,
+    #e5be78 65%,
+    #b6893e 100%
+  );
+  background-size:220% auto;
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  animation:shimmerGold 6.5s linear infinite, arabShimmerGlow 3.2s ease-in-out infinite;
+  padding-top:4px;
+  padding-bottom:4px;
+}
+
+@media (prefers-reduced-motion: reduce){
+  .couple-script,
+  .closing-couple-names,
+  .name-script,
+  .ayat-arab,
+  .bismillah-calligraphy{
+    animation:none;
+    background:none;
+    color:var(--gold-bright);
+    filter:none;
+  }
+}
