@@ -1,331 +1,295 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Undangan Pernikahan - Herlangga &amp; Zalsa</title>
-<meta name="description" content="Undangan pernikahan digital Herlangga Aprilyansah &amp; Zalsa Nabila Putri, S.E. — Sabtu, 27 Maret 2027 di Jakarta.">
-<meta property="og:title" content="Undangan Pernikahan - Herlangga &amp; Zalsa">
-<meta property="og:description" content="Sabtu, 27 Maret 2027 • Yayasan Darul Aitama, Jakarta Pusat.">
-<meta property="og:type" content="website">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Great+Vibes&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=20261160">
-</head>
-<body data-wedding-theme="emerald">
+document.addEventListener("DOMContentLoaded", () => {
+  const params = new URLSearchParams(window.location.search);
+  const to = params.get("to") || params.get("nama") || params.get("guest");
+  if (to) {
+    const guestEl = document.getElementById("guestName");
+    if (guestEl) guestEl.textContent = decodeURIComponent(to.replace(/\+/g, " "));
+    const namaInput = document.getElementById("namaTamu");
+    if (namaInput && !namaInput.value) namaInput.value = decodeURIComponent(to.replace(/\+/g, " "));
+  }
+  const curtain = document.getElementById("openingCurtain");
+  const badge = document.querySelector(".curtain-crest-badge");
+  let curtainOpened = false;
+  let curtainDoneTimer = null;
+  function openCurtain() {
+    if (!curtain || curtainOpened || curtain.classList.contains("is-done")) return;
+    curtainOpened = true;
+    curtain.classList.add("is-opening");
+    curtain.setAttribute("aria-hidden", "true");
+    clearTimeout(curtainDoneTimer);
+    curtainDoneTimer = setTimeout(() => {
+      curtain.classList.add("is-done");
+    }, 1250);
+  }
+  if (badge) badge.addEventListener("click", openCurtain);
+  if (curtain) curtain.addEventListener("click", (e) => { if (e.target === curtain || e.target.closest(".curtain-panel")) openCurtain(); });
+  setTimeout(openCurtain, 6000);
 
-<!-- TIRAI -->
-<div class="opening-curtain" id="openingCurtain" role="dialog" aria-label="Tirai Pembuka Undangan">
-  <div class="curtain-panel curtain-panel-left"><span class="curtain-gold-trim"></span></div>
-  <button type="button" class="curtain-crest-badge" aria-label="Buka Tirai Undangan">
-    <span>H &amp; Z</span><small>WELCOME</small>
-  </button>
-  <div class="curtain-panel curtain-panel-right"><span class="curtain-gold-trim"></span></div>
-</div>
-
-<div class="scroll-progress-bar" id="scrollProgressBar" aria-hidden="true"></div>
-
-<div class="theme-switcher" role="group" aria-label="Pilih tema tampilan undangan">
-  <button type="button" class="theme-chip is-active" data-theme="emerald" aria-pressed="true">Emerald</button>
-  <button type="button" class="theme-chip" data-theme="velvet" aria-pressed="false">Velvet</button>
-  <button type="button" class="theme-chip" data-theme="botanical" aria-pressed="false">Botanical</button>
-</div>
-
-<!-- 1. COVER -->
-<section class="hero-envelope anim-section" id="cover">
-  <div class="envelope-wrapper">
-    <div class="envelope-header anim-item">
-      <p class="script-top text-rise reveal-blur">We're</p>
-      <h2 class="spaced-title text-rise reveal-blur">Getting Married</h2>
-      <h1 class="couple-script text-rise reveal-zoom" id="display-nama-pasangan">Herlangga &amp; Zalsa</h1>
-      <p class="date-mini text-rise reveal-up">Sabtu, 27 Maret 2027</p>
-      <p class="guest-mini text-rise reveal-up">Kepada Yth: <strong id="guestName">Tamu Undangan</strong></p>
-    </div>
-    <button type="button" id="openInvitationBtn" class="envelope-trigger anim-item reveal-zoom" aria-label="Buka atau tutup amplop undangan" aria-expanded="false">
-      <div class="envelope-card" id="hero-envelope-card">
-        <div class="envelope-pocket-inside">
-          <span class="pocket-monogram" id="display-monogram-amplop">H &amp; Z</span>
-          <span class="pocket-sub">Undangan Pernikahan</span>
-        </div>
-        <div class="envelope-back-lining"></div>
-        <div class="envelope-flap-lace"></div>
-        <div class="envelope-gold-trim"></div>
-        <div class="wax-seal" id="hero-wax-seal" title="Klik amplop untuk membuka">✦</div>
-      </div>
-      <span class="click-hint" id="envelope-hint-text">CLICK ENVELOPE TO OPEN</span>
-    </button>
-  </div>
-</section>
-
-<audio id="bgMusic" loop preload="metadata">
-  <source src="lagu.mp3.mp3" type="audio/mpeg">
-</audio>
-<button type="button" id="musicToggleBtn" class="music-btn" aria-label="Putar atau jeda musik" aria-pressed="false">♫ Musik: Off</button>
-
-<!-- 2. AYAT -->
-<section class="section-doily-emerald anim-section" id="ayat-pilihan">
-  <div class="doily-scene anim-item">
-    <div class="top-ornament-line light" aria-hidden="true"><span></span><i>✦</i><span></span></div>
-    <div class="ar-rum-arch-outer reveal-zoom video-reveal">
-      <div class="ar-rum-arch-inner">
-        <span class="arch-corner ac-tl" aria-hidden="true">✦</span>
-        <span class="arch-corner ac-tr" aria-hidden="true">✦</span>
-        <span class="arch-corner ac-bl" aria-hidden="true">✦</span>
-        <span class="arch-corner ac-br" aria-hidden="true">✦</span>
-        <p class="ayat-arab text-rise reveal-blur" lang="ar" dir="rtl" aria-hidden="true">وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُمْ مِنْ أَنْفُسِكُمْ أَزْوَاجًا</p>
-        <p class="ayat-text text-rise reveal-up" id="display-ayat-teks">"Dan di antara tanda-tanda (kebesaran)-Nya ialah Dia menciptakan pasangan-pasangan untukmu dari jenismu sendiri, agar kamu cenderung dan merasa tenteram kepadanya, dan Dia menjadikan di antaramu rasa kasih dan sayang. Sungguh, pada yang demikian itu benar-benar terdapat tanda-tanda (kebesaran Allah) bagi kaum yang berpikir."</p>
-        <div class="ayat-divider" aria-hidden="true"><span>✦</span></div>
-      </div>
-    </div>
-    <div class="tassel-maroon" aria-hidden="true"></div>
-    <div class="bottom-envelope-pocket reveal-up video-reveal" id="ayat-envelope-pocket">
-      <div class="pocket-flap-accent"></div>
-      <div class="pocket-label">Sakinah • Mawaddah • Warahmah</div>
-    </div>
-  </div>
-</section>
-
-<!-- 3. MEMPELAI -->
-<section class="section-maroon anim-section" id="mempelai">
-  <div class="maroon-container">
-    <p class="bismillah-calligraphy text-rise reveal-blur" id="display-bismillah" lang="ar" dir="rtl">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيم</p>
-    <p class="intro-note text-rise reveal-up">Dengan memohon rahmat &amp; ridho Allah SWT, kami mengundang bapak/ibu/saudara/i untuk hadir pada pernikahan:</p>
-    <div class="profile-row anim-item">
-      <div class="oval-frame-wrap reveal-left video-reveal">
-        <span class="corner-ornament tl" aria-hidden="true">✦</span>
-        <span class="corner-ornament tr" aria-hidden="true">✦</span>
-        <span class="corner-ornament bl" aria-hidden="true">✦</span>
-        <span class="corner-ornament br" aria-hidden="true">✦</span>
-        <div class="oval-photo"><img src="pria.jpg" alt="Foto Mempelai Pria - Herlangga Aprilyansah" loading="lazy"></div>
-      </div>
-      <div class="profile-text align-left">
-        <h3 class="name-script text-rise reveal-right">Herlangga Aprilyansah</h3>
-        <p class="parent-info text-rise reveal-up" id="display-ortu-pria">Putra Pertama dari<br>Bapak Ramlan<br>&amp; Ibu Hernawati</p>
-      </div>
-    </div>
-    <div class="ampersand-maroon anim-item reveal-zoom" aria-hidden="true">&amp;</div>
-    <div class="profile-row reverse-mobile anim-item">
-      <div class="profile-text align-right">
-        <h3 class="name-script text-rise reveal-left">Zalsa Nabila Putri, S.E.</h3>
-        <p class="parent-info text-rise reveal-up" id="display-ortu-wanita">Putri Pertama dari<br>Bapak Yudi Himawan<br>&amp; Ibu Indri Rastuti</p>
-      </div>
-      <div class="oval-frame-wrap reveal-right video-reveal">
-        <span class="corner-ornament tl" aria-hidden="true">✦</span>
-        <span class="corner-ornament tr" aria-hidden="true">✦</span>
-        <span class="corner-ornament bl" aria-hidden="true">✦</span>
-        <span class="corner-ornament br" aria-hidden="true">✦</span>
-        <div class="oval-photo"><img src="wanita.jpg" alt="Foto Mempelai Wanita - Zalsa Nabila Putri, S.E." loading="lazy"></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- 4. SAVE THE DATE -->
-<section class="section-save-date-green anim-section" id="save-the-date">
-  <div class="sparkle-field" id="std-sparkles" aria-hidden="true"></div>
-  <div class="top-ornament-line light anim-item" aria-hidden="true"><span></span><i>✦</i><span></span></div>
-  <div class="std-block anim-item">
-    <h2 class="std-script-title text-rise reveal-blur"><span class="std-line-main">Save</span><span class="std-line-sub">the</span><span class="std-line-main">Date</span></h2>
-    <p class="std-month text-rise reveal-up" id="display-std-bulan">MARET</p>
-    <div class="std-date-split reveal-zoom video-reveal">
-      <div class="std-side-item"><span class="std-side-script">Akad</span><small id="display-std-jam-akad">Pukul 16.00 WIB</small></div>
-      <div class="std-day-number glow-blink" id="display-std-tanggal">27</div>
-      <div class="std-side-item"><span class="std-side-script">Resepsi</span><small id="display-std-jam-resepsi">Pukul 19.00 - 21.00 WIB</small></div>
-    </div>
-    <p class="std-year reveal-up" id="display-std-tahun">2027</p>
-    <p class="std-time-summary" id="display-std-waktu-lengkap"></p>
-    <p class="toward-happy-text text-rise reveal-up">menuju hari bahagia kami</p>
-    <div class="countdown reveal-zoom video-reveal" id="countdown" aria-live="off">
-      <div><span id="days">00</span><small>Hari</small></div>
-      <div><span id="hours">00</span><small>Jam</small></div>
-      <div><span id="minutes">00</span><small>Menit</small></div>
-      <div><span id="seconds">00</span><small>Detik</small></div>
-    </div>
-    <button type="button" id="addToCalendarBtn" class="btn-calendar-outline reveal-up"><span>✦</span> Simpan ke Kalender</button>
-    <div class="venue-illustration reveal-zoom video-reveal" aria-hidden="true">
-      <svg viewBox="0 0 560 155" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="25" y1="142" x2="535" y2="142" stroke="#d5dfd8" stroke-width="2" stroke-linecap="round"/><rect x="42" y="64" width="130" height="78" fill="#cbd6ce" stroke="#edf3ee" stroke-width="1.8"/><polygon points="34,64 107,32 180,64" fill="#dbe4dd" stroke="#edf3ee" stroke-width="1.8"/><rect x="62" y="78" width="16" height="22" fill="#6b8072"/><rect x="99" y="78" width="16" height="22" fill="#6b8072"/><rect x="136" y="78" width="16" height="22" fill="#6b8072"/><rect x="62" y="109" width="16" height="22" fill="#6b8072"/><rect x="99" y="109" width="16" height="22" fill="#6b8072"/><rect x="136" y="109" width="16" height="22" fill="#6b8072"/><rect x="172" y="48" width="216" height="94" fill="#d5dfd8" stroke="#edf3ee" stroke-width="1.8"/><polygon points="166,48 280,18 394,48" fill="#e2eae4" stroke="#edf3ee" stroke-width="1.8"/><rect x="262" y="102" width="36" height="40" fill="#7c9183"/><rect x="196" y="66" width="18" height="24" fill="#6b8072"/><rect x="232" y="66" width="18" height="24" fill="#6b8072"/><rect x="310" y="66" width="18" height="24" fill="#6b8072"/><rect x="346" y="66" width="18" height="24" fill="#6b8072"/><rect x="196" y="102" width="18" height="24" fill="#6b8072"/><rect x="346" y="102" width="18" height="24" fill="#6b8072"/><rect x="388" y="64" width="130" height="78" fill="#cbd6ce" stroke="#edf3ee" stroke-width="1.8"/><polygon points="380,64 453,32 526,64" fill="#dbe4dd" stroke="#edf3ee" stroke-width="1.8"/><rect x="408" y="78" width="16" height="22" fill="#6b8072"/><rect x="445" y="78" width="16" height="22" fill="#6b8072"/><rect x="482" y="78" width="16" height="22" fill="#6b8072"/><rect x="408" y="109" width="16" height="22" fill="#6b8072"/><rect x="445" y="109" width="16" height="22" fill="#6b8072"/><rect x="482" y="109" width="16" height="22" fill="#6b8072"/><ellipse cx="182" cy="112" rx="14" ry="30" fill="#e6eee8"/><ellipse cx="378" cy="112" rx="14" ry="30" fill="#e6eee8"/><ellipse cx="280" cy="143" rx="46" ry="8" fill="#dbe4dd" stroke="#edf3ee" stroke-width="1.5"/><path d="M266 142 Q280 124 294 142" stroke="#f4f8f5" stroke-width="2" fill="none"/></svg>
-    </div>
-  </div>
-  <hr class="green-divider">
-  <div class="detail-session-block anim-item reveal-up video-reveal">
-    <h3 class="detail-script-heading text-rise reveal-blur">Akad</h3>
-    <p class="detail-date-line">Sabtu, 27 Maret 2027</p>
-    <p class="detail-time-line">16.00 WIB</p>
-    <p class="detail-venue-name">YAYASAN DARUL AITAMA</p>
-    <p class="detail-address-line">Jl. K.H. Mas Mansyur No.47, Kb. Melati,<br>Kec. Tanah Abang, Kota Jakarta Pusat,<br>Daerah Khusus Ibukota Jakarta 10230</p>
-  </div>
-  <div class="botanical-flourish anim-item" aria-hidden="true"><span></span><i>✦</i><span></span></div>
-  <div class="detail-session-block anim-item reveal-up video-reveal">
-    <h3 class="detail-script-heading text-rise reveal-blur">Resepsi</h3>
-    <p class="detail-date-line">Sabtu, 27 Maret 2027</p>
-    <p class="detail-time-line">19.00 WIB - 21.00 WIB</p>
-    <p class="detail-venue-name">YAYASAN DARUL AITAMA</p>
-    <p class="detail-address-line">Jl. K.H. Mas Mansyur No.47, Kb. Melati,<br>Kec. Tanah Abang, Kota Jakarta Pusat,<br>Daerah Khusus Ibukota Jakarta 10230</p>
-    <a href="https://maps.app.goo.gl/vtc6LVVJoQGudwiw7" target="_blank" rel="noopener noreferrer" class="btn-maroon-pill">Lihat Lokasi Maps</a>
-  </div>
-</section>
-
-<!-- 5. GIFT -->
-<section class="section-gift-maroon anim-section" id="wedding-gift">
-  <div class="top-ornament-line light anim-item" aria-hidden="true"><span></span><i>✦</i><span></span></div>
-  <div class="gift-maroon-inner anim-item">
-    <h2 class="gift-script-heading text-rise reveal-blur">Wedding Gift</h2>
-    <div class="gift-wrap-decor reveal-zoom" aria-hidden="true">
-      <svg viewBox="0 0 120 112" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M60 28 C46 11, 24 14, 28 28 C31 36, 48 34, 60 28 Z" fill="#e6c88c" stroke="#fff7e3" stroke-width="1.5"/><path d="M60 28 C74 11, 96 14, 92 28 C89 36, 72 34, 60 28 Z" fill="#e6c88c" stroke="#fff7e3" stroke-width="1.5"/><circle cx="60" cy="28" r="6" fill="#9b1831" stroke="#fff7e3" stroke-width="1.5"/><rect x="20" y="34" width="80" height="18" rx="4" fill="#fbf3e4" stroke="#d9be8c" stroke-width="1.8"/><rect x="53" y="34" width="14" height="18" fill="#c99f57"/><rect x="25" y="52" width="70" height="48" rx="5" fill="#f5ead4" stroke="#d9be8c" stroke-width="1.8"/><rect x="53" y="52" width="14" height="48" fill="#d9be8c"/><line x1="25" y1="68" x2="95" y2="68" stroke="#c99f57" stroke-width="1.2" stroke-dasharray="4 4"/></svg>
-    </div>
-    <p class="gift-maroon-text text-rise reveal-up">Doa restu dan kehadiran Anda merupakan<br>karunia yang sangat berarti bagi kami.</p>
-    <p class="gift-maroon-text text-rise reveal-up">Namun, jika memberi adalah ungkapan tanda kasih,<br>Anda dapat memberi melalui dibawah ini.</p>
-    <div class="rek-maroon-item reveal-left video-reveal">
-      <p class="rek-maroon-num">1110293867</p>
-      <p class="rek-maroon-bank">BCA</p>
-      <p class="rek-maroon-holder">a.n Herlangga Aprilyansah</p>
-      <button type="button" class="btn-olive-copy" data-copy="1110293867" aria-label="Salin nomor rekening BCA"><span class="copy-label">Copy</span></button>
-    </div>
-    <div class="rek-maroon-item reveal-right video-reveal">
-      <p class="rek-maroon-num">4183269335</p>
-      <p class="rek-maroon-bank">PERMATA BANK</p>
-      <p class="rek-maroon-holder">a.n Zalsa Nabila Putri</p>
-      <button type="button" class="btn-olive-copy" data-copy="4183269335" aria-label="Salin nomor rekening Permata Bank"><span class="copy-label">Copy</span></button>
-    </div>
-    <p class="gift-maroon-text gift-closing-note text-rise reveal-up">Dan bisa mengirim dalam bentuk fisik<br>bisa kirim melalui alamat dibawah dan konfirmasi<br>ke nomor berikut:</p>
-    <div class="physical-gift-box reveal-zoom video-reveal">
-      <div class="physical-line"><strong>Penerima</strong><span>Herlangga &amp; Zalsa</span></div>
-      <div class="physical-line"><strong>Alamat</strong><span>Jl. Ks Tubun IV Rt 04 Rw 07 No 31, Slipi Jakarta Barat</span></div>
-      <div class="physical-line"><strong>WhatsApp</strong>
-        <div class="wa-contact-stack">
-          <div class="wa-contact-row"><span class="wa-contact-num">0895331933432</span><span class="wa-contact-owner">(a.n Zalsa)</span></div>
-          <div class="wa-contact-row"><span class="wa-contact-num">081212798828</span><span class="wa-contact-owner">(a.n Herlangga)</span></div>
-        </div>
-      </div>
-      <div class="wa-actions-group">
-        <a href="https://wa.me/62895331933432?text=Halo%20Zalsa%2C%20saya%20ingin%20konfirmasi%20pengiriman%20kado%20pernikahan%20untuk%20Herlangga%20%26%20Zalsa." target="_blank" rel="noopener noreferrer" class="btn-wa-gift">WhatsApp Zalsa</a>
-        <a href="https://wa.me/6281212798828?text=Halo%20Herlangga%2C%20saya%20ingin%20konfirmasi%20pengiriman%20kado%20pernikahan%20untuk%20Herlangga%20%26%20Zalsa." target="_blank" rel="noopener noreferrer" class="btn-wa-gift">WhatsApp Herlangga</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- 6. LOVE STORY -->
-<section class="section-love-story-green anim-section" id="love-story">
-  <div class="love-story-inner">
-    <div class="polaroid-duo-wrap anim-item reveal-zoom video-reveal">
-      <figure class="polaroid-card polaroid-left"><img src="pria.jpg" alt="Foto Kisah Cinta 1" loading="lazy"></figure>
-      <figure class="polaroid-card polaroid-right"><img src="wanita.jpg" alt="Foto Kisah Cinta 2" loading="lazy"><span class="polaroid-corner-tag" aria-hidden="true">01 &amp; 02</span></figure>
-      <span class="polaroid-wax-badge" aria-hidden="true">✦</span>
-    </div>
-    <h2 class="love-story-heading text-rise reveal-blur">Love Story</h2>
-    <div class="story-timeline">
-      <div class="story-step anim-item reveal-left video-reveal">
-        <span class="story-marker" aria-hidden="true">✦</span>
-        <h3 class="story-step-title text-rise">Awal Pertemuan</h3>
-        <p class="story-step-text text-rise">Tidak ada yang benar-benar kebetulan di dunia ini. Setiap pertemuan telah diatur dengan indah, hanya menunggu waktu yang tepat untuk terjadi. Berawal dari sebuah perkenalan sederhana, tanpa banyak rencana atau harapan berlebihan, kami dipertemukan dalam cara yang tidak pernah kami duga sebelumnya.</p>
-      </div>
-      <div class="story-step anim-item reveal-right video-reveal">
-        <span class="story-marker" aria-hidden="true">✦</span>
-        <h3 class="story-step-title text-rise">Perjalanan Bersama</h3>
-        <p class="story-step-text text-rise">Seiring berjalannya waktu, kebersamaan kecil yang kami lalui perlahan tumbuh menjadi sesuatu yang lebih berarti. Dalam setiap cerita, tentu ada tawa, ada juga tantangan. Namun dari situlah kami belajar untuk saling memahami, menerima, dan melengkapi satu sama lain.</p>
-      </div>
-      <div class="story-step story-step-last anim-item reveal-left video-reveal">
-        <span class="story-marker" aria-hidden="true">✦</span>
-        <h3 class="story-step-title text-rise">Komitmen</h3>
-        <p class="story-step-text text-rise">Hingga akhirnya kami menyadari bahwa perjalanan ini bukan lagi tentang dua orang yang berjalan sendiri, melainkan tentang dua hati yang memilih untuk melangkah bersama. Dengan penuh rasa syukur dan keyakinan, kami memutuskan untuk mengikat janji suci dan memulai babak baru dalam kehidupan kami.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- 7. GALERI -->
-<section class="section-gallery-classic anim-section" id="galeri">
-  <div class="gallery-classic-inner">
-    <h2 class="gallery-classic-title text-rise reveal-blur">Galeri Momen</h2>
-    <p class="gallery-classic-sub text-rise reveal-up">Potret kecil penuh cinta menuju hari bahagia kami.</p>
-    <div class="gallery-grid">
-      <div class="gallery-frame anim-item reveal-zoom video-reveal delay-1"><img src="pria.jpg" alt="Galeri Momen 1" loading="lazy"></div>
-      <div class="gallery-frame anim-item reveal-zoom video-reveal delay-2"><img src="wanita.jpg" alt="Galeri Momen 2" loading="lazy"></div>
-      <div class="gallery-frame anim-item reveal-zoom video-reveal delay-3"><img src="pria.jpg" alt="Galeri Momen 3" loading="lazy"></div>
-    </div>
-  </div>
-</section>
-
-<div class="photo-lightbox" id="photoLightbox" role="dialog" aria-modal="true" aria-label="Preview foto momen" aria-hidden="true">
-  <div class="photo-lightbox-content">
-    <button type="button" class="photo-lightbox-close" id="photoLightboxClose" aria-label="Tutup preview foto">✕</button>
-    <img id="photoLightboxImg" src="" alt="Preview Foto Momen">
-  </div>
-</div>
-
-<!-- 8. PENUTUP -->
-<section class="section-closing-envelope anim-section" id="penutup">
-  <div class="top-ornament-line light anim-item" aria-hidden="true"><span></span><i>✦</i><span></span></div>
-  <div class="closing-scene anim-item">
-    <div class="closing-card-frame reveal-zoom video-reveal">
-      <span class="closing-crest" aria-hidden="true">✦</span>
-      <p class="closing-message text-rise reveal-up">Menjadi sebuah kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir dalam hari bahagia kami. Terimakasih atas segala ucapan, doa, dan perhatian yang diberikan.</p>
-      <p class="closing-until-meet text-rise reveal-up">Sampai jumpa di hari pernikahan kami!</p>
-      <div class="closing-couple-names reveal-blur"><span>Herlangga</span><span class="closing-amp">&amp;</span><span>Zalsa</span></div>
-    </div>
-    <div class="closing-tassel" aria-hidden="true"></div>
-    <div class="closing-envelope-base reveal-up video-reveal">
-      <div class="closing-envelope-flap"></div>
-      <div class="closing-pocket-tag">WITH LOVE</div>
-    </div>
-  </div>
-</section>
-
-<!-- 9. RSVP -->
-<section class="section-rsvp-last anim-section" id="ucapan">
-  <div class="rsvp-last-container anim-item">
-    <h2 class="rsvp-last-title text-rise reveal-blur">Ucapan &amp; Konfirmasi Hadir</h2>
-    <p class="rsvp-last-subtitle text-rise reveal-up">Kirimkan doa restu serta konfirmasi kehadiran Anda.</p>
-    <form id="rsvpForm" class="rsvp-card-form reveal-zoom video-reveal">
-      <label for="namaTamu" class="sr-only">Nama Anda</label>
-      <input type="text" id="namaTamu" name="namaTamu" placeholder="Nama Anda" autocomplete="name" required>
-      <label for="statusKehadiran" class="sr-only">Konfirmasi Kehadiran</label>
-      <select id="statusKehadiran" name="statusKehadiran" required>
-        <option value="">Pilih Konfirmasi Kehadiran</option>
-        <option value="Hadir">Hadir</option>
-        <option value="Tidak Hadir">Tidak Hadir</option>
-        <option value="Masih Ragu">Masih Ragu</option>
-      </select>
-      <label for="pesanUcapan" class="sr-only">Ucapan dan Doa</label>
-      <textarea id="pesanUcapan" name="pesanUcapan" rows="3" placeholder="Tulis ucapan dan doa untuk mempelai..." required></textarea>
-      <button type="submit" class="btn-rsvp-tan">Kirim Ucapan</button>
-    </form>
-    <div id="ucapanList" class="ucapan-list" aria-live="polite"></div>
-  </div>
-</section>
-
-<footer class="anim-section">
-  <div class="anim-item reveal-up">
-    <p class="text-rise">Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir.</p>
-    <h3>HERLANGGA &amp; ZALSA</h3>
-  </div>
-</footer>
-
-<!-- DARURAT TIRAI - JANGAN DIHAPUS -->
-<script>
-  (function () {
-    var curtainTimer;
-    function openEmergencyCurtain() {
-      var c = document.getElementById('openingCurtain');
-      if (!c || c.classList.contains('is-done')) return;
-      c.classList.add('is-opening');
-      c.setAttribute('aria-hidden', 'true');
-      clearTimeout(curtainTimer);
-      curtainTimer = setTimeout(function () {
-        c.classList.add('is-done');
-      }, 1250);
-    }
-    setTimeout(openEmergencyCurtain, 4500);
-    document.addEventListener('click', function (e) {
-      var badge = e.target && e.target.closest ? e.target.closest('.curtain-crest-badge') : null;
-      if (badge) {
-        openEmergencyCurtain();
+  const envelopeBtn = document.getElementById("openInvitationBtn");
+  const hint = document.getElementById("envelope-hint-text");
+  let envelopeOpen = false;
+  if (envelopeBtn) {
+    envelopeBtn.addEventListener("click", () => {
+      envelopeOpen = !envelopeOpen;
+      envelopeBtn.classList.toggle("is-open", envelopeOpen);
+      if (hint) hint.textContent = envelopeOpen ? "CLICK ENVELOPE TO CLOSE" : "CLICK ENVELOPE TO OPEN";
+      if (envelopeOpen) {
+        setTimeout(() => {
+          const ayat = document.getElementById("ayat-pilihan");
+          if (ayat) ayat.scrollIntoView({ behavior: "smooth", block: "start" });
+        }, 900);
       }
     });
-  })();
-</script>
-<script src="script.js?v=20261160"></script>
-</body>
-</html>
+  }
+
+  const music = document.getElementById("bgMusic");
+  const musicBtn = document.getElementById("musicToggleBtn");
+  let musicOn = false;
+  async function toggleMusic() {
+    if (!music) return;
+    try {
+      if (musicOn) { music.pause(); musicOn = false; }
+      else { await music.play(); musicOn = true; }
+      if (musicBtn) musicBtn.textContent = musicOn ? "♫ Musik: On" : "♫ Musik: Off";
+    } catch (e) {}
+  }
+  if (musicBtn) musicBtn.addEventListener("click", toggleMusic);
+
+  const chips = document.querySelectorAll(".theme-chip");
+  chips.forEach((chip) => {
+    chip.addEventListener("click", () => {
+      chips.forEach((c) => c.classList.remove("is-active"));
+      chip.classList.add("is-active");
+      document.body.setAttribute("data-wedding-theme", chip.dataset.theme);
+    });
+  });
+
+  const progress = document.getElementById("scrollProgressBar");
+  function onScroll() {
+    const h = document.documentElement;
+    const max = h.scrollHeight - h.clientHeight;
+    if (progress && max > 0) progress.style.width = (h.scrollTop / max * 100) + "%";
+  }
+  window.addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
+
+  const target = new Date("2027-03-27T16:00:00+07:00").getTime();
+  const dEl = document.getElementById("days");
+  const hEl = document.getElementById("hours");
+  const mEl = document.getElementById("minutes");
+  const sEl = document.getElementById("seconds");
+  function tick() {
+    if (!dEl) return;
+    let diff = target - Date.now();
+    if (diff < 0) diff = 0;
+    const d = Math.floor(diff / 86400000);
+    const h = Math.floor((diff % 86400000) / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+    dEl.textContent = String(d).padStart(2, "0");
+    hEl.textContent = String(h).padStart(2, "0");
+    mEl.textContent = String(m).padStart(2, "0");
+    sEl.textContent = String(s).padStart(2, "0");
+  }
+  tick();
+  setInterval(tick, 1000);
+
+  const sparkleBox = document.getElementById("std-sparkles");
+  if (sparkleBox && window.innerWidth > 768) {
+    for (let i = 0; i < 22; i++) {
+      const el = document.createElement("span");
+      const isStar = i % 2 === 0;
+      el.className = isStar ? "sparkle-star" : "sparkle-dot";
+      el.textContent = isStar ? "✦" : "";
+      el.style.left = Math.random() * 100 + "%";
+      el.style.top = Math.random() * 100 + "%";
+      el.style.fontSize = (8 + Math.random() * 10) + "px";
+      el.style.setProperty("--dur", (2 + Math.random() * 2) + "s");
+      el.style.setProperty("--delay", (Math.random() * 2) + "s");
+      if (!isStar) { el.style.width = "5px"; el.style.height = "5px"; }
+      sparkleBox.appendChild(el);
+    }
+  }
+
+  document.querySelectorAll(".btn-olive-copy").forEach((btn) => {
+    btn.addEventListener("click", async () => {
+      const text = btn.dataset.copy || "";
+      try { await navigator.clipboard.writeText(text); } catch (e) {
+        const ta = document.createElement("textarea");
+        ta.value = text; document.body.appendChild(ta); ta.select();
+        document.execCommand("copy"); ta.remove();
+      }
+      const label = btn.querySelector(".copy-label");
+      if (label) label.textContent = "Tersalin!";
+      btn.classList.add("copied");
+      setTimeout(() => { if (label) label.textContent = "Copy"; btn.classList.remove("copied"); }, 1800);
+    });
+  });
+
+  const calBtn = document.getElementById("addToCalendarBtn");
+  if (calBtn) {
+    calBtn.addEventListener("click", () => {
+      const title = encodeURIComponent("Pernikahan Herlangga & Zalsa");
+      const desc = encodeURIComponent("Akad 16.00 WIB - Resepsi 19.00-21.00 WIB di Yayasan Darul Aitama, Jakarta Pusat");
+      const loc = encodeURIComponent("Yayasan Darul Aitama, Jl. K.H. Mas Mansyur No.47, Jakarta Pusat");
+      window.open(`https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=20270327T090000Z/20270327T140000Z&details=${desc}&location=${loc}`, "_blank");
+    });
+  }
+
+  const lightbox = document.getElementById("photoLightbox");
+  const lightboxImg = document.getElementById("photoLightboxImg");
+  const lightboxClose = document.getElementById("photoLightboxClose");
+  document.querySelectorAll(".gallery-frame img").forEach((img) => {
+    img.addEventListener("click", () => {
+      if (!lightbox || !lightboxImg) return;
+      lightboxImg.src = img.src;
+      lightbox.classList.add("is-open");
+      lightbox.setAttribute("aria-hidden", "false");
+    });
+  });
+  function closeLightbox() {
+    if (!lightbox) return;
+    lightbox.classList.remove("is-open");
+    lightbox.setAttribute("aria-hidden", "true");
+  }
+  if (lightboxClose) lightboxClose.addEventListener("click", closeLightbox);
+  if (lightbox) lightbox.addEventListener("click", (e) => { if (e.target === lightbox) closeLightbox(); });
+
+  const form = document.getElementById("rsvpForm");
+  const list = document.getElementById("ucapanList");
+  const KEY = "ucapan_herlangga_zalsa_v1";
+  function escapeHtml(str) {
+    return str.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  }
+  function renderUcapan() {
+    if (!list) return;
+    let data = [];
+    try { data = JSON.parse(localStorage.getItem(KEY) || "[]"); } catch (e) { data = []; }
+    if (!data.length) { list.innerHTML = ""; return; }
+    list.innerHTML = data.map((item) =>
+      `<div class="ucapan-item"><strong>${escapeHtml(item.nama)}</strong><span class="ucapan-status">${escapeHtml(item.status)}</span><p>${escapeHtml(item.pesan)}</p></div>`
+    ).join("");
+  }
+  renderUcapan();
+  if (form) {
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const nama = document.getElementById("namaTamu").value.trim();
+      const status = document.getElementById("statusKehadiran").value;
+      const pesan = document.getElementById("pesanUcapan").value.trim();
+      if (!nama || !status || !pesan) return;
+      let data = [];
+      try { data = JSON.parse(localStorage.getItem(KEY) || "[]"); } catch (e) { data = []; }
+      data.unshift({ nama, status, pesan });
+      try { localStorage.setItem(KEY, JSON.stringify(data.slice(0, 50))); } catch (e) {}
+      renderUcapan();
+      form.reset();
+      alert("Terima kasih! Ucapan kamu sudah terkirim.");
+    });
+  }
+
+  // === 3D TILT ===
+  function addTilt3D(selector, max = 12) {
+    const els = document.querySelectorAll(selector);
+    els.forEach((el) => {
+      el.addEventListener("touchmove", (e) => {
+        if (!e.touches[0]) return;
+        const rect = el.getBoundingClientRect();
+        const x = e.touches[0].clientX - rect.left;
+        const y = e.touches[0].clientY - rect.top;
+        const rx = ((y / rect.height) - 0.5) * -max;
+        const ry = ((x / rect.width) - 0.5) * max;
+        el.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+      }, { passive: true });
+      el.addEventListener("mousemove", (e) => {
+        const rect = el.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const rx = ((y / rect.height) - 0.5) * -max;
+        const ry = ((x / rect.width) - 0.5) * max;
+        el.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+      });
+      const reset = () => { el.style.transform = ""; };
+      el.addEventListener("mouseleave", reset);
+      el.addEventListener("touchend", reset);
+    });
+  }
+  addTilt3D(".envelope-card", 14);
+  addTilt3D(".oval-frame-wrap", 12);
+  addTilt3D(".polaroid-duo-wrap", 10);
+  addTilt3D(".gallery-frame", 12);
+  addTilt3D(".ar-rum-arch-outer", 8);
+  addTilt3D(".closing-card-frame", 8);
+  addTilt3D(".physical-gift-box", 8);
+
+  // === REVEAL AGAK LAMA & SMOOTH SAAT SCROLL ===
+  const animatedTargets = Array.from(document.querySelectorAll(
+    ".text-rise, .video-reveal, .reveal-up, .reveal-left, .reveal-right, .reveal-zoom, .reveal-blur"
+  ));
+
+  function showElementSmooth(el, delayMs = 0) {
+    if (!el || el.dataset.revealed === "1") return;
+    el.dataset.revealed = "1";
+    setTimeout(() => {
+      el.classList.add("is-shown", "is-visible", "is-in");
+    }, delayMs);
+  }
+
+  function revealBatch(elements) {
+    elements.forEach((el, idx) => {
+      showElementSmooth(el, Math.min(idx * 170, 680));
+    });
+  }
+
+  if ("IntersectionObserver" in window) {
+    const smoothObserver = new IntersectionObserver(
+      (entries) => {
+        const entering = entries
+          .filter((entry) => entry.isIntersecting)
+          .map((entry) => entry.target);
+
+        if (entering.length) {
+          revealBatch(entering);
+          entering.forEach((el) => smoothObserver.unobserve(el));
+        }
+      },
+      {
+        threshold: 0.14,
+        rootMargin: "0px 0px -36px 0px"
+      }
+    );
+
+    animatedTargets.forEach((el) => smoothObserver.observe(el));
+
+    let scrollCheckTimer = null;
+    window.addEventListener(
+      "scroll",
+      () => {
+        clearTimeout(scrollCheckTimer);
+        scrollCheckTimer = setTimeout(() => {
+          const vh = window.innerHeight || document.documentElement.clientHeight;
+          const newlyVisible = animatedTargets.filter((el) => {
+            if (el.dataset.revealed === "1") return false;
+            const rect = el.getBoundingClientRect();
+            return rect.top < vh * 0.86 && rect.bottom > 0;
+          });
+          if (newlyVisible.length) {
+            revealBatch(newlyVisible);
+            newlyVisible.forEach((el) => smoothObserver.unobserve(el));
+          }
+        }, 120);
+      },
+      { passive: true }
+    );
+  } else {
+    revealBatch(animatedTargets);
+  }
+
+  window.addEventListener("scroll", () => {
+    const hero = document.querySelector(".hero-envelope");
+    if (hero) {
+      const y = window.scrollY;
+      hero.style.backgroundPosition = `center ${y * 0.3}px`;
+    }
+  }, { passive: true });
+});
