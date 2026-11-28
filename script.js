@@ -18,6 +18,10 @@ document.addEventListener("DOMContentLoaded", () => {
   if (badge) badge.addEventListener("click", openCurtain);
   if (curtain) curtain.addEventListener("click", (e) => { if (e.target === curtain || e.target.closest(".curtain-panel")) openCurtain(); });
   setTimeout(openCurtain, 6000);
+  const music = document.getElementById("bgMusic"); const musicBtn = document.getElementById("musicToggleBtn"); let musicOn = false;
+  async function playMusic() { if (!music || musicOn) return; try { await music.play(); musicOn = true; if (musicBtn) musicBtn.textContent = "♫ Musik: On"; } catch (e) {} }
+  async function toggleMusic() { if (!music) return; try { if (musicOn) { music.pause(); musicOn = false; } else { await music.play(); musicOn = true; } if (musicBtn) musicBtn.textContent = musicOn ? "♫ Musik: On" : "♫ Musik: Off"; } catch (e) {} }
+  if (musicBtn) musicBtn.addEventListener("click", toggleMusic);
   const envelopeBtn = document.getElementById("openInvitationBtn");
   const hint = document.getElementById("envelope-hint-text");
   let envelopeOpen = false;
@@ -25,12 +29,12 @@ document.addEventListener("DOMContentLoaded", () => {
     envelopeBtn.addEventListener("click", () => {
       envelopeOpen = !envelopeOpen; envelopeBtn.classList.toggle("is-open", envelopeOpen);
       if (hint) hint.textContent = envelopeOpen ? "CLICK ENVELOPE TO CLOSE" : "CLICK ENVELOPE TO OPEN";
-      if (envelopeOpen) { setTimeout(() => { const ayat = document.getElementById("ayat-pilihan"); if (ayat) ayat.scrollIntoView({ behavior: "smooth", block: "start" }); }, 900); }
+      if (envelopeOpen) {
+        playMusic();
+        setTimeout(() => { const ayat = document.getElementById("ayat-pilihan"); if (ayat) ayat.scrollIntoView({ behavior: "smooth", block: "start" }); }, 900);
+      }
     });
   }
-  const music = document.getElementById("bgMusic"); const musicBtn = document.getElementById("musicToggleBtn"); let musicOn = false;
-  async function toggleMusic() { if (!music) return; try { if (musicOn) { music.pause(); musicOn = false; } else { await music.play(); musicOn = true; } if (musicBtn) musicBtn.textContent = musicOn ? "♫ Musik: On" : "♫ Musik: Off"; } catch (e) {} }
-  if (musicBtn) musicBtn.addEventListener("click", toggleMusic);
   const chips = document.querySelectorAll(".theme-chip");
   chips.forEach((chip) => { chip.addEventListener("click", () => { chips.forEach((c) => c.classList.remove("is-active")); chip.classList.add("is-active"); document.body.setAttribute("data-wedding-theme", chip.dataset.theme); }); });
   const progress = document.getElementById("scrollProgressBar");
