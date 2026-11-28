@@ -17,9 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
     curtain.classList.add("is-opening");
     curtain.setAttribute("aria-hidden", "true");
     clearTimeout(curtainDoneTimer);
-    curtainDoneTimer = setTimeout(() => {
-      curtain.classList.add("is-done");
-    }, 1250);
+    curtainDoneTimer = setTimeout(() => { curtain.classList.add("is-done"); }, 1250);
   }
   if (badge) badge.addEventListener("click", openCurtain);
   if (curtain) curtain.addEventListener("click", (e) => { if (e.target === curtain || e.target.closest(".curtain-panel")) openCurtain(); });
@@ -94,6 +92,26 @@ document.addEventListener("DOMContentLoaded", () => {
   tick();
   setInterval(tick, 1000);
 
+  // BURUNG PUTIH - CUMA DI SAVE THE DATE
+  function createWhiteBird(container, topPercent, duration, delay, size) {
+    if (!container) return;
+    const bird = document.createElement("div");
+    bird.className = "bird";
+    bird.style.setProperty("--bird-top", topPercent + "%");
+    bird.style.setProperty("--fly-dur", duration + "s");
+    bird.style.setProperty("--fly-delay", delay + "s");
+    bird.style.setProperty("--bird-size", size + "px");
+    bird.innerHTML = '<span class="b-wing left"></span><span class="b-body"></span><span class="b-head"></span><span class="b-wing right"></span>';
+    container.appendChild(bird);
+  }
+  const birdsStd = document.getElementById("birdsStd");
+  if (birdsStd) {
+    createWhiteBird(birdsStd, 8, 16, 0, 56);
+    createWhiteBird(birdsStd, 16, 20, 4, 44);
+    createWhiteBird(birdsStd, 26, 18, 8, 38);
+    createWhiteBird(birdsStd, 12, 24, 2, 32);
+  }
+
   const sparkleBox = document.getElementById("std-sparkles");
   if (sparkleBox && window.innerWidth > 768) {
     for (let i = 0; i < 22; i++) {
@@ -130,8 +148,8 @@ document.addEventListener("DOMContentLoaded", () => {
   if (calBtn) {
     calBtn.addEventListener("click", () => {
       const title = encodeURIComponent("Pernikahan Herlangga & Zalsa");
-      const desc = encodeURIComponent("Akad 16.00 WIB - Resepsi 19.00-21.00 WIB di Yayasan Darul Aitama, Jakarta Pusat");
-      const loc = encodeURIComponent("Yayasan Darul Aitama, Jl. K.H. Mas Mansyur No.47, Jakarta Pusat");
+      const desc = encodeURIComponent("Akad 16.00 WIB - Resepsi 19.00-21.00 WIB di Yayasan Daarul Aitam, Jakarta Pusat");
+      const loc = encodeURIComponent("Yayasan Daarul Aitam, Jl. K.H. Mas Mansyur No.47, Jakarta Pusat");
       window.open(`https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=20270327T090000Z/20270327T140000Z&details=${desc}&location=${loc}`, "_blank");
     });
   }
@@ -188,7 +206,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // === 3D TILT ===
   function addTilt3D(selector, max = 12) {
     const els = document.querySelectorAll(selector);
     els.forEach((el) => {
@@ -218,73 +235,53 @@ document.addEventListener("DOMContentLoaded", () => {
   addTilt3D(".oval-frame-wrap", 12);
   addTilt3D(".polaroid-duo-wrap", 10);
   addTilt3D(".gallery-frame", 12);
-  addTilt3D(".ar-rum-arch-outer", 8);
+  addTilt3D(".ar-rum-frame-new", 8);
   addTilt3D(".closing-card-frame", 8);
   addTilt3D(".physical-gift-box", 8);
+  addTilt3D(".building-new-wrap", 8);
 
-  // === REVEAL SMOOTH BERTAHAP ALA VIDEO ===
   const animatedTargets = Array.from(document.querySelectorAll(
     ".text-rise, .video-reveal, .reveal-up, .reveal-left, .reveal-right, .reveal-zoom, .reveal-blur"
   ));
-
   function showElementSmooth(el, delayMs = 0) {
     if (!el || el.dataset.revealed === "1") return;
     el.dataset.revealed = "1";
-    setTimeout(() => {
-      el.classList.add("is-shown", "is-visible", "is-in");
-    }, delayMs);
+    setTimeout(() => { el.classList.add("is-shown", "is-visible", "is-in"); }, delayMs);
   }
-
   function revealBatch(elements) {
-    elements.forEach((el, idx) => {
-      showElementSmooth(el, Math.min(idx * 110, 440));
-    });
+    elements.forEach((el, idx) => { showElementSmooth(el, Math.min(idx * 110, 440)); });
   }
-
   if ("IntersectionObserver" in window) {
     const smoothObserver = new IntersectionObserver(
       (entries) => {
-        const entering = entries
-          .filter((entry) => entry.isIntersecting)
-          .map((entry) => entry.target);
-
+        const entering = entries.filter((entry) => entry.isIntersecting).map((entry) => entry.target);
         if (entering.length) {
           revealBatch(entering);
           entering.forEach((el) => smoothObserver.unobserve(el));
         }
       },
-      {
-        threshold: 0.14,
-        rootMargin: "0px 0px -32px 0px"
-      }
+      { threshold: 0.14, rootMargin: "0px 0px -32px 0px" }
     );
-
     animatedTargets.forEach((el) => smoothObserver.observe(el));
-
     let scrollCheckTimer = null;
-    window.addEventListener(
-      "scroll",
-      () => {
-        clearTimeout(scrollCheckTimer);
-        scrollCheckTimer = setTimeout(() => {
-          const vh = window.innerHeight || document.documentElement.clientHeight;
-          const newlyVisible = animatedTargets.filter((el) => {
-            if (el.dataset.revealed === "1") return false;
-            const rect = el.getBoundingClientRect();
-            return rect.top < vh * 0.88 && rect.bottom > 0;
-          });
-          if (newlyVisible.length) {
-            revealBatch(newlyVisible);
-            newlyVisible.forEach((el) => smoothObserver.unobserve(el));
-          }
-        }, 80);
-      },
-      { passive: true }
-    );
+    window.addEventListener("scroll", () => {
+      clearTimeout(scrollCheckTimer);
+      scrollCheckTimer = setTimeout(() => {
+        const vh = window.innerHeight || document.documentElement.clientHeight;
+        const newlyVisible = animatedTargets.filter((el) => {
+          if (el.dataset.revealed === "1") return false;
+          const rect = el.getBoundingClientRect();
+          return rect.top < vh * 0.88 && rect.bottom > 0;
+        });
+        if (newlyVisible.length) {
+          revealBatch(newlyVisible);
+          newlyVisible.forEach((el) => smoothObserver.unobserve(el));
+        }
+      }, 80);
+    }, { passive: true });
   } else {
     revealBatch(animatedTargets);
   }
-
   window.addEventListener("scroll", () => {
     const hero = document.querySelector(".hero-envelope");
     if (hero) {
